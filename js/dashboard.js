@@ -26,7 +26,7 @@ require(['jquery', 'buttons', 'buttonmaker', 'navigator', 'dimensions', 'd3'], f
 			}
 	);
 	
-	var navbarheight = 50;
+	var navbarheight = 75;
 	
 	buttons.init(
 		new Dimensions({
@@ -36,7 +36,7 @@ require(['jquery', 'buttons', 'buttonmaker', 'navigator', 'dimensions', 'd3'], f
 				y: function(){return 0},
 			},
 			
-			height: function(){ return $(window).height() - navbarheight},
+			height: function(){ return $(window).height()},
 			
 			width: function(){ return $(window).width()},
 			
@@ -57,7 +57,7 @@ require(['jquery', 'buttons', 'buttonmaker', 'navigator', 'dimensions', 'd3'], f
 				y: function(){return 0},
 			},
 			
-			height: function(){ return $(window).height() - navbarheight},
+			height: function(){ return $(window).height()},
 			
 			width: function(){ return $(window).width()},
 			

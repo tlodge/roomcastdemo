@@ -5,6 +5,26 @@ define(['jquery','d3','radio'], function($,d3, radio){
 		
 		dim,
 		
+		demos 	 = [ 
+						{name:"add button", callback:addclicked},
+						{name:"add category", callback:categoryclicked},
+				   ],
+		
+		screens  = [
+						{name:"user", id:"buttons"},
+						{name:"button maker", id:"buttonmaker"},
+						{name:"dashboard", id:"dashboard"},
+						{name:"stats", id:"stats"}
+					],
+		
+		addclicked = function(d){
+		
+		},
+		
+		categoryclicked = function(d){
+		
+		},
+		
 		slide = function(d){
 			
 			d3.select("#dashboard")
@@ -18,10 +38,16 @@ define(['jquery','d3','radio'], function($,d3, radio){
 				.style("left", "0px");	
 		},
 		
+		
+		navbarheight = function(){
+			return dim.height() * 3/5;
+		},
+		
 		init = function(d, ids){
 			dim = d;
 			
-			buttonwidth = dim.height() * 0.8;
+			
+			buttonwidth = navbarheight() * 0.8;
 			
 			svg = d3.select("#navigator")
 					  .style("left", dim.x() + "px")
@@ -34,21 +60,57 @@ define(['jquery','d3','radio'], function($,d3, radio){
 					  .attr("height",dim.height() + dim.margin().top + dim.margin().bottom)
 			 		  .append("g")
 					  .attr("id", "navmain");
-					  
+			
+			
+			
+						  
+			svg.append("rect")
+				.attr("x", dim.x())
+				.attr("y", dim.height()*2/5)
+				.attr("width", dim.width())
+				.attr("height", navbarheight())
+				.style("fill", "black")
+				.attr("opacity", 0.7)
+			
 			svg.append("rect")
 				.attr("x", dim.x())
 				.attr("y", 0)
-				.attr("width", dim.width())
-				.attr("height", dim.height())
-				.style("fill", "black");
+				.attr("width", dim.width()/15)
+				.attr("height", dim.height()*2/5)
+				.style("fill", "#006f9b");
+		
+			svg.append("text")
+				.attr("x", dim.x() + (dim.width()/15)/2)
+				.attr("y", (navbarheight() * 2/5))
+				.attr("dy", ".2em")
+				.style("fill", "#fff")
+				.attr("text-anchor", "middle")
+				.style("font-size", (navbarheight() * 2/5) +  "px")
+				.text("DEMO") 	
+				
 			
-			svg.append("rect")
-				.attr("x", dim.x() + dim.width()/2)
-				.attr("y", (dim.height()-buttonwidth)/2)
-				.attr("width", buttonwidth)
-				.attr("height", buttonwidth)
-				.style("fill", "#f47961")
+			var viewnavs = svg.selectAll("g.view")
+							  .data(screens)
+			
+			var viewitem = viewnavs
+								.enter()
+								.append("g")
+								.attr("class", "viewnavitem")
+			
+			var menuitemwidth = dim.width()/2 / screens.length;
+				
+			viewnavs
+				.append("text")
+				.attr("x", function(d, i){
+											return dim.width()/2 + (i * menuitemwidth)})
+				.attr("y", dim.height() * 2/5  + navbarheight()/2)
+				.style("fill", "#fff")
+				.attr("dy", ".2em")
+				.attr("text-anchor", "middle")
+				.style("font-size", (navbarheight() * 2/5) +  "px")
+				.text(function(d){return d.name}) 	
 				.on("click", slide);
+									
 		}
 		
 	return{
