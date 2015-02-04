@@ -99,10 +99,10 @@ define(['jquery','d3','radio'], function($,d3, radio){
 			
 			var menuitemwidth = dim.width()/2 / screens.length;
 				
-			viewnavs
+			viewitem
 				.append("text")
 				.attr("x", function(d, i){
-											return dim.width()/2 + (i * menuitemwidth)})
+											return dim.width()/2 + (i * menuitemwidth) + menuitemwidth/2})
 				.attr("y", dim.height() * 2/5  + navbarheight()/2)
 				.style("fill", "#fff")
 				.attr("dy", ".2em")
@@ -110,7 +110,29 @@ define(['jquery','d3','radio'], function($,d3, radio){
 				.style("font-size", (navbarheight() * 2/5) +  "px")
 				.text(function(d){return d.name}) 	
 				.on("click", slide);
-									
+			
+			
+			var demonavs = svg.selectAll("g.demoitem")
+							  .data(demos)
+			
+			var demoitem = demonavs
+								.enter()
+								.append("g")
+								.attr("class", "demoitem")
+			
+			var demoitemwidth = dim.width()/4 / demos.length;
+				
+			demoitem
+				.append("text")
+				.attr("x", function(d, i){
+											return (i * demoitemwidth) + demoitemwidth/2})
+				.attr("y", dim.height() * 2/5  + navbarheight()/2)
+				.style("fill", "#fff")
+				.attr("dy", ".2em")
+				.attr("text-anchor", "middle")
+				.style("font-size", (navbarheight() * 2/5) +  "px")
+				.text(function(d){return d.name}) 	
+										
 		}
 		
 	return{
