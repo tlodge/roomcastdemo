@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<!--<link href='http://fonts.googleapis.com/css?family=Oswald&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+   <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>-->
+    <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+    <title>dashboard</title>
+  </head>
+  <body>
+  	<style>
+  		
+  		body{
+  			background-color:#fff;
+  			/*font-family: 'Oswald', sans-serif;
+  			font-family: 'Varela Round', sans-serif;
+  			font-family: 'Noto Sans', sans-serif;*/
+  			font-family: "Open Sans",sans-serif;
+  			margin: 0;
+  			position:relative;
+  			overflow: hidden;
+  		}
+  		
+  		h1{
+  			font-weight: normal;
+  		}
+  		
+  		h2{
+  			font-weight: normal;
+  		}
+  		
+  		input{
+  			border: 0px;
+  			margin: 0px;
+  			padding: 0px;
+  		}
+  		
+  		.msgclip{
+			clip-path: url(#messageClip);
+		}
+
+		.bigclip{
+			clip-path: url(#bigClip);
+		}
+		
+		
+		#dashboard{
+		  	float:left;
+		}
+		
+		#controlpanel{
+			float:left;
+		}
+		
+		div{
+			position: absolute;
+		}
+		
+  	</style>
+  	
+  	
+  	
+  	<!--<div id="dashboard">	
+  		<svg>
+  		<foreignObject class="video">
+			<video id="video" x="200" y="100" height="480" width="640">
+		</foreignObject>
+  		</svg>
+  	</div>-->
+  	
+	<div id="dashboard"></div>
+	<div id="buttonmaker"></div>
+	<div id="navigator"></div>
+
+    <script data-main="js/dashboard.js" src="js/require/require.js"></script>
+  </body>
+</html>
