@@ -17,7 +17,7 @@ require.config({
     }
 });
 
-require(['jquery', 'buttons', 'buttonmaker', 'navigator', 'dimensions', 'd3'], function($, buttons, buttonmaker, nav, Dimensions, d3) {
+require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 'dimensions', 'd3'], function($, buttons, buttonmaker, stats, dashboard, nav, Dimensions, d3) {
 	
 	$(document).bind(
 		'touchmove',
@@ -70,6 +70,50 @@ require(['jquery', 'buttons', 'buttonmaker', 'navigator', 'dimensions', 'd3'], f
 		})
 	
 	);
+	
+	dashboard.init(
+		new Dimensions({
+			
+			anchor:{
+				x: function(){return $(window).width()*2}, 
+				y: function(){return 0},
+			},
+			
+			height: function(){ return $(window).height()},
+			
+			width: function(){ return $(window).width()},
+			
+			margins:{
+				top: function(){return 0},
+				right: function(){return 0},
+				bottom: function(){return 0},
+				left: function(){return 0}
+			}
+		})
+	
+	);
+	
+	stats.init(
+		new Dimensions({
+			
+			anchor:{
+				x: function(){return $(window).width()*3}, 
+				y: function(){return 0},
+			},
+			
+			height: function(){ return $(window).height()},
+			
+			width: function(){ return $(window).width()},
+			
+			margins:{
+				top: function(){return 0},
+				right: function(){return 0},
+				bottom: function(){return 0},
+				left: function(){return 0}
+			}
+		})
+	);
+	
 	
 	nav.init(
 		new Dimensions({

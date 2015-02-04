@@ -5,9 +5,111 @@ define(['jquery','d3','radio'], function($,d3, radio){
 		
 		dim,
 		
+		
+		
+		buttonindex = 0;
+		
+		buttons = [
+		{
+			category:"concierge",
+			name:"parking",
+			options:[
+						{
+							name:"when",
+							question:"roughly when would you like the key to be released?",
+							components:[
+									{name:"rows", id:"rows", type:"slider", min:1, max:20, value:8, callback:function(value){
+										console.log(value);
+									}},
+								
+									{name:"cols", id:"cols",type:"slider", min:1, max:20, value:8, callback:function(value){
+										console.log(value);
+									}}
+							]
+						},
+						{
+							name:"duration",
+							
+							question:"roughly how long for?",
+							
+							components:[
+								{name:"duration", id:"duration", type:"slider", min:1, max:20, value:10, callback:function(value){
+									console.log(value);
+								}},
+							]
+						},
+						{
+							name:"contact",
+							
+							question:"how shall we contact you?",
+							
+							components:[
+								{name:"c1",id:"c1", type:"button", value: true, label:"tlodge@gmail.com", callback:function(value){
+									console.log(value);
+								}},
+								{name:"c2",id:"c2", type:"button", value: true, label:"07972639571", callback:function(value){
+									console.log(value);
+								}},
+								{name:"c3",id:"c3", type:"button", value: true, label:"don't contact me!", callback:function(value){
+									console.log(value);
+								}},
+							]
+						}
+					]					
+				
+			},
+			
+			{
+					category:"concierge",
+					name:"parking permit for today",
+					options:[
+						{
+							name:"when",
+							question:"you sure you want a permit?",
+							components:[
+									{name:"rows", id:"rows", type:"slider", min:1, max:20, value:8, callback:function(value){
+										console.log(value);
+									}},
+								
+									{name:"cols", id:"cols",type:"slider", min:1, max:20, value:8, callback:function(value){
+										console.log(value);
+									}}
+							]
+						}
+					]
+				
+			},
+			{
+						category:"security",
+						name: "escort me",
+						options:[
+						{
+							name:"help",
+							question:"here is a video",
+							components:[
+								{name:"video", id:"myvideo", type:"video", src:"video/test.mp4", callback:function(value){
+									console.log(value);
+								}}
+							]
+						}]
+			}
+		],
+		
+		
+		
+		addclicked = function(d){
+			console.log("add was clicked!!");
+			if (buttonindex < buttons.length){
+				radio('newbutton').broadcast(buttons[buttonindex]);
+			}
+			buttonindex++;
+		},
+		
+		
+		
 		demos 	 = [ 
-						{name:"add button", callback:addclicked},
-						{name:"add category", callback:categoryclicked},
+						{name:"add button", callback:addclicked}
+						//{name:"add category", callback:categoryclicked},
 				   ],
 		
 		screens  = [
@@ -17,25 +119,39 @@ define(['jquery','d3','radio'], function($,d3, radio){
 						{name:"stats", id:"stats"}
 					],
 		
-		addclicked = function(d){
+		currentscreen  = screens[0],
 		
-		},
+		
 		
 		categoryclicked = function(d){
 		
 		},
 		
 		slide = function(d){
-			
-			d3.select("#dashboard")
-				.transition()
-				.duration(1000)
-				.style("left", -dim.width() + "px");
-			
-			d3.select("#buttonmaker")
-				.transition()
-				.duration(1000)
-				.style("left", "0px");	
+			if (d.id == currentscreen.id){
+				return;
+			}
+			else{
+				d3.select("#" + d.id)
+				  .transition()
+				  .duration(1000)
+				  .style("left", "0px");
+				
+				var tx;
+				
+				if (screens.indexOf(currentscreen) < screens.indexOf(d)){
+					tx = -dim.width();
+				}else{
+					tx = dim.width();
+				}
+				
+				d3.select("#" + currentscreen.id)
+				  	 .transition()
+				  	.duration(1000)
+				  	.style("left", tx + "px");
+				
+				currentscreen = d;	
+			}
 		},
 		
 		
@@ -131,7 +247,8 @@ define(['jquery','d3','radio'], function($,d3, radio){
 				.attr("dy", ".2em")
 				.attr("text-anchor", "middle")
 				.style("font-size", (navbarheight() * 2/5) +  "px")
-				.text(function(d){return d.name}) 	
+				.text(function(d){return d.name})
+				.on("click", function(d){addclicked(d)});  	
 										
 		}
 		

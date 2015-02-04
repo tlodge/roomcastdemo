@@ -8,9 +8,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	
 		dim,
 		
-		svg  = d3.select("#dashboard")
+		svg  = d3.select("#buttons")
 			.append("svg")
-			.attr("id", "dashboard")
+			.attr("id", "buttons")
 			.append("g")
 			.attr("id", "main")
 			.attr("class", "bigclip"),
@@ -294,7 +294,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		renderbuttons = function(){
 			
 			
-			d3.select("#dashboard")
+			d3.select("#buttons")
   				.select("svg")
   				.attr("width", dim.width() + dim.margin().left)
 				.attr("height",dim.height() + dim.margin().top)
@@ -460,7 +460,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		
 		rendermessagecolumn = function(){
 			
-			svg = d3.select("#dashboard")
+			svg = d3.select("#buttons")
 					.select("svg")
 					.select("g#main");
 			
@@ -587,7 +587,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		
 		createmasks  = function(){
 			
-			 var clip = d3.select("svg#dashboard")
+			 var clip = d3.select("svg#buttons")
 			 			 .append("defs");
 			 	
 			 clip	
@@ -618,7 +618,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			
 			dim = d;
 			
-			d3.select("#dashboard")
+			d3.select("#buttons")
   				.select("svg")
   			 	.attr("width", dim.width() + dim.margin().left + dim.margin().right)
 				.attr("height",dim.height() + dim.margin().top + dim.margin().bottom)
