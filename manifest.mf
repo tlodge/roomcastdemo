@@ -1,18 +1,30 @@
 CACHE MANIFEST
-#created recently
+
+#last update 5th Feb 2005
 index.html
 js/require/require.js
 js/demo.js
+
+#widgets
 js/my/widgets/groupwidget.js
 js/my/widgets/notifywidget.js
+js/my/widgets/namewidget.js
+
+#screens
 js/my/stats.js
 js/my/dashboard.js
 js/my/buttons.js
 js/my/messages.js
 js/my/buttonmaker.js
 js/my/controls.js
+js/my/navigator.js
+
+#utilities
 js/my/util.js
+js/my/dimensions.js
 js/jquery/jquery-2.1.0.min.js
+
+#external
 js/d3/d3.js
 js/radio/radio.min.js
 js/moment/moment.min.js
