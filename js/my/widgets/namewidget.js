@@ -53,7 +53,7 @@ define(['jquery','d3'], function($,d3){
 				 	.style("font-size", (tboxheight()*0.8) + "px")
 				 	.on("focus", function(d){
 				 			console.log("got focus!!");
-				 			$(window).scrollTo(0,0);
+				 			//$(window).scrollTo(0,0);
 				 			$(document).scrollTop(0);
 				 			
 				 	})
