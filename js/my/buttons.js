@@ -86,10 +86,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		],
 			
 
-		pressed = function(d){
-			messages.addmessage(d);
-			selectoptions(d);
-		},
+		
 			
 			
 		selectoptions = function(d){
@@ -304,15 +301,21 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.call(util.autofit, cwidth())		
 		},
 		
+		pressed = function(d){
+			messages.addmessage(d);
+			selectoptions(d);
+		},
 		
-		dragpressed =  d3.behavior.drag()
-	   					  .on("drag", function(){console.log("dragged")})
-						   .on("dragend", function(){console.log("drag end!")})
-						   .on("dragstart",function(){console.log("drag start!")}),
+		dragpressed = function(){
+			console.log(d3.select(this).data()[0]);
+			var d = d3.select(this).data()[0];
+			messages.addmessage(d);
+			selectoptions(d);
+		},
 		
 		renderbuttons = function(){
 			
-			console.log("OK IN RENDER BUTTONS");
+			console.log("OK IN RENDER BUTTONS - 2");
 			
 			d3.select("#buttons")
   				.select("svg")
@@ -431,8 +434,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					.style("stroke", "white")
 					.style("stroke-width", 4)
 					.style("fill",function(d){return column[d.name] % 2 == 0 ? "#f47961": "#006f9b"})
-					.on("click", function(d){pressed(d)})
-					.call(dragpressed);
+					//.on("click", function(d){pressed(d)})
+					.call( d3.behavior.drag().on("dragstart",dragpressed));
 			
 			button.append("text")
 					.attr("class", "buttontext")
@@ -442,8 +445,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	  			  	.style("fill", "white")
 	  			  	.style("font-size", fontsize + "px")
 	  			  	.text(function(d){return d.name})  	
-	  			  	.on("click", function(d){pressed(d)})
-	  			  	.call(dragpressed)
+	  			  	//.on("click", function(d){pressed(d)})
+	  			  	//.call(dragpressed)
+	  			  	.call( d3.behavior.drag().on("dragstart", dragpressed))
 	  			  	.call(util.autofit , buttonwidth);
 	  			  	
 		},
