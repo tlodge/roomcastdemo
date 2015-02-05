@@ -63,7 +63,9 @@ define(['jquery','d3'], function($,d3){
 				 			$('body').css("overflow", "auto");
 				 			/* doesn't work if disable scrolling - can maybe enable temporarily?*/
 				 			$(document).scrollTop(0);
+				 			$(document).scrollLeft(0);
 				 	})
+				 	
 				 	
 			};
 			
