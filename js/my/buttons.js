@@ -312,6 +312,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		
 		renderbuttons = function(){
 			
+			console.log("OK IN RENDER BUTTONS");
 			
 			d3.select("#buttons")
   				.select("svg")
@@ -442,7 +443,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	  			  	.style("font-size", fontsize + "px")
 	  			  	.text(function(d){return d.name})  	
 	  			  	.on("click", function(d){pressed(d)})
-	  			  	.call(dragpressed);
+	  			  	.call(dragpressed)
 	  			  	.call(util.autofit , buttonwidth);
 	  			  	
 		},
