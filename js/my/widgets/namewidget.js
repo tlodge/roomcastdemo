@@ -57,6 +57,13 @@ define(['jquery','d3'], function($,d3){
 				 			//$(document).scrollTop(0);
 				 			
 				 	})
+				 	.on("blur", function(d){
+				 			console.log("seen a blur!!");
+				 			$(document).bind('touchmove',true);
+				 			$('body').css("overflow", "auto");
+				 			/* doesn't work if disable scrolling - can maybe enable temporarily?*/
+				 			$(document).scrollTop(0);
+				 	})
 				 	
 			};
 			
