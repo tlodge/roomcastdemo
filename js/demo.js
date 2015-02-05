@@ -27,6 +27,9 @@ require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 
 			}
 	);
 	
+	$(document).bind(
+		'touchmove',false
+	);
 	
 	
 	String.prototype.trunc =
