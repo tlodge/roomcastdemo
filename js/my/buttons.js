@@ -208,6 +208,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.style("font-size", buttonradius/2.5+ "px")
 				.text("CANCEL") 
 				.on("click", function(d){d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);})
+			
+			
 			//controls.create(cpanel, optwidth, padding, (width/2-padding), height-padding, controlsdata);
 			controls.create({
 					hook: cpanel,
@@ -303,6 +305,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		},
 		
 		
+		/*dragpressed =  d3.behavior.drag()
+	   					  .on("drag", function(){console.log("dragged")})
+						   .on("dragend", function(){console.log("drag end!")})
+						   .on("dragstart",function(){console.log("drag start!")}),*/
 		
 		renderbuttons = function(){
 			
@@ -425,7 +431,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					.style("stroke-width", 4)
 					.style("fill",function(d){return column[d.name] % 2 == 0 ? "#f47961": "#006f9b"})
 					.on("click", function(d){pressed(d)})
-			
+					.call(d3.behavior.drag()
+	   					  .on("dragstart", function(){console.log("dragged")}));
 			
 			button.append("text")
 					.attr("class", "buttontext")
