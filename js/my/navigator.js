@@ -101,7 +101,7 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 		
 		
 		
-		addclicked = function(d){
+		addclicked = function(){
 			console.log("add was clicked!!");
 			if (buttonindex < buttons.length){
 				radio('newbutton').broadcast(buttons[buttonindex]);
@@ -363,8 +363,8 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 				.attr("text-anchor", "middle")
 				.style("font-size", (navbarheight() * 2/5) +  "px")
 				.text(function(d){return d.name})
-				.on("click", function(d){addclicked(d)});  	
-										
+				//.on("click", function(d){addclicked(d)});  	
+				.call( d3.behavior.drag().on("dragstart", addclicked))						
 		}
 		
 	return{
