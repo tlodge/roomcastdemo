@@ -28,7 +28,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		},
 		
 		yscale = function(){
-			return d3.scale.linear().range([dim.headerpadding()+dim.padding(), dim.height()])
+			return d3.scale.linear().range([dim.headerpadding(), dim.height()])
 		 							.domain([0, buttons.length+1]);
 		},
 		
@@ -85,10 +85,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			}
 		],
 			
-	
-	
+
 		pressed = function(d){
-		
 			messages.addmessage(d);
 			selectoptions(d);
 		},
@@ -161,7 +159,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.style("stroke", "#70675c")
 				.style("stroke-width",2);
 				
-			option.append("circle")
+			/*option.append("circle")
 				  .attr("class", "sendbutton")
 				  .attr("cx", optx + optwidth - 2*buttonradius)
 				  .attr("cy",opty + optheight)
@@ -169,20 +167,20 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				  .style("fill","#f47961")
 				  .style("stroke","#70675c")
 				  .style("stroke-width", 2)	
-				  .on("click", function(d){d3.select("g.options").remove()})
+				  .on("click", function(d){d3.select("g.options").remove()})*/
 			
 			option.append("text")
 				.attr("class", "optionsend")
 				.attr("dy", ".3em")
 				.attr("text-anchor", "middle")
 				.attr("x", optx + optwidth - 2*buttonradius)
-				.attr("y",opty + optheight)	
+				.attr("y",opty + optheight - (buttonradius/2))	
 				.style("fill", "#fff")
 				.style("font-size", buttonradius/2.5+ "px")
 				.text("SEND") 	
 				.on("click", function(d){d3.select("g.options").remove()})
 				
-			option.append("circle")
+			/*option.append("circle")
 				  .attr("class", "cancelbutton")
 				  .attr("cx", optx + optwidth - 5*buttonradius)
 				  .attr("cy",opty + optheight)
@@ -190,7 +188,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				  .style("fill","#f47961")
 				  .style("stroke","#70675c")
 				  .style("stroke-width", 2)	
-				  .on("click", function(d){d3.select("g.options").remove()})
+				  .on("click", function(d){d3.select("g.options").remove()})*/
 			
 			
 			option.append("text")
@@ -198,7 +196,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.attr("dy", ".3em")
 				.attr("text-anchor", "middle")
 				.attr("x", optx + optwidth - 5*buttonradius)
-				.attr("y",opty + optheight)	
+				.attr("y",opty + optheight - (buttonradius/2))	
 				.style("fill", "#fff")
 				.style("font-size", buttonradius/2.5+ "px")
 				.text("CANCEL") 
@@ -230,9 +228,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		//perhaps differentiate between renders for screen size change and renders for data change
 		//as would be more efficient.
 		render = function(){
-//			dim.setxdomain([0, buttons.length+1])
-			renderbuttons();
 			rendermessagecolumn();
+			renderbuttons();
 			renderheading();
 			messages.render();
 		},	
@@ -253,7 +250,12 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			var categoryheading = svg.selectAll("g.heading")
 									 .data(data, function(d){return d.width+" "+d.height})
 									 
-										
+			svg.selectAll("text.categoryheading")
+	  			  	.attr("x", function(d,i){return xscale()(i) + cwidth()/2})
+					.attr("y", dim.headerpadding()/2)	
+					.style("font-size", (dim.headerpadding()*0.5 + "px"))
+	  				.call(util.autofit, cwidth())						
+			
 			categoryheading
 						.enter()
 						.append("g", "g.messages")
@@ -288,8 +290,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.style("fill", "white")
 				.style("font-size", (dim.headerpadding()*0.4 + "px"))
 				.text(function(d){return d.category}) 	
-		
+				.call(util.autofit, cwidth())		
 		},
+		
+		
 		
 		renderbuttons = function(){
 			
@@ -311,19 +315,23 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
   				});
   			});
   			 
-			var buttonradius = ((yscale().range()[1]-yscale().range()[0]-(dim.padding()*2))/buttons.length)/2;
-  			
-  			
+  			 
+  			var buttonwidth 	= cwidth() - dim.padding()*2;
+  			var buttonheight 	= (((dim.height() - dim.headerpadding()) - dim.padding()*2) / maxbuttons) - dim.padding() ; 
+  			 
+  			var fontsize = buttonheight*0.2;
+  			var newyscale = d3.scale.linear().range([dim.headerpadding() + dim.padding(), dim.height()])
+  			 								  .domain([0, maxbuttons]);
+			
   			var noteradius = dim.padding()/2.5;		
   		   
   			
   			var buttonx = function(name){
-  				return cwidth() * column[name] + cwidth()/2;
+  				return cwidth() * column[name] + dim.padding();
   			}				
   			
   			var buttony = function(name){
-  				//return dim.headerpadding() + (row[name] * buttonradius);
-  				return  buttonradius + yscale()(row[name]);
+  				return  newyscale(row[name]);
   			}	
   			
   			var notex = function(name){
@@ -335,6 +343,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
   			}
   			
   			svg.selectAll("rect.column")
+  			   .transition()
+  			   .duration(500)
   			   .attr("x", function(d,i){return xscale()(i)})
 			   .attr("width",cwidth())
 			   .attr("height",dim.height())
@@ -345,36 +355,24 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.attr("width",cwidth())
 				.attr("height",dim.headerpadding())
   			
-  			svg.selectAll("circle.button")
-  				.attr("cx", function(d,i,j){return buttonx(d.name)})
-					.attr("cy", function(d,i,j){return buttony(d.name)})
-					.attr("r", buttonradius * 0.8)
-				
-  			svg.selectAll("line.message")
-							.attr("x1", function(d){return buttonx(d.name) + buttonradius})
-							.attr("y1", function(d){return buttony(d.name) + buttonradius/8})
-							.attr("x2", function(d){return notex(d.name)})
-							.attr("y2", function(d){return notey(d.name)})
-							.style("opacity", function(d){return d.message ?  1: 0});
-							
-			svg.selectAll("circle.message")
-							.attr("cx", function(d){return notex(d.name)})
-							.attr("cy", function(d){return notey(d.name)})
-							.attr("r", noteradius)	
-							.style("opacity",  function(d){return d.message ?  1: 0});
-			
-			svg.selectAll("text.categoryheading")
-	  			  	.attr("x", function(d,i){return xscale()(i) + cwidth()/2})
-					.attr("y", dim.headerpadding()/2)	
-					.style("font-size", (dim.headerpadding()*0.5 + "px"))
-					
-			svg.selectAll("text.buttontext")
-			
+  			svg.selectAll("rect.button")
+  					.transition()
+  					.duration(500)
 					.attr("x", function(d){return buttonx(d.name)})
-					.attr("y", function(d){return buttony(d.name)})	
-	  			  	.style("font-size", (buttonradius*0.3 + "px"))
+					.attr("y", function(d){return buttony(d.name)})
+					.attr("width", buttonwidth)
+					.attr("height", buttonheight)
+			
+			
+	  				
+			svg.selectAll("text.buttontext")
+					.attr("x", function(d){return buttonx(d.name) + buttonwidth/2 })
+					.attr("y", function(d){return buttony(d.name) + buttonheight/2 + fontsize/4})	
+	  			  	.style("font-size", fontsize + "px")
 	  			  	.text(function(d){return d.name})  	
-	  			  	.call(wrap , buttonradius, buttonradius);
+	  			  	.call(util.autofit , buttonwidth);
+	  			  	
+					
 	  			  		
   			///handle new data					 
   		   	var categories = svg.selectAll("g.category")
@@ -408,52 +406,28 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 							.attr("class", "button");
 			
 			
-			button.append("circle")
+			button.append("rect")
 				  	.attr("class", "button")
-				  	//.attr("rx",buttonradius)
-				  	//.attr("ry",buttonradius)
-					.attr("cx", function(d,i,j){return buttonx(d.name)})
-					.attr("cy", function(d,i,j){return buttony(d.name)})
-					.attr("r", buttonradius*0.8)
-					//.attr("height", buttonradius)
+					.attr("x", function(d){return buttonx(d.name)})
+					.attr("y", function(d){return buttony(d.name)})
+					.attr("width", buttonwidth)
+					.attr("height", buttonheight)
 					.style("stroke", "white")
 					.style("stroke-width", 4)
 					.style("fill",function(d){return column[d.name] % 2 == 0 ? "#f47961": "#006f9b"})
 					.on("click", function(d){pressed(d)})
-							
-			button.append("line")
-							.attr("class", "message")
-							.attr("x1", function(d){return buttonx(d.name) + buttonradius})
-							.attr("y1", function(d){return buttony(d.name) + buttonradius/8})
-							.attr("x2", function(d){return notex(d.name)})
-							.attr("y2", function(d){return notey(d.name)})
-							.style("stroke-width", 1)
-							.style("stroke", "black")	
-							.style("opacity", 0)			
-							.on("click", pressed)
-							
-			button.append("circle")
-							.attr("class", "message")
-							.attr("cx", function(d){return notex(d.name)})
-							.attr("cy", function(d){return notey(d.name)})
-							.attr("r", noteradius)	
-							.style("stroke", "black")
-							.style("stroke-width", 1)
-							.style("fill", "white")
-							.style("opacity", 0)
-							.on("click", function(d){pressed(d);})
+			
 			
 			button.append("text")
 					.attr("class", "buttontext")
-				  	.attr("dy", ".2em")
-	  			  	.attr("x", function(d){return buttonx(d.name)})
-					.attr("y", function(d){return buttony(d.name)})	
+	  			  	.attr("x", function(d){return buttonx(d.name) + buttonwidth/2 })
+					.attr("y", function(d){return buttony(d.name) + buttonheight/2 + fontsize/4})	
 				  	.attr("text-anchor", "middle")
 	  			  	.style("fill", "white")
-	  			  	.style("font-size", (buttonradius*0.25 + "px"))
+	  			  	.style("font-size", fontsize + "px")
 	  			  	.text(function(d){return d.name})  	
 	  			  	.on("click", function(d){pressed(d)})
-	  			  	.call(wrap , buttonradius, buttonradius);
+	  			  	.call(util.autofit , buttonwidth);
 	  			  	
 		},
 		
@@ -482,8 +456,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			d3.selectAll("text.messageheadertext")
 	  			.attr("x",  function(d) {return xscale()(d) + cwidth()/2})
 				.attr("y", dim.headerpadding()/2)	
-	  			.style("font-size", (dim.headerpadding*0.3 + "px"))
-	  		
+	  			.style("font-size", (dim.headerpadding*0.5 + "px"))
+	  			.call(util.autofit, cwidth())
+	  			
 	  		var msgs = svg
 							.selectAll("g.messages")
 							.data(cols,function(d){return d})
@@ -527,14 +502,13 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	  			  .style("fill", "white")
 	  			  .style("font-size", (dim.headerpadding()*0.5 + "px"))
 	  			  .text("timeline")  
-	  
+	  			  .call(util.autofit, cwidth())
 	  		//remove old
 	  		msgs
 				.exit()
 	  			.remove();
 	  	},		
 	  			
-	  	
 	    wrap = function(text, width, height) {
 	    
 	    
@@ -617,6 +591,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		init = function(d){
 			
 			dim = d;
+			messages.init(dim);
 			
 			d3.select("#buttons")
   				.select("svg")
@@ -637,12 +612,6 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					params[nv[0]] = nv[1] || true;
 				}
 			}
-			
-			messages.init(dim);
-			
-			render();
-			
-			
 			
 			createmasks();
 			
@@ -667,22 +636,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				render();
 			});
 			
-			
-			//d3.select(window).on('resize', update);
-			
-			/*d3.select("#videos")
-				.append("svg")
-				.attr("id", "svg")
-				.append("foreignObject")
-				.attr("class", "video")
-				.attr("width",630)
-				.attr("height", 480)
-				.append("video")
-				.attr("id", "video")
-				.attr("x",200)
-				.attr("y",100)
-				.attr("height", 480)
-				.attr("width", 640)*/
+			render();
 			
 			
 		}

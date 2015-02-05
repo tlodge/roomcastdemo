@@ -1,13 +1,17 @@
 define(['jquery','d3','radio'], function($,d3, radio){
 
+	"use strict";
+	
 	var 
 		svg,
 		
 		dim,
+				
+		demoup = false,
 		
+		buttonindex = 0,
 		
-		
-		buttonindex = 0;
+		viewpos = {},
 		
 		buttons = [
 		{
@@ -108,7 +112,7 @@ define(['jquery','d3','radio'], function($,d3, radio){
 		
 		
 		demos 	 = [ 
-						{name:"add button", callback:addclicked}
+						{name:"+ add button", callback:addclicked}
 						//{name:"add category", callback:categoryclicked},
 				   ],
 		
@@ -121,11 +125,22 @@ define(['jquery','d3','radio'], function($,d3, radio){
 		
 		currentscreen  = screens[0],
 		
+		menuitemwidth = function(){
+			return dim.width()/2 / screens.length;
+		},
 		
+		viewitemwidth = function(){
+			return dim.width()/2 / screens.length;
+		},
+		
+		demoitemwidth = function(){
+			return dim.width()/4 / demos.length;
+		},
 		
 		categoryclicked = function(d){
 		
 		},
+		
 		
 		slide = function(d){
 			if (d.id == currentscreen.id){
@@ -151,6 +166,13 @@ define(['jquery','d3','radio'], function($,d3, radio){
 				  	.style("left", tx + "px");
 				
 				currentscreen = d;	
+				
+				d3.selectAll("rect.viewselection")
+					.transition()
+					.duration(500)
+					.attr("x", dim.width()/2 + (viewpos[d.name] * menuitemwidth()))
+					.attr("y", dim.height() * 2/5)
+			
 			}
 		},
 		
@@ -159,15 +181,83 @@ define(['jquery','d3','radio'], function($,d3, radio){
 			return dim.height() * 3/5;
 		},
 		
+		toggledemo = function(){
+			if (demoup){
+				d3.select("#navigator")
+					 .transition()
+				 	 .duration(500)
+					 .style("top",  dim.y() +  "px")
+			}else{
+				d3.select("#navigator")
+					 .transition()
+				 	 .duration(500)
+					 .style("top", (dim.y() + navbarheight())+  "px")
+			}
+			demoup = !demoup;
+		},
+		
+		update = function(){
+			
+		  	
+			var nav = d3.select("#navigator");
+			
+			nav 			
+			   	.attr("width", dim.width() + dim.margin().left + dim.margin().right + "px" )
+			   	.attr("height",dim.height() + dim.margin().top + dim.margin().bottom + "px" )
+				.style("left", dim.x() + "px");
+			
+			nav.select("svg#navigator")
+			   .attr("width", dim.width() + dim.margin().left + dim.margin().right)
+			   .attr("height",dim.height() + dim.margin().top + dim.margin().bottom);
+			
+			nav.selectAll("text.viewitem")
+				.attr("x", function(d, i){return dim.width()/2 + (i * menuitemwidth()) + menuitemwidth()/2})
+				.attr("y", dim.height() * 2/5  + navbarheight()/2)
+			
+			nav.selectAll("text.demoitem")
+				.attr("x", function(d, i){return (i * demoitemwidth()) + demoitemwidth()/2})
+				.attr("y", dim.height() * 2/5  + navbarheight()/2)	
+			
+			nav.selectAll("rect.viewselection")
+				.attr("x", dim.width()/2 + (viewpos[currentscreen.name] * menuitemwidth()))
+				.attr("y", dim.height() * 2/5)
+			
+			nav.select("rect.demobar")
+				.attr("x", dim.x())
+				.attr("y", dim.height()*2/5)
+				.attr("width", dim.width())
+				.attr("height", navbarheight())
+			
+			nav.select("rect.labelbar")
+				.attr("x", dim.x())
+				.attr("y", 0)
+				.attr("width", dim.width()/15)
+				.attr("height", dim.height()*2/5)
+				
+			
+			if (demoup){
+				nav.style("top",  (dim.y() + navbarheight()) +  "px");	  
+			}else{
+			 	nav.style("top",  dim.y() +  "px");
+			}
+		},
+		
+		
 		init = function(d, ids){
+		
+			screens.forEach(function(item,i){
+				viewpos[item.name] = i;
+			});
+			
 			dim = d;
 			
 			
-			buttonwidth = navbarheight() * 0.8;
+			var buttonwidth = navbarheight() * 0.8;
+			
 			
 			svg = d3.select("#navigator")
 					  .style("left", dim.x() + "px")
-					  .style("top",  dim.y() + "px")
+					  .style("top",  (dim.y() + navbarheight()) +  "px")
 					  .attr("width", dim.width() + dim.margin().left + dim.margin().right + "px" )
 					  .attr("height",dim.height() + dim.margin().top + dim.margin().bottom + "px" )
 			 		  .append("svg")
@@ -176,11 +266,10 @@ define(['jquery','d3','radio'], function($,d3, radio){
 					  .attr("height",dim.height() + dim.margin().top + dim.margin().bottom)
 			 		  .append("g")
 					  .attr("id", "navmain");
-			
-			
-			
+					  
 						  
 			svg.append("rect")
+				.attr("class","demobar")
 				.attr("x", dim.x())
 				.attr("y", dim.height()*2/5)
 				.attr("width", dim.width())
@@ -189,12 +278,14 @@ define(['jquery','d3','radio'], function($,d3, radio){
 				.attr("opacity", 0.7)
 			
 			svg.append("rect")
+				.attr("class","labelbar")
 				.attr("x", dim.x())
 				.attr("y", 0)
 				.attr("width", dim.width()/15)
 				.attr("height", dim.height()*2/5)
-				.style("fill", "#006f9b");
-		
+				.style("fill", "#006f9b")
+				.on("click", toggledemo)
+				
 			svg.append("text")
 				.attr("x", dim.x() + (dim.width()/15)/2)
 				.attr("y", (navbarheight() * 2/5))
@@ -203,7 +294,16 @@ define(['jquery','d3','radio'], function($,d3, radio){
 				.attr("text-anchor", "middle")
 				.style("font-size", (navbarheight() * 2/5) +  "px")
 				.text("DEMO") 	
-				
+				.on("click", toggledemo)
+			
+			svg.append("rect")
+				.attr("class", "viewselection")
+				.attr("x", dim.width()/2 + (0 * menuitemwidth()))
+				.attr("y", dim.height() * 2/5)
+				.attr("width", viewitemwidth())
+				.attr("height", dim.height()*3/5)
+				.style("fill", "#f47961")
+
 			
 			var viewnavs = svg.selectAll("g.view")
 							  .data(screens)
@@ -213,12 +313,12 @@ define(['jquery','d3','radio'], function($,d3, radio){
 								.append("g")
 								.attr("class", "viewnavitem")
 			
-			var menuitemwidth = dim.width()/2 / screens.length;
+		
 				
 			viewitem
 				.append("text")
-				.attr("x", function(d, i){
-											return dim.width()/2 + (i * menuitemwidth) + menuitemwidth/2})
+				.attr("class", "viewitem")
+				.attr("x", function(d){return dim.width()/2 + (viewpos[d.name] * menuitemwidth()) + menuitemwidth()/2})
 				.attr("y", dim.height() * 2/5  + navbarheight()/2)
 				.style("fill", "#fff")
 				.attr("dy", ".2em")
@@ -236,12 +336,13 @@ define(['jquery','d3','radio'], function($,d3, radio){
 								.append("g")
 								.attr("class", "demoitem")
 			
-			var demoitemwidth = dim.width()/4 / demos.length;
+			
 				
 			demoitem
 				.append("text")
+				.attr("class", "demoitem")
 				.attr("x", function(d, i){
-											return (i * demoitemwidth) + demoitemwidth/2})
+											return (i * demoitemwidth()) + demoitemwidth()/2})
 				.attr("y", dim.height() * 2/5  + navbarheight()/2)
 				.style("fill", "#fff")
 				.attr("dy", ".2em")
@@ -253,7 +354,8 @@ define(['jquery','d3','radio'], function($,d3, radio){
 		}
 		
 	return{
-		init: init	
+		init: init,
+		update: update,	
 	}
 
 });

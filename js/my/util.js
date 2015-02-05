@@ -1,4 +1,4 @@
-define(['jquery'], function($){
+define(['jquery', 'd3'], function($, d3){
 
 	"use strict";
 	
@@ -172,6 +172,17 @@ define(['jquery'], function($){
 	  		}).reduce(function(x,y){
 	  			return x + " " + y;
 	  		}) + " z";
+	  	},
+	  	
+	  	autofit = function(text, width) {
+	  	 	text.each(function(){
+	  	 		var text = d3.select(this);
+	  	 		while(text.node().getComputedTextLength() > width){
+	  	 			var fontsize = Math.floor(text.style("font-size").replace("px",'')) - 2;
+	  	 			text.style("font-size", fontsize + "px")			
+	  	 		}
+	  	 	})
+	  	 	
 	  	}
 	  	
 	return {
@@ -184,7 +195,8 @@ define(['jquery'], function($){
 		optionsheading:optionsheading,
 		menuheading:menuheading,
 		arrow: arrow,
-		shuffle:shuffle
+		shuffle:shuffle,
+		autofit:autofit,
 		
 	}
 });

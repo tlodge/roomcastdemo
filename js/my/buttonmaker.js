@@ -33,10 +33,10 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 			//update size of root
 			
 			d3.select("div#buttonmaker")
-			  //.select("root")
 			  .style("width", (dim.width() + dim.margin().left + dim.margin().right) + "px")
 			  .style("height",(dim.height() + dim.margin().top + dim.margin().bottom) + "px")
-			
+ 			  .style("top", dim.y() + "px")
+			  .style("left", dim.x() + "px")
 			renderbuttons();
 			renderstep();
 			rendermenu();

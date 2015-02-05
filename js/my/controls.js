@@ -1,4 +1,4 @@
-define(['jquery','d3', 'dimensions'], function($, d3, dim){
+define(['jquery','d3', 'dimensions', 'util'], function($, d3, dim, util){
 
 	"use strict";
 	
@@ -154,6 +154,7 @@ define(['jquery','d3', 'dimensions'], function($, d3, dim){
 					 .style("fill", function(d){return d.value ? "black":"#70675c";})
 					 .style("font-size", buttonlabelsize + "px")
 					 .text(function(d){return d.label})
+					 .call(util.autofit, x2-x1)
 			}
 			
 			else if (d.type=="video"){
@@ -213,7 +214,7 @@ define(['jquery','d3', 'dimensions'], function($, d3, dim){
 			
 			var groupheight  = options.h/options.data.length;
 			var headerheight = groupheight/5; 
-			var textsize     = headerheight * 0.5;
+			var textsize     = headerheight * 0.7;
 			
 			var groups = options.hook.append("g")
 							 .attr("class", "groups")
@@ -243,7 +244,8 @@ define(['jquery','d3', 'dimensions'], function($, d3, dim){
 				 .style("fill", "#000")
 	  			 .style("font-size", textsize + "px")
 	  			 .text(function(d){return d.question})
-	  		
+	  			 .call(util.autofit, options.w);
+	  			 
 	  		var components = group.append("g")
 								  .attr("class", "components"); 
 								  

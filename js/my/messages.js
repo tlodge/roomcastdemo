@@ -302,7 +302,7 @@ define(['jquery','d3'], function($,d3){
 				
 				var cm = {
 					type: visibleevent.type,
-					data: visibleevent.type == "press" ? "the '" +  message.button + "' button was pressed" : visibleevent.data,
+					data: eventtotext(visibleevent),
 					button: message.button,
 					ts: visibleevent.ts,
 				}
@@ -311,6 +311,11 @@ define(['jquery','d3'], function($,d3){
 		
 			}
 			return "no data";
+		},
+		
+		eventtotext = function(event){
+			var message  = messages[flowindex[event.flow]];
+		 	return event.type == "press" ? "the '" +  message.button + "' button was pressed" : event.data;
 		},
 		
 		createmessagebox = function(){	
@@ -402,22 +407,28 @@ define(['jquery','d3'], function($,d3){
 			
 			if (!animated){
 			//update current
-			d3.selectAll("rect.flowcontainer")
-				 .attr("x", xpos)
-				  .attr("y", function(d){return mscale(inverseflidx(d))})
-				  .attr("width", cwidth)
-				  .attr("height", flowsheight)
+				d3.selectAll("rect.flowcontainer")
+					 .attr("x", xpos)
+					  .attr("y", function(d){return mscale(inverseflidx(d))})
+					  .attr("width", cwidth)
+					  .attr("height", flowsheight)
 				  
-			d3.selectAll("circle.event")
-				.attr("cx", midx)
-				.attr("cy", function(d){return cpos(d)})
-				.attr("r", flowradius())
+				d3.selectAll("circle.event")
+					.attr("cx", midx)
+					.attr("cy", function(d){return cpos(d)})
+					.attr("r", flowradius())
 			
-			d3.selectAll("line.edge")
-				.attr("x1",midx)
-				.attr("x2",midx)
-				.attr("y1",function(d){return cpos(d.from) + flowradius()})
-				.attr("y2",function(d){return cpos(d.to) - flowradius()})
+				d3.selectAll("line.edge")
+					.attr("x1",midx)
+					.attr("x2",midx)
+					.attr("y1",function(d){return cpos(d.from) + flowradius()})
+					.attr("y2",function(d){return cpos(d.to) - flowradius()})
+			
+				d3.selectAll("text.eventtitle")
+					  .attr("x",midx + flowradius()*2)
+					  .attr("y", function(d){return cpos(d)})
+					  .style("font-size",  headerfontsize() + "px")
+					  .text(function(d){return eventtotext(d)})  	
 			}
 			else{
 				d3.selectAll("rect.flowcontainer")
@@ -442,6 +453,14 @@ define(['jquery','d3'], function($,d3){
 					.attr("x2",midx)
 					.attr("y1",function(d){return cpos(d.from) + flowradius()})
 					.attr("y2",function(d){return cpos(d.to) - flowradius()})
+				
+				d3.selectAll("text.eventtitle")
+					 .transition()
+					 .duration(500)
+					 .attr("x",midx + flowradius()*2)
+					 .attr("y", function(d){return cpos(d)})
+					 .style("font-size",  headerfontsize() + "px")
+					 .text(function(d){return eventtotext(d)}) 
 			}
 				
 			
@@ -501,7 +520,15 @@ define(['jquery','d3'], function($,d3){
 					.style("stroke", "#4d4d4d")
 					.style("stroke-width", 2)
 					.on("click", eventclicked);
-					
+			
+			flowlist.append("text")
+				  .attr("class", "eventtitle")
+				  
+	  			  .attr("x",midx + flowradius()*2)
+				  .attr("y", function(d){return cpos(d)})
+	  			  .style("fill", "#4d4d4d")
+	  			  .style("font-size",  headerfontsize() + "px")
+	  			  .text(function(d){return eventtotext(d)})  	
 								
 			flows
 				.exit()
@@ -563,7 +590,7 @@ define(['jquery','d3'], function($,d3){
   			
   			//set up message scale
   			mscale 		= d3.scale.linear().range([dim.padding(), dim.height()]);
-			
+			//render();
 			
 		}
 

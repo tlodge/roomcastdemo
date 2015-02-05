@@ -140,6 +140,7 @@ require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 
 		console.log("seen a resize!");
 		buttons.update();
 		buttonmaker.update();
+		nav.update();
 	});
 			
 	
