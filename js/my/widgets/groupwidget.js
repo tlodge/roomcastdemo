@@ -33,6 +33,11 @@ define(['jquery','d3'], function($,d3){
 				 	
 			};
 			
+			my.update = function(){
+				console.log("group widget updating! ");
+				
+			};
+				
 			my.width = function(value){
 				if (!arguments.length)
 					return width;

@@ -100,9 +100,15 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			var opty = dim.headerpadding()*1.3;
 			var optx = cwidth()/4;
 			
+			d3.selectAll("g")
+				.style("opacity", 0.5);
+				
 			//update
-			svg.selectAll("g.options")
-					
+			d3.selectAll("g#main")
+				.style("opacity", 1.0)
+				.selectAll("g.options")
+				.style("opacity", 1.0);	
+				
 			//enter
 			var options = svg.selectAll("g.options")
 							 .data([d], function(d){return d.name})
@@ -110,7 +116,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			var option = options.enter()
 								.append("g")
 								.attr("class", "options")
-			
+								
 			
 				
 			option.append("rect")
@@ -178,7 +184,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.style("fill", "#fff")
 				.style("font-size", buttonradius/2.5+ "px")
 				.text("SEND") 	
-				.on("click", function(d){d3.select("g.options").remove()})
+				.on("click", function(d){d3.select("g.options").remove()
+										 d3.selectAll("g").style("opacity", 1.0);})
 				
 			/*option.append("circle")
 				  .attr("class", "cancelbutton")
@@ -200,7 +207,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.style("fill", "#fff")
 				.style("font-size", buttonradius/2.5+ "px")
 				.text("CANCEL") 
-				.on("click", function(d){d3.select("g.options").remove()})
+				.on("click", function(d){d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);})
 			//controls.create(cpanel, optwidth, padding, (width/2-padding), height-padding, controlsdata);
 			controls.create({
 					hook: cpanel,
@@ -212,8 +219,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				}
 			);
 					
-			options.exit()
-				   .remove();
+		
+			options.exit()	   
+				.remove()
+				  
 		
 		},	
 						

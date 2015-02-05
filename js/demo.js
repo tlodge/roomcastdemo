@@ -9,6 +9,7 @@ require.config({
 	 	"ramda": "../ramda/ramda.min",
 	 	"numeric": "../numeric/numeric-solve",
 	 	"radio": "../radio/radio.min",	
+	 	"moment": "../moment/moment.min",
     },
     
 	//"pubnub": "//cdn.pubnub.com/pubnub.min"
@@ -25,6 +26,16 @@ require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 
 				e.preventDefault();
 			}
 	);
+	
+	String.prototype.trunc =
+     function(n,useWordBoundary){
+         var toLong = this.length>n,
+             s_ = toLong ? this.substr(0,n-1) : this;
+         s_ = useWordBoundary && toLong ? s_.substr(0,s_.lastIndexOf(' ')) : s_;
+         return  toLong ? s_ + '...' : s_;
+      };
+	
+	
 	
 	var navbarheight = 75;
 	

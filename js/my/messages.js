@@ -1,4 +1,4 @@
-define(['jquery','d3'], function($,d3){
+define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 	
 	"use strict";
 	
@@ -133,7 +133,7 @@ define(['jquery','d3'], function($,d3){
 		},
 		
 		headerfontsize = function(){
-			return messageheaderheight() * 0.8
+			return messageheaderheight() * 0.7
 		},	
 		
 		dragslidermove = function(){
@@ -404,6 +404,7 @@ define(['jquery','d3'], function($,d3){
 			var xpos = Math.floor(d3.select("rect.messagecolumn").attr("x"));
 			var midx = xpos + flowradius() * 2.5;
 			
+			console.log("cwidth is " + cwidth);
 			
 			if (!animated){
 			//update current
@@ -423,12 +424,18 @@ define(['jquery','d3'], function($,d3){
 					.attr("x2",midx)
 					.attr("y1",function(d){return cpos(d.from) + flowradius()})
 					.attr("y2",function(d){return cpos(d.to) - flowradius()})
-			
+						 
 				d3.selectAll("text.eventtitle")
-					  .attr("x",midx + flowradius()*2)
-					  .attr("y", function(d){return cpos(d)})
-					  .style("font-size",  headerfontsize() + "px")
-					  .text(function(d){return eventtotext(d)})  	
+	  			  .attr("x",midx + flowradius()*2)
+				  .attr("y", function(d){return cpos(d) - headerfontsize() + flowradius()/2})
+	  			  .style("font-size",  headerfontsize() + "px")	
+				  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
+				  
+				d3.selectAll("text.eventdate")
+	  			  .attr("x",midx + flowradius()*2)
+				  .attr("y", function(d){return cpos(d) +  flowradius()/1.5})
+	  			  .style("font-size",  (headerfontsize()*0.8) + "px")
+	  			 
 			}
 			else{
 				d3.selectAll("rect.flowcontainer")
@@ -453,14 +460,21 @@ define(['jquery','d3'], function($,d3){
 					.attr("x2",midx)
 					.attr("y1",function(d){return cpos(d.from) + flowradius()})
 					.attr("y2",function(d){return cpos(d.to) - flowradius()})
-				
+					
 				d3.selectAll("text.eventtitle")
-					 .transition()
-					 .duration(500)
-					 .attr("x",midx + flowradius()*2)
-					 .attr("y", function(d){return cpos(d)})
-					 .style("font-size",  headerfontsize() + "px")
-					 .text(function(d){return eventtotext(d)}) 
+				  .transition()
+				  .duration(500)
+	  			  .attr("x",midx + flowradius()*2)
+				  .attr("y", function(d){return cpos(d) - headerfontsize() + flowradius()/2})
+	  			  .style("font-size",  headerfontsize() + "px")	
+				  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
+				    
+				d3.selectAll("text.eventdate")
+				 .transition()
+				  .duration(500)
+	  			  .attr("x",midx + flowradius()*2)
+				  .attr("y", function(d){return cpos(d) +  flowradius()/1.5})
+	  			  .style("font-size",  (headerfontsize()*0.8) + "px")
 			}
 				
 			
@@ -520,16 +534,27 @@ define(['jquery','d3'], function($,d3){
 					.style("stroke", "#4d4d4d")
 					.style("stroke-width", 2)
 					.on("click", eventclicked);
-			
+		
 			flowlist.append("text")
 				  .attr("class", "eventtitle")
-				  
 	  			  .attr("x",midx + flowradius()*2)
-				  .attr("y", function(d){return cpos(d)})
+				  .attr("y", function(d){return cpos(d) - headerfontsize() + flowradius()/2})
 	  			  .style("fill", "#4d4d4d")
 	  			  .style("font-size",  headerfontsize() + "px")
-	  			  .text(function(d){return eventtotext(d)})  	
-								
+	  			  .text(function(d){return eventtotext(d).trunc(30, true)}) 
+	  			  .on("click", eventclicked)
+	  			  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
+				
+		
+				 
+			flowlist.append("text")
+				  .attr("class", "eventdate")
+	  			  .attr("x",midx + flowradius()*2)
+				  .attr("y", function(d){return cpos(d) +  flowradius()/1.5})
+	  			  .style("fill", "#006f9b")
+	  			  .style("font-size",  (headerfontsize()*0.8) + "px")
+	  			  .text(function(d){return moment.unix(d.ts).format("MMM Do, h:mm:ss a")})  
+	  			  .on("click", eventclicked);					
 			flows
 				.exit()
 				.remove();

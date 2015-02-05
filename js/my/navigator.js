@@ -1,4 +1,4 @@
-define(['jquery','d3','radio'], function($,d3, radio){
+define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 
 	"use strict";
 	
@@ -213,7 +213,9 @@ define(['jquery','d3','radio'], function($,d3, radio){
 			nav.selectAll("text.viewitem")
 				.attr("x", function(d, i){return dim.width()/2 + (i * menuitemwidth()) + menuitemwidth()/2})
 				.attr("y", dim.height() * 2/5  + navbarheight()/2)
-			
+				.style("font-size", (navbarheight() * 2/5) +  "px")
+				.call(util.autofit, viewitemwidth())
+				
 			nav.selectAll("text.demoitem")
 				.attr("x", function(d, i){return (i * demoitemwidth()) + demoitemwidth()/2})
 				.attr("y", dim.height() * 2/5  + navbarheight()/2)	
@@ -221,7 +223,9 @@ define(['jquery','d3','radio'], function($,d3, radio){
 			nav.selectAll("rect.viewselection")
 				.attr("x", dim.width()/2 + (viewpos[currentscreen.name] * menuitemwidth()))
 				.attr("y", dim.height() * 2/5)
-			
+				.attr("width", viewitemwidth())
+				.attr("height", dim.height()*3/5)
+				
 			nav.select("rect.demobar")
 				.attr("x", dim.x())
 				.attr("y", dim.height()*2/5)
@@ -233,12 +237,20 @@ define(['jquery','d3','radio'], function($,d3, radio){
 				.attr("y", 0)
 				.attr("width", dim.width()/15)
 				.attr("height", dim.height()*2/5)
-				
+			
+		
+					
 			
 			if (demoup){
 				nav.style("top",  (dim.y() + navbarheight()) +  "px");	  
 			}else{
 			 	nav.style("top",  dim.y() +  "px");
+			}
+			
+			var startindex = screens.indexOf(currentscreen);
+			
+			for (var i = startindex+1; i < screens.length; i++){
+				d3.select("#" + screens[i].id).style("left", (dim.width()*i) + "px");
 			}
 		},
 		
@@ -325,8 +337,8 @@ define(['jquery','d3','radio'], function($,d3, radio){
 				.attr("text-anchor", "middle")
 				.style("font-size", (navbarheight() * 2/5) +  "px")
 				.text(function(d){return d.name}) 	
-				.on("click", slide);
-			
+				.on("click", slide)
+				.call(util.autofit, viewitemwidth())
 			
 			var demonavs = svg.selectAll("g.demoitem")
 							  .data(demos)

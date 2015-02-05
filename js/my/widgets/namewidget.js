@@ -13,46 +13,88 @@ define(['jquery','d3'], function($,d3){
 			
 			function my(){		
 				 
+				 console.log("name widget in here!");
 				 var data = this.data()[0];
-				 var tboxheight = height/7
-				 var tboxwidth = width/3;
-				 var labelwidth = width/3;
+				
 				 
 				 var textcontainer = this
 				 						.append("div")
-				 						.style("top",  (y + height/2) -  tboxheight +  "px")
-				 						.style("left", (x + width/2 - tboxwidth/2 - labelwidth/2) + "px")
-				 						.style("width",  labelwidth + tboxwidth + "px")
-				 						.style("height", tboxheight + "px")
-				 						.style("background", "#c8c2ae")
+				 						.attr("class", "textwidgetcontainer")
+				 						.style("top",  (y + height/2) -  tboxheight() +  "px")
+				 						.style("left", (x + width/2 - tboxwidth()/2 - labelwidth()/2) + "px")
+				 						.style("width",  labelwidth() + tboxwidth() + "px")
+				 						.style("height", tboxheight() + "px")
+				 						
 				 
 				
 				textcontainer	
 				 	.append("div")
+				 	.attr("class", "labelbox")
 				 	.style("text-align", "center")
 				 	//.style("padding-top", (tboxheight*0.8)/5 + "px")
-				 	.style("width",  labelwidth + "px")
-				 	.style("height", tboxheight + "px")
-				 	.style("line-height", tboxheight + "px")
+				 	.style("width",  labelwidth() + "px")
+				 	.style("height", tboxheight() + "px")
+				 	.style("line-height", tboxheight() + "px")
 				 	.text("button name")
 				 	.style("color", "white")
 				 	.style("background", "#006f9b")
-				 	.style("font-size", (tboxheight*0.8) + "px")
+				 	.style("font-size", (tboxheight()*0.8) + "px")
 				 	
 				textcontainer	
 				 	.append("div")
-				 	.style("left", labelwidth + "px")
+				 	.attr("class", "inputbox")
+				 	.style("left", labelwidth() + "px")
 				 	.append("input")
 				 	.style("text-align", "center")
 				 	.attr("type", "text")
-				 	.style("padding-left", ((tboxheight*0.8)/8) + "px") 
-				 	.style("width",  tboxwidth + "px")
-				 	.style("height", tboxheight + "px")
-				 	.style("font-size", (tboxheight*0.8) + "px")
+				 	.style("padding-left", ((tboxheight()*0.8)/8) + "px") 
+				 	.style("width",  tboxwidth() + "px")
+				 	.style("height", tboxheight() + "px")
+				 	.style("font-size", (tboxheight()*0.8) + "px")
 				 	
 				 	
 			};
 			
+			
+			var tboxheight = function(){
+			 	return height/7;
+				
+			};
+			
+			var tboxwidth = function(){
+				return width/3;
+				
+			};
+			
+			var labelwidth = function(){
+			 	return  width/3;
+			};
+			
+			my.update = function(){
+				console.log("name widget updating with " + width  + " " + height);
+				
+				d3.select("div.textwidgetcontainer")
+				 	.style("top",  (y + height/2) -  tboxheight() +  "px")
+				 	.style("left", (x + width/2 - tboxwidth()/2 - labelwidth()/2) + "px")
+				 	.style("width",  labelwidth() + tboxwidth() + "px")
+				 	.style("height", tboxheight() + "px")
+				
+				d3.select("div.labelbox")
+				 	.style("width",  labelwidth() + "px")
+				 	.style("height", tboxheight() + "px")
+				 	.style("line-height", tboxheight() + "px")
+				 	.style("font-size", (tboxheight()*0.8) + "px")
+				 
+				d3.select("div.inputbox")
+				 	.style("left", labelwidth() + "px")
+				 	.select("input")
+				 	.style("padding-left", ((tboxheight()*0.8)/8) + "px") 
+				 	.style("width",  tboxwidth() + "px")
+				 	.style("height", tboxheight() + "px")
+				 	.style("font-size", (tboxheight()*0.8) + "px")
+				
+			};
+				
 			my.width = function(value){
 				if (!arguments.length)
 					return width;

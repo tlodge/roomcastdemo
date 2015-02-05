@@ -198,7 +198,13 @@ define(['jquery','d3'], function($,d3){
 				}
 			};
 			
-			//public functions			
+			//public functions	
+			
+			my.update = function(dim){
+				console.log("notify widget updating with ");
+				console.log(dim);
+			};
+					
 			my.width = function(value){
 				if (!arguments.length)
 					return width;
