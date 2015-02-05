@@ -27,6 +27,8 @@ require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 
 			}
 	);
 	
+	
+	
 	String.prototype.trunc =
      function(n,useWordBoundary){
          var toLong = this.length>n,

@@ -51,7 +51,7 @@ define(['jquery','d3'], function($,d3){
 				 	.style("width",  tboxwidth() + "px")
 				 	.style("height", tboxheight() + "px")
 				 	.style("font-size", (tboxheight()*0.8) + "px")
-				 	
+				 	.on("focus", function(d){window.scrollTo(0,0);document.body.scrollTop = 0;})
 				 	
 			};
 			
