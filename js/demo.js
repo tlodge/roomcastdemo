@@ -26,12 +26,13 @@ require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 
 				e.preventDefault();
 			}
 	);
-	
-	$(document).bind(
-		'touchmove',false
-	);
-	
-	
+
+	$(document).ready(function(){
+		document.ontouchmove = function(e){
+			e.preventDefault();
+		}
+	});
+		
 	String.prototype.trunc =
      function(n,useWordBoundary){
          var toLong = this.length>n,
