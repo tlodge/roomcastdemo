@@ -54,7 +54,7 @@ define(['jquery','d3'], function($,d3){
 				 	.on("focus", function(d){
 				 			console.log("got focus!!");
 				 			//$(window).scrollTo(0,0);
-				 			$(document).scrollTop(0);
+				 			$(document).scrollTop(200);
 				 			
 				 	})
 				 	
