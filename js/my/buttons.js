@@ -305,10 +305,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		},
 		
 		
-		/*dragpressed =  d3.behavior.drag()
+		dragpressed =  d3.behavior.drag()
 	   					  .on("drag", function(){console.log("dragged")})
 						   .on("dragend", function(){console.log("drag end!")})
-						   .on("dragstart",function(){console.log("drag start!")}),*/
+						   .on("dragstart",function(){console.log("drag start!")}),
 		
 		renderbuttons = function(){
 			
@@ -431,8 +431,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					.style("stroke-width", 4)
 					.style("fill",function(d){return column[d.name] % 2 == 0 ? "#f47961": "#006f9b"})
 					.on("click", function(d){pressed(d)})
-					.call(d3.behavior.drag()
-	   					  .on("dragstart", function(){console.log("dragged")}));
+					.call(dragpressed);
 			
 			button.append("text")
 					.attr("class", "buttontext")
@@ -443,6 +442,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	  			  	.style("font-size", fontsize + "px")
 	  			  	.text(function(d){return d.name})  	
 	  			  	.on("click", function(d){pressed(d)})
+	  			  	.call(dragpressed);
 	  			  	.call(util.autofit , buttonwidth);
 	  			  	
 		},
