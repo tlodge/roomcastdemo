@@ -296,7 +296,8 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 				.attr("width", dim.width()/15)
 				.attr("height", dim.height()*2/5)
 				.style("fill", "#006f9b")
-				.on("click", toggledemo)
+				//.on("click", toggledemo)
+				.call( d3.behavior.drag().on("dragstart", toggledemo))
 				
 			svg.append("text")
 				.attr("x", dim.x() + (dim.width()/15)/2)
@@ -306,7 +307,8 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 				.attr("text-anchor", "middle")
 				.style("font-size", (navbarheight() * 2/5) +  "px")
 				.text("DEMO") 	
-				.on("click", toggledemo)
+				//.on("click", toggledemo)
+				.call( d3.behavior.drag().on("dragstart", toggledemo))
 			
 			svg.append("rect")
 				.attr("class", "viewselection")
