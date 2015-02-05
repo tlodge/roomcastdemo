@@ -52,9 +52,9 @@ define(['jquery','d3'], function($,d3){
 				 	.style("height", tboxheight() + "px")
 				 	.style("font-size", (tboxheight()*0.8) + "px")
 				 	.on("focus", function(d){
-				 			console.log("got focus!!");
-				 			//$(window).scrollTo(0,0);
-				 			$(document).scrollTop(200);
+				 			
+				 			/* doesn't work if disable scrolling - can maybe enable temporarily?*/
+				 			//$(document).scrollTop(0);
 				 			
 				 	})
 				 	
