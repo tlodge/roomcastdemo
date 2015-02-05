@@ -52,15 +52,15 @@ define(['jquery','d3'], function($,d3){
 				 	.style("height", tboxheight() + "px")
 				 	.style("font-size", (tboxheight()*0.8) + "px")
 				 	.on("focus", function(d){
-				 			
+				 				
 				 			/* doesn't work if disable scrolling - can maybe enable temporarily?*/
 				 			//$(document).scrollTop(0);
 				 			
 				 	})
 				 	.on("blur", function(d){
-				 			console.log("seen a blur!!");
-				 			$(document).bind('touchmove',true);
-				 			$('body').css("overflow", "auto");
+				 			//console.log("seen a blur!!");
+				 			//$(document).bind('touchmove',true);
+				 			//$('body').css("overflow", "auto");
 				 			/* doesn't work if disable scrolling - can maybe enable temporarily?*/
 				 			$(document).scrollTop(0);
 				 			$(document).scrollLeft(0);
