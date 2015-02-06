@@ -500,7 +500,7 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 				  	.attr("height", flowsheight)
 				  	.style("stroke", "black")
 					.style("fill", "white")
-				   	.style("fill-opacity", 0.5)
+				   	.style("fill-opacity", 1.0)
 			
 			var flowedges = d3.select("g.flows")
 								.selectAll("line.edge")
