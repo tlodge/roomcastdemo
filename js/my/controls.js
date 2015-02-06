@@ -169,6 +169,26 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		},
 		
 		
+		buttonselected = function(){
+			console.log("am in drag strt!");
+			if (d3.event != null){
+				if (d3.event.defaultPrevented){
+					console.log("am returninG@");
+					return;
+				}
+			}
+			var d = d3.select(this).data();
+			d[0].value = !d[0].value;
+			console.log(d[0].value);
+			//d3.selectAll("text.buttonlabel").style("fill", function(d){return d.value ? "black":"#4d4d4d";});
+			d3.select(this).style("fill", d[0].value?"#4d4d4d":"white");
+			//d[0].callback(d[0].value)
+		},
+		
+		
+		buttonlistener = d3.behavior.drag().on("dragstart",buttonselected),
+		
+		
 		createbuttoncomponent = function(options){
 			var y  =  options.dim.y + options.dim.h/3;
 			var buttonradius = options.dim.h/4;
@@ -187,7 +207,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				  .attr("height", buttonradius)
 				  .style("fill", "#fff")
 				  .style("stroke", "#4d4d4d")
-				  .style("stroke-width", "2px")
+				  .style("stroke-width", "2px");
 			
 			options.parent.append("rect")
 				   .attr("x", x1 + (x2-x1)/2 - buttoninnerradius/2)
@@ -195,21 +215,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				  .attr("width", buttoninnerradius)
 				  .attr("height", buttoninnerradius)
 				  .style("fill", function(d){return d.value?"#4d4d4d":"white"})
-				  .call(d3.behavior.drag().on("dragstart", function(){
-						console.log("am in drag strt!");
-						if (d3.event != null){
-  							if (d3.event.defaultPrevented){
-	  							console.log("am returninG@");
-	  							return;
-	  						}
-	  					}
-						var d = d3.select(this).data();
-						d[0].value = !d[0].value;
-						console.log(d[0].value);
-						//d3.selectAll("text.buttonlabel").style("fill", function(d){return d.value ? "black":"#4d4d4d";});
-						d3.select(this).style("fill", d[0].value?"#4d4d4d":"white");
-						//d[0].callback(d[0].value)
-				  }))
+				  .call(buttonlistener);
 			
 		
 			
@@ -222,7 +228,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				 .style("fill", function(d){return d.value ? "black":"#4d4d4d";})
 				 .style("font-size", buttonlabelsize + "px")
 				 .text(function(d){return d.label})
-				 .call(util.autofit, options.dim.w)
+				 .call(util.autofit, options.dim.w);
 		
 		},
 		
