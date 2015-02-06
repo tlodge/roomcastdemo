@@ -169,9 +169,9 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		
 		
 		buttonselected = function(){
-			if (d3.event.defaultPrevented){
-					return;
-			}
+			//if (d3.event.defaultPrevented){
+			//		return;
+			//}
 			if (d3.event != null){
 				d3.event.sourceEvent.stopPropagation();
 				d3.event.sourceEvent.preventDefault();
