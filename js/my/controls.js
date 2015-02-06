@@ -174,7 +174,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 			//}
 			if (d3.event != null){
 				d3.event.sourceEvent.stopPropagation();
-				d3.event.sourceEvent.preventDefault();
+				//d3.event.sourceEvent.preventDefault();
 			}
 			var d = d3.select(this).data();
 			d[0].value = !d[0].value;
