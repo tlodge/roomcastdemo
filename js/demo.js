@@ -54,7 +54,7 @@ require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 
 			width: function(){ return $(window).width()},
 			
 			margins:{
-				top: function(){return 0},
+				top: function(){return 20},
 				right: function(){return 0},
 				bottom: function(){return 0},
 				left: function(){return 0}
