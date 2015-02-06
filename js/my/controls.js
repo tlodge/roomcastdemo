@@ -169,7 +169,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		
 		
 		buttonselected = function(){
-			console.log("--------> button selected!!");
+		
 			if (d3.event.defaultPrevented){
 					return;
 			}
@@ -179,8 +179,6 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 			}
 			var d = d3.select(this).data();
 			d[0].value = !d[0].value;
-			console.log(d[0]);
-			//d3.selectAll("text.buttonlabel").style("fill", function(d){return d.value ? "black":"#4d4d4d";});
 			d3.select(this).style("fill", d[0].value?"#4d4d4d":"white");
 			d[0].callback(d[0].value)
 		},
@@ -207,7 +205,8 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				  .attr("height", buttonradius)
 				  .style("fill", "#fff")
 				  .style("stroke", "#4d4d4d")
-				  .style("stroke-width", "2px");
+				  .style("stroke-width", "2px")
+			 	  .call(buttonlistener);
 			
 			options.parent.append("rect")
 				   .attr("x", x1 + (x2-x1)/2 - buttoninnerradius/2)
@@ -219,7 +218,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 			
 		
 			
-			 options.parent.append("text")
+			 var opttxt = options.parent.append("text")
 				 .attr("class", function(d){return "buttonlabel buttonlabel_" + d.id})
 				 .attr("text-anchor", "middle")
 				 .attr("x", x1 + (x2-x1)/2)
@@ -228,8 +227,11 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				 .style("fill", function(d){return d.value ? "black":"#4d4d4d";})
 				 .style("font-size", buttonlabelsize + "px")
 				 .text(function(d){return d.label})
-				 .call(util.autofit, options.dim.w);
-		
+				 .call(util.autofit, options.dim.w)
+			
+			opttxt	 
+				.call(buttonlistener);
+				
 		},
 		
 		
