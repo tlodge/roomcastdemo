@@ -404,7 +404,6 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 			var xpos = Math.floor(d3.select("rect.messagecolumn").attr("x"));
 			var midx = xpos + flowradius() * 2.5;
 			
-			console.log("cwidth is " + cwidth);
 			
 			if (!animated){
 			//update current

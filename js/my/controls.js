@@ -11,7 +11,6 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 			  			 
 			
 			  var slidervaluesize = options.sliderradius/1.2;
-			  console.log("slider value size is " + slidervaluesize);  
 			  
 			  options.parent.append("line")
 					  .attr("x1", options.x1)
@@ -171,21 +170,18 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		
 		buttonselected = function(){
 			if (d3.event.defaultPrevented){
-					console.log("am returninG@");
 					return;
 			}
 			if (d3.event != null){
-				console.log("am in here!");
 				d3.event.sourceEvent.stopPropagation();
 				d3.event.sourceEvent.preventDefault();
-				
 			}
 			var d = d3.select(this).data();
 			d[0].value = !d[0].value;
-			console.log(d[0].value);
-			//d3.selectAll("text.buttonlabel").style("fill", function(d){return d.value ? "black":"#4d4d4d";});
+			
+			d3.selectAll("text.buttonlabel").style("fill", function(d){return d.value ? "black":"#4d4d4d";});
 			d3.select(this).style("fill", d[0].value?"#4d4d4d":"white");
-			//d[0].callback(d[0].value)
+			d[0].callback(d[0].value)
 		},
 		
 		
@@ -196,7 +192,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 			var y  =  options.dim.y + options.dim.h/3;
 			var buttonradius = options.dim.h/4;
 			var buttonlabelsize = buttonradius/1.2;
-			 console.log("button value size is " + buttonlabelsize);  
+			  
 			var buttoninnerradius = options.dim.h/6;
 			
 			var x1 = options.dim.x + buttonradius*2 + options.dim.w*options.col;
@@ -223,7 +219,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		
 			
 			 options.parent.append("text")
-				 .attr("class", function(d){console.log(d);return "buttonlabel buttonlabel_" + d.id})
+				 .attr("class", function(d){return "buttonlabel buttonlabel_" + d.id})
 				 .attr("text-anchor", "middle")
 				 .attr("x", x1 + (x2-x1)/2)
 				 .attr("y", y + options.dim.h/2.5)

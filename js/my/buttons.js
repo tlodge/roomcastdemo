@@ -260,12 +260,15 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		},
 		
 		dragpressed = function(){
+			if (d3.event.defaultPrevented){
+					return;
+			}
 			if (d3.event != null){
-  				console.log("ok is not null!!")
-    			if (d3.event.defaultPrevented)
-	  				return;
-	  		}
-			console.log(d3.select(this).data()[0]);
+				d3.event.sourceEvent.stopPropagation();
+				d3.event.sourceEvent.preventDefault();
+			}
+			
+			
 			var d = d3.select(this).data()[0];
 			messages.addmessage(d);
 			selectoptions(d);
