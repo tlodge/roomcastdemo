@@ -197,6 +197,12 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				  .style("fill", function(d){return d.value?"#4d4d4d":"white"})
 				  .call(d3.behavior.drag().on("dragstart", function(){
 						console.log("am in drag strt!");
+						if (d3.event != null){
+  							if (d3.event.defaultPrevented){
+	  							console.log("am returninG@");
+	  							return;
+	  						}
+	  					}
 						var d = d3.select(this).data();
 						d[0].value = !d[0].value;
 						console.log(d[0].value);
