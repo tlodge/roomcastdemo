@@ -170,12 +170,15 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		
 		
 		buttonselected = function(){
-			console.log("am in drag strt!");
-			if (d3.event != null){
-				if (d3.event.defaultPrevented){
+			if (d3.event.defaultPrevented){
 					console.log("am returninG@");
 					return;
-				}
+			}
+			if (d3.event != null){
+				console.log("am in here!");
+				d3.event.sourceEvent.stopPropagation();
+				d3.event.sourceEvent.preventDefault();
+				
 			}
 			var d = d3.select(this).data();
 			d[0].value = !d[0].value;
