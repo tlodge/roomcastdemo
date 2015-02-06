@@ -11,7 +11,8 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 			  			 
 			
 			  var slidervaluesize = options.sliderradius/1.2;
-				  
+			  console.log("slider value size is " + slidervaluesize);  
+			  
 			  options.parent.append("line")
 					  .attr("x1", options.x1)
 					  .attr("x2", options.x2)
@@ -144,8 +145,6 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		createslidercomponent = function(options){
 			var y  =  options.dim.y + options.dim.h/3;
 		 	var sliderradius = options.dim.h/4;
-			var sliderlabelsize = options.dim.h/8;
-			var slidervaluesize = sliderlabelsize*2.5;
 			
 			var x1 = options.dim.x + sliderradius/4 + options.dim.w*options.col;
 			var x2 =  options.dim.x + options.dim.w*options.col + options.dim.w - sliderradius/4;
@@ -174,7 +173,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 			var y  =  options.dim.y + options.dim.h/3;
 			var buttonradius = options.dim.h/4;
 			var buttonlabelsize = buttonradius/1.2;
-			
+			 console.log("button value size is " + buttonlabelsize);  
 			var buttoninnerradius = options.dim.h/6;
 			
 			var x1 = options.dim.x + buttonradius*2 + options.dim.w*options.col;
@@ -213,7 +212,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				 .style("fill", function(d){return d.value ? "black":"#4d4d4d";})
 				 .style("font-size", buttonlabelsize + "px")
 				 .text(function(d){return d.label})
-				 .call(util.autofit, x2-x1)
+				 //.call(util.autofit, x2-x1)
 		
 		},
 		
