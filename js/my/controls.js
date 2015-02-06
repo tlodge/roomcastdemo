@@ -169,7 +169,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		
 		
 		buttonselected = function(){
-			console.log("button selected!!");
+			console.log("--------> button selected!!");
 			if (d3.event.defaultPrevented){
 					return;
 			}
@@ -179,7 +179,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 			}
 			var d = d3.select(this).data();
 			d[0].value = !d[0].value;
-			
+			console.log(d[0]);
 			//d3.selectAll("text.buttonlabel").style("fill", function(d){return d.value ? "black":"#4d4d4d";});
 			d3.select(this).style("fill", d[0].value?"#4d4d4d":"white");
 			d[0].callback(d[0].value)
