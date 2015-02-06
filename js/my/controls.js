@@ -199,14 +199,13 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 						console.log("am in drag strt!");
 						var d = d3.select(this).data();
 						d[0].value = !d[0].value;
+						console.log(d[0].value);
 						//d3.selectAll("text.buttonlabel").style("fill", function(d){return d.value ? "black":"#4d4d4d";});
 						d3.select(this).style("fill", d[0].value?"#4d4d4d":"white");
-						d[0].callback(d[0].value)
+						//d[0].callback(d[0].value)
 				  }))
 			
 		
-			 console.log("x2 - x1 is " + (x2-x1));
-		 	 console.log("width isis " + options.dim.w);
 			
 			 options.parent.append("text")
 				 .attr("class", function(d){console.log(d);return "buttonlabel buttonlabel_" + d.id})
