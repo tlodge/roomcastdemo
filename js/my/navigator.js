@@ -22,12 +22,8 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 							name:"when",
 							question:"roughly when would you like the key to be released?",
 							components:[
-									{name:"rows", id:"rows", type:"slider", min:1, max:20, value:8, callback:function(value){
-										console.log(value);
-									}},
-								
-									{name:"cols", id:"cols",type:"slider", min:1, max:20, value:8, callback:function(value){
-										console.log(value);
+									{name:"rows", id:"rows", type:"date", min:"today", max:10, value:"today", callback:function(value){
+											console.log(value);
 									}}
 							]
 						},
@@ -39,6 +35,8 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 							components:[
 								{name:"duration", id:"duration", type:"slider", min:1, max:20, value:10, callback:function(value){
 									console.log(value);
+								}, formatter:function(d){
+											return Math.floor(d) + " hours";
 								}},
 							]
 						},
@@ -102,7 +100,6 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 		
 		
 		addclicked = function(){
-			console.log("add was clicked!!");
 			if (buttonindex < buttons.length){
 				radio('newbutton').broadcast(buttons[buttonindex]);
 			}
@@ -363,7 +360,7 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 				.attr("text-anchor", "middle")
 				.style("font-size", (navbarheight() * 2/5) +  "px")
 				.text(function(d){return d.name})
-				.on("click", addclicked)  	
+				//.on("click", addclicked)  	
 				.call( d3.behavior.drag().on("dragstart", addclicked))						
 		}
 		

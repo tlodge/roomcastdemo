@@ -45,11 +45,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 								name:"when",
 								question:"roughly when would you like the key to be released?",
 								components:[
-										{name:"rows", id:"rows", type:"slider", min:1, max:20, value:8, callback:function(value){
-											console.log(value);
-										}},
-								
-										{name:"cols", id:"cols",type:"slider", min:1, max:20, value:8, callback:function(value){
+										{name:"rows", id:"rows", type:"date", min:"today", max:10, value:"today", callback:function(value){
 											console.log(value);
 										}}
 								]
@@ -72,10 +68,14 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 								components:[
 										{name:"rows", id:"rows", type:"slider", min:1, max:20, value:8, callback:function(value){
 											console.log(value);
+										}, formatter:function(d){
+											return Math.floor(d) + " hours";
 										}},
 								
 										{name:"cols", id:"cols",type:"slider", min:1, max:20, value:8, callback:function(value){
 											console.log(value);
+										},formatter:function(d){
+											return Math.floor(d) + " hours";
 										}}
 								]
 							}
@@ -92,10 +92,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		selectoptions = function(d){
 		
 			var buttonradius = cwidth()/8;
-			var optwidth  = dim.width() - (2 * cwidth()/4);
-			var optheight = dim.height() - dim.headerpadding()*2.6
-			var opty = dim.headerpadding()*1.3;
-			var optx = cwidth()/4;
+			var optwidth  = dim.width() /1.5;
+			var optheight = dim.height() * 0.8;
+			
+			var opty = (dim.height() - optheight)/2;
+			var optx = (dim.width() - optwidth)/2;
 			
 			d3.selectAll("g")
 				.style("opacity", 0.5);
@@ -114,63 +115,23 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 								.append("g")
 								.attr("class", "options")
 								
+			var cpanel = option.append("g")
+				   			   .attr("class", "hook");
+				   			   	
 			
-				
 			option.append("rect")
 				.attr("x", optx)
 				.attr("y", opty)
 				.attr("width", optwidth)
-				.attr("height", optheight)
-				.style("fill", "white")
-				.style("stroke", "#70675c")
-				.style("opacity", 0.98)
-				//.style("stroke-width",2);
-			
-			var cpanel = option.append("g")
-				   			   .attr("class", "hook");
-				   			   	
-			option.append("path")
-				  .attr("class", "heading")
-  				  .attr("d", function(d){					
-  							return util.optionsheading({
-  															x:optx,
-  															y:opty,
-  															w:optwidth,
-  															h:dim.headerpadding()	
-  														
-  														});
-  				  })
-  				  .style("fill", "#70675c")
-  				  .style("stroke", "none")
-  				  .style("stroke-width", 0)
-			
-			option.append("text")
-				.attr("class", "optionsmainheader")
-				.attr("dy", ".3em")
-				.attr("x", optx+optwidth/50)
-				.attr("y",opty+ dim.headerpadding()/2)	
-				.style("fill", "#fff")
-				.style("font-size", (dim.headerpadding()*0.9+ "px"))
-				.text(function(d){return d.name}) 	
-			
+				.attr("height", buttonradius/6)
+				.style("fill", "#4d4d4d")
+				
 			option.append("rect")
 				.attr("x", optx)
 				.attr("y", opty+optheight-buttonradius)
 				.attr("width", optwidth)
 				.attr("height", buttonradius)
-				.style("fill", "#70675c")
-				.style("stroke", "#70675c")
-				.style("stroke-width",2);
-				
-			/*option.append("circle")
-				  .attr("class", "sendbutton")
-				  .attr("cx", optx + optwidth - 2*buttonradius)
-				  .attr("cy",opty + optheight)
-				  .attr("r",buttonradius)
-				  .style("fill","#f47961")
-				  .style("stroke","#70675c")
-				  .style("stroke-width", 2)	
-				  .on("click", function(d){d3.select("g.options").remove()})*/
+				.style("fill", "#4d4d4d")
 			
 			option.append("text")
 				.attr("class", "optionsend")
@@ -184,15 +145,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.on("click", function(d){d3.select("g.options").remove()
 										 d3.selectAll("g").style("opacity", 1.0);})
 				
-			/*option.append("circle")
-				  .attr("class", "cancelbutton")
-				  .attr("cx", optx + optwidth - 5*buttonradius)
-				  .attr("cy",opty + optheight)
-				  .attr("r",buttonradius)
-				  .style("fill","#f47961")
-				  .style("stroke","#70675c")
-				  .style("stroke-width", 2)	
-				  .on("click", function(d){d3.select("g.options").remove()})*/
+		
 			
 			
 			option.append("text")
@@ -211,9 +164,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			controls.create({
 					hook: cpanel,
 					x: optx, 
-					y: opty + dim.headerpadding(), 
+					y: opty, 
 					w: optwidth, 
-					h: optheight -  dim.headerpadding() - buttonradius, 
+					h: optheight - buttonradius, 
 					data: d.options
 				}
 			);
@@ -409,7 +362,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					 .attr("y", 0)
 					 .attr("width",cwidth())
 					 .attr("height",dim.height())
-					 .style("fill",  function(d,i){return i %2 == 0? "#c8c2ae":"#dbdbdb"})
+					 .style("fill",  function(d,i){return i %2 == 0? "#cccccc":"#ececec"})
 			
 		
 			

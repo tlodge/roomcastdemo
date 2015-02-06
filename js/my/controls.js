@@ -1,4 +1,4 @@
-define(['jquery','d3', 'dimensions', 'util'], function($, d3, dim, util){
+define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, util, moment){
 
 	"use strict";
 	
@@ -7,157 +7,225 @@ define(['jquery','d3', 'dimensions', 'util'], function($, d3, dim, util){
 	
 		hook,
 	
-		createcomponent = function(parent, dim, col, row, d){
-	
-		
-			var y  =  dim.y + dim.h/3;
+		createslider = function(options){
+			  			 
 			
-			
-			
-			if (d.type=="slider"){
-			  
-			  var sliderradius = dim.h/8;
-			  var sliderlabelsize = dim.h/8;
-			  var slidervaluesize = sliderlabelsize*2.5;
-			
-			  var x1 = dim.x + sliderradius*2 + dim.w*col;
-			  var x2 =  dim.x + dim.w*col + dim.w - sliderradius*2;
-			  
-			  var sliderscale = d3.scale.linear();
-			  sliderscale.range([d.min, d.max]);
-			  sliderscale.domain([x1,x2]);
-			  
-			  parent.append("line")
-					  .attr("x1", x1)
-					  .attr("x2", x2)
-					  .attr("y1", y)
-					  .attr("y2", y)
-					  .style("stroke", "black")
+			  var slidervaluesize = options.sliderradius/1.2;
+				  
+			  options.parent.append("line")
+					  .attr("x1", options.x1)
+					  .attr("x2", options.x2)
+					  .attr("y1", options.y)
+					  .attr("y2", options.y)
+					  .style("stroke", "#4d4d4d")
 					  .style("stroke-width", "1px")
 			
-				parent.append("line")
-					  .attr("x1", x1)
-					  .attr("x2", x1)
-					  .attr("y1", y-sliderradius/2)
-					  .attr("y2", y+sliderradius/2)
-					  .style("stroke", "black")
-					  .style("stroke-width", "1px")
+			  options.parent.append("line")
+					  .attr("x1", options.x1)
+					  .attr("x2", options.x1)
+					  .attr("y1", options.y-options.sliderradius/4)
+					  .attr("y2", options.y+options.sliderradius/4)
+					  .style("stroke", "#4d4d4d")
+					  .style("stroke-width", options.sliderradius/20)
 				
-				parent.append("line")
-					  .attr("x1", x2)
-					  .attr("x2", x2)
-					  .attr("y1", y-sliderradius/2)
-					  .attr("y2", y+sliderradius/2)
-					  .style("stroke", "black")
-					  .style("stroke-width", "1px")
+			  options.parent.append("line")
+					  .attr("x1", options.x2)
+					  .attr("x2", options.x2)
+					  .attr("y1", options.y-options.sliderradius/4)
+					  .attr("y2", options.y+options.sliderradius/4)
+					  .style("stroke", "#4d4d4d")
+					  .style("stroke-width", options.sliderradius/20)		
 				
-				parent.append("text")
-					  .attr("class", "sliderscale")
-					 .attr("text-anchor", "middle")
-					 .attr("x", x1)
-					 .attr("y", y+sliderlabelsize+sliderlabelsize)
-					 .attr("dy", ".3em")	
-					 .style("fill", "#70675c")
-					 .style("font-size", sliderlabelsize + "px")
-					 .text(function(d){return d.min})
-	  			
-	  			parent.append("text")
-	  				.attr("class", "sliderscale")
-					 .attr("text-anchor", "middle")
-					 .attr("x", x2)
-					 .attr("y", y+sliderlabelsize+sliderlabelsize)
-					 .attr("dy", ".3em")	
-					 .style("fill", "#70675c")
-					 .style("font-size", sliderlabelsize + "px")
-					 .text(function(d){return d.max})
-				
-					  	  
-				parent.append("circle")
+			  options.parent.append("rect")
 					  .attr("class", "sliderbutton")
-					  .attr("cx", function(d){return  sliderscale.invert(d.value);})
-					  .attr("cy", y)
-					  .attr("r", sliderradius)
-					  .style("stroke", "#70675c")
-					  .style("stroke-width", "2px")
-					  .style("fill", "#f47961")
+					  .attr("x", function(d){return  options.sliderscale(options.startvalue);})
+					  .attr("y", options.y - options.sliderradius/2)
+					  .attr("width", options.sliderradius)
+					  .attr("height", options.sliderradius)
+					  .style("stroke", "#4d4d4d")
+					  .style("stroke-width", options.sliderradius/20)
+					  .style("fill", "white")
 					  .call(d3.behavior.drag().on("drag", function(d){
-					  		var x = Math.min(Math.max(d3.event.x,x1),x2);
-					  		var value = sliderscale(x);
-					  		d3.select("text.option_" + d.id)
-					  			.text(parseInt(value));
-					  		d3.select(this).attr("cx",x);
+					  		var x = Math.min(Math.max(d3.event.x,options.sliderscale.range()[0]),options.sliderscale.range()[1]);
+					  		var value = options.sliderscale.invert(x);
+					  		var txtout = d3.select("text.option_" + options.id).text(options.formatter(value))
+					  		
+					  		if (options.styler != undefined){
+					  			txtout.call(options.styler);
+					  		}
+					  		
+					  		d3.select(this).attr("x",x);
 					  }).on("dragend", function(){
 					  		var d = d3.select(this).data();
-					  		var x = d3.select(this).attr("cx");
-					  		var value = sliderscale(x);
+					  		var x = d3.select(this).attr("x");
+					  		var value =  options.sliderscale.invert(x);
 					  		d[0].callback(value)
 					  }))
-				
-				parent.append("text")
-	  				 .attr("class", function(d){return "option_" + d.id})
+					  	  
+			  var finalval = options.parent.append("text")
+	  				 .attr("class", function(d){return "option_" + options.id})
 					 .attr("text-anchor", "middle")
-					 .attr("x", x1 + (x2-x1)/2)
-					 .attr("y", y + dim.h/2.5)
+					 .attr("x", options.x1 + (options.x2-options.x1)/2)
+					 .attr("y", options.y + options.sliderradius*1.5)
 					 .attr("dy", ".3em")	
 					 .style("fill", "#000")
 					 .style("font-size", slidervaluesize + "px")
-					 .text(function(d){return d.value})
-					  
-				
-			}
-			else if (d.type == "button"){
-				
-				var buttonradius = dim.h/6;
-				var buttoninnerradius = dim.h/7;
-				var buttonlabelsize = buttonradius*1.5;
-				var x1 = dim.x + buttonradius*2 + dim.w*col;
-			    var x2 =  dim.x + dim.w*col + dim.w - buttonradius*2;
-				
-				
-				parent.append("circle")
-					  .attr("cx", x1 + (x2-x1)/2)
-					  .attr("cy", y)
-					  .attr("r", buttonradius)
-					  .style("fill", "#fff")
-					  .style("stroke", "#70675c")
-					  .style("stroke-width", "2px")
-				
-				parent.append("circle")
-					  .attr("cx", x1 + (x2-x1)/2)
-					  .attr("cy", y)
-					  .attr("r", buttoninnerradius)
-					  .style("fill", function(d){return d.value?"#f47961":"white"})
-					  .call(d3.behavior.drag().on("dragstart", function(){
-					  		var d = d3.select(this).data();
-					  		
-					  		//d3.selectAll("text.buttonlabel").style("fill", "#70675c");
-					  		
-					  		d[0].value = !d[0].value;
-					  		
-					  		
-					  		//d3.select("text.buttonlabel_" + d[0].id).style("fill", d[0].value ? "black":"#70675c");
-					  		d3.selectAll("text.buttonlabel")
-					  		  .style("fill", function(d){return d.value ? "black":"#70675c";});
-					  		
-					  		d3.select(this).style("fill", d[0].value?"#f47961":"white");
-					  		d[0].callback(d[0].value)
-					  		
-					  		
-					  }))
-				
-				 parent.append("text")
-	  				 .attr("class", function(d){console.log(d);return "buttonlabel buttonlabel_" + d.id})
-					 .attr("text-anchor", "middle")
-					 .attr("x", x1 + (x2-x1)/2)
-					 .attr("y", y + dim.h/2.5)
-					 .attr("dy", ".3em")	
-					 .style("fill", function(d){return d.value ? "black":"#70675c";})
-					 .style("font-size", buttonlabelsize + "px")
-					 .text(function(d){return d.label})
-					 .call(util.autofit, x2-x1)
-			}
+					 .style("font-weight", "bold")
+					 .text(function(d){return options.formatter(options.startvalue)})
+					 .call(util.autofit, options.x2-options.x1);
 			
-			else if (d.type=="video"){
+			  if (options.styler != undefined){
+					finalval.call(options.styler);
+			  }
+		},
+		
+		
+		
+		createdatecomponent 	= function(options){
+			var y  =  options.dim.y + options.dim.h/3;
+			var sliderradius = options.dim.h/4;
+			var x1 = options.dim.x + sliderradius/4 + (options.dim.w/2)*options.col;
+			var x2 =  options.dim.x + (options.dim.w/2)*options.col + (options.dim.w/2) - sliderradius/4;
+		  
+			//create the day slider
+			var now 	 = moment();
+			var latest = moment().add(7, 'days');
+		  
+			var sliderscale = d3.time.scale().range([x1,x2-sliderradius]).domain([now.toDate(), latest.toDate()])
+		  
+		  
+			//curry the callback! that way it can distinguish between time and date!
+		  
+			
+			createslider({
+					parent		:	options.parent,
+					x1			:	x1,
+					x2			: 	x2,
+					y 			: 	y,
+					sliderradius: 	sliderradius,
+					formatter	: 	 function(d){return moment(d).format("dddd Do ") + moment(d).format("MMMM").toUpperCase();},
+					id			:   "day_" + options.row + "_" + options.col,
+					startvalue 	: 	now.toDate(),
+					sliderscale	:   sliderscale,
+					styler		:   util.boldstyler,
+			});
+		
+			var tx1 		= options.dim.x + sliderradius/4 + (options.dim.w/2)*(options.col+1);
+			var tx2 		= options.dim.x + (options.dim.w/2)*(options.col+1) + (options.dim.w/2) - sliderradius/4;
+			var tnow 		= moment().startOf('day');
+			var tlatest   	= moment().endOf('day');
+			var tsliderscale = d3.time.scale()
+										.range([tx1,tx2-sliderradius])
+										.domain([tnow.toDate(), tlatest.toDate()])	
+		  
+									
+			//create the time slider
+		  
+			createslider({
+					parent		:	options.parent,
+					x1			:	tx1,
+					x2			: 	tx2,
+					y 			: 	y,
+					sliderradius: 	sliderradius,
+					formatter	: 	function(d){
+							var ts = Math.floor(d.getTime()/1000);
+							var precision = 15 * 60;
+							return moment.unix(Math.round(ts/precision) * precision).format("hh:mm:ss")
+					},	
+					id			:   "time_" + options.row + "_" + options.col,
+					startvalue 	: 	tnow.toDate(),
+					sliderscale	:   tsliderscale,
+				
+			  });		
+		
+		},
+		
+		
+		createslidercomponent = function(options){
+			var y  =  options.dim.y + options.dim.h/3;
+		 	var sliderradius = options.dim.h/4;
+			var sliderlabelsize = options.dim.h/8;
+			var slidervaluesize = sliderlabelsize*2.5;
+			
+			var x1 = options.dim.x + sliderradius/4 + options.dim.w*options.col;
+			var x2 =  options.dim.x + options.dim.w*options.col + options.dim.w - sliderradius/4;
+			  
+			var sliderscale = d3.scale.linear()
+			 					.range([x1,x2-sliderradius])
+			 					.domain([options.data.min, options.data.max])
+			
+			
+			createslider({
+				  		parent		:	options.parent,
+				  		x1			:	x1,
+				  		x2			: 	x2,
+				  		y 			: 	y,
+				  		sliderradius: 	sliderradius,
+				  		formatter	: 	 function(d){return options.data.formatter? options.data.formatter(d):Math.floor(d)},
+				  		id			:   "day_" + options.row + "_" + options.col,
+				  		startvalue 	: 	options.data.value,
+				  		sliderscale	:   sliderscale,
+				  		styler		:   util.boldstyler,
+			});
+		},
+		
+		
+		createbuttoncomponent = function(options){
+			var y  =  options.dim.y + options.dim.h/3;
+			var buttonradius = options.dim.h/4;
+			var buttonlabelsize = buttonradius/1.2;
+			
+			var buttoninnerradius = options.dim.h/6;
+			
+			var x1 = options.dim.x + buttonradius*2 + options.dim.w*options.col;
+			var x2 =  options.dim.x + options.dim.w*options.col + options.dim.w - buttonradius*2;
+				
+				
+			options.parent.append("rect")
+				  .attr("x", x1 + (x2-x1)/2 - buttonradius/2)
+				  .attr("y", y - buttonradius/2)
+				  .attr("width", buttonradius)
+				  .attr("height", buttonradius)
+				  .style("fill", "#fff")
+				  .style("stroke", "#4d4d4d")
+				  .style("stroke-width", "2px")
+			
+			options.parent.append("rect")
+				   .attr("x", x1 + (x2-x1)/2 - buttoninnerradius/2)
+				  .attr("y", y - buttoninnerradius/2)
+				  .attr("width", buttoninnerradius)
+				  .attr("height", buttoninnerradius)
+				  .style("fill", function(d){return d.value?"#4d4d4d":"white"})
+				  .call(d3.behavior.drag().on("dragstart", function(){
+						var d = d3.select(this).data();
+						d[0].value = !d[0].value;
+						d3.selectAll("text.buttonlabel").style("fill", function(d){return d.value ? "black":"#4d4d4d";});
+						d3.select(this).style("fill", d[0].value?"#4d4d4d":"white");
+						d[0].callback(d[0].value)
+				  }))
+			
+			 options.parent.append("text")
+				 .attr("class", function(d){console.log(d);return "buttonlabel buttonlabel_" + d.id})
+				 .attr("text-anchor", "middle")
+				 .attr("x", x1 + (x2-x1)/2)
+				 .attr("y", y + options.dim.h/2.5)
+				 .attr("dy", ".3em")	
+				 .style("fill", function(d){return d.value ? "black":"#4d4d4d";})
+				 .style("font-size", buttonlabelsize + "px")
+				 .text(function(d){return d.label})
+				 .call(util.autofit, x2-x1)
+		
+		},
+		
+		
+		
+		createcomponent = function(options){
+	
+		
+			var y  =  options.dim.y + options.dim.h/3;
+			
+			
+			if (options.data.type=="video"){
 				
 				var ratio = 640/480;	
 				var width 	= $(window).width();
@@ -183,10 +251,10 @@ define(['jquery','d3', 'dimensions', 'util'], function($, d3, dim, util){
 				video.src ="http://s3.amazonaws.com/trms-dev/svg_video_test/oceans-clip.ogg";
 				
 				
-				parent.append("circle")
-				  .attr("cx", dim.x + dim.w/2)
-				  .attr("cy", dim.y + dim.h/2)
-				  .attr("r", dim.h/3)
+				options.parent.append("circle")
+				  .attr("cx", options.dim.x + options.dim.w/2)
+				  .attr("cy", options.dim.y + options.dim.h/2)
+				  .attr("r", options.dim.h/3)
 				  .style("stroke", "#70675c")
 				  .style("stroke-width", "2px")
 				  .style("fill", "#f47961")
@@ -201,8 +269,7 @@ define(['jquery','d3', 'dimensions', 'util'], function($, d3, dim, util){
 				  });		
 			}
 		},
-	
-		
+			
 		
 		create = function(options){
 			
@@ -214,7 +281,7 @@ define(['jquery','d3', 'dimensions', 'util'], function($, d3, dim, util){
 			
 			var groupheight  = options.h/options.data.length;
 			var headerheight = groupheight/5; 
-			var textsize     = headerheight * 0.7;
+			var textsize     = groupheight/8;
 			
 			var groups = options.hook.append("g")
 							 .attr("class", "groups")
@@ -227,45 +294,62 @@ define(['jquery','d3', 'dimensions', 'util'], function($, d3, dim, util){
 				 .attr("class", "group")
 			
 			group.append("rect")
-				 .attr("class", "optionsheader")
-				  .attr("x", options.x)
-				  .attr("y", function(d,i){return options.y+(i * groupheight)})
-				  .attr("width", options.w)
-				  .attr("height", headerheight)
-				  .style("stroke", "none")
-				  .style("fill", "#c8c2ae")
-			
-				  
+				 .attr("x", options.x)
+				 .attr("y", function(d,i,j){return  options.y + (i * groupheight)})
+				 .attr("width",options.w)
+				 .attr("height",groupheight)
+				 .style("fill", function(d,i,j){return i%2 == 0 ? "#ececec":"#cccccc"})	 
+				 	  
 			group.append("text")
 				 .attr("text-anchor", "middle")
 				 .attr("x", options.x + options.w/2)
-				 .attr("y",function(d,i){return options.y+(i * groupheight) + headerheight/2})
+				 .attr("y",function(d,i){return options.y+(i * groupheight) + groupheight/6})
 				 .attr("dy", ".3em")	
 				 .style("fill", "#000")
 	  			 .style("font-size", textsize + "px")
 	  			 .text(function(d){return d.question})
 	  			 .call(util.autofit, options.w);
-	  			 
+	  		  		
 	  		var components = group.append("g")
 								  .attr("class", "components"); 
-								  
+					  
 			
 			var component = components.selectAll("g.component")
 					  				  .data(function(d){return d.components})
 									  .enter()
 									  .append("g")
 									  .attr("class", "component")
-									  .each(function(d,i,j){
-											var col = i;
-											var row = j;
-											var dim = {	x: options.x,
-										   				y: headerheight + options.y + (row * groupheight),
-										   				w: options.w/d.items,
-										   				h: groupheight - headerheight
-										   			}; 
-													
-											createcomponent(d3.select(this),dim, col,row, d);
-										});	 
+			
+					
+									  		 
+			component.each(function(d,i,j){
+							var col = i;
+							var row = j;
+							
+							var dim = {	x: options.x,
+										y: headerheight + options.y + (row * groupheight),
+										w: options.w/d.items,
+										h: groupheight - headerheight
+									}; 
+									
+							var params = {
+								parent: d3.select(this),
+								dim: dim,
+								row: row,
+								col: col,
+								data: d,
+							};
+							
+							if (d.type=="date"){
+								createdatecomponent(params);
+							}else if (d.type=="slider"){	
+								createslidercomponent(params);
+							}else if (d.type=="button"){
+								createbuttoncomponent(params);
+							}else{
+								createcomponent(params);
+							}
+						});	 
 	  		
 		}
 		

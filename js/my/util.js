@@ -192,7 +192,23 @@ define(['jquery', 'd3'], function($, d3){
 	  	 		}
 	  	 	})
 	  	 	
-	  	}
+	  	},
+	  	
+	  	boldstyler = function(text){
+			text.each(function() {
+		
+			var text = d3.select(this),
+				words = text.text().split(/\s+/),
+				boldword  = words.shift(),
+				remainder = (" " +  words.join(" ")),
+				tspan = text.text(boldword)
+								.style("font-weight", "bold")
+								.append("tspan")
+								.text(remainder)
+								.style("font-weight", "normal")
+								.style("fill", "#4d4d4d")
+			})
+		}
 	  	
 	return {
 		generatepath: generatepath,
@@ -206,6 +222,7 @@ define(['jquery', 'd3'], function($, d3){
 		arrow: arrow,
 		shuffle:shuffle,
 		autofit:autofit,
+		boldstyler:boldstyler,
 		
 	}
 });
