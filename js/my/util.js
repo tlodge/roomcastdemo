@@ -188,7 +188,7 @@ define(['jquery', 'd3'], function($, d3){
 	  	 		while(text.node().getComputedTextLength() > width * 0.9 && guard++ < 100){
 	  	 			var fontsize = Math.floor(text.style("font-size").replace("px",'')) - 2;
 	  	 			text.style("font-size", fontsize + "px")			
-	  	 			console.log("shrinking!!");
+	  	 			console.log("width: " + width + " length is " + text.node().getComputedTextLength()  + " shrinking to "  + fontsize + "px");
 	  	 		}
 	  	 	})
 	  	 	
