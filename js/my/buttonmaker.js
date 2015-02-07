@@ -170,8 +170,8 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 		
 		},
 		
-		changestep = function(d){
-			
+		changestep = function(){
+			var d = d3.select(this).data()[0];
 			if (d == "next"){
 				if (currentstep < steps.length-1){
 					currentstep += 1;
@@ -217,8 +217,8 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 			 	 	.style("width",buttonwidth()+"px")
 			 	 	.style("height",buttonwidth()+"px")
 			 	 	.style("background", "#f47961")
-			 		.on("click",changestep);
-					
+			 		//.on("click",changestep);
+					.call( d3.behavior.drag().on("dragstart", changestep))
 			 navb.exit()
 			 	 	.remove();
 		},

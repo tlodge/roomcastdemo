@@ -144,10 +144,12 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		
 		
 		createslidercomponent = function(options){
+	
 			var y  =  options.dim.y + options.dim.h/3;
-			var sliderradius = Math.min(options.dim.w/10,options.dim.h/4);
-			var x1 = options.dim.x + sliderradius/4 + options.dim.w*options.col;
-			var x2 =  options.dim.x + options.dim.w*options.col + options.dim.w - sliderradius/4;
+			var sliderradius = Math.min(options.dim.w/7.5,options.dim.h/4);
+			var x1 = options.dim.x + sliderradius/4 + (options.dim.w)*options.col;
+			var x2 =  options.dim.x + (options.dim.w)*options.col + (options.dim.w) - sliderradius/4;
+		  
 			  
 			var sliderscale = d3.scale.linear()
 			 					.range([x1,x2-sliderradius])

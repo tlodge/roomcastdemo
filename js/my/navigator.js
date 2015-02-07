@@ -109,8 +109,10 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 		
 		
 		demos 	 = [ 
-						{name:"+ add button", callback:addclicked}
-						//{name:"add category", callback:categoryclicked},
+						{name:"+ add button", callback:addclicked},
+						{name:"andy (leaseholder)", callback:addclicked},
+						{name:"sue (tenant)", callback:addclicked},
+						{name:"dave (leaseholder)", callback:addclicked},
 				   ],
 		
 		screens  = [
@@ -131,7 +133,7 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 		},
 		
 		demoitemwidth = function(){
-			return dim.width()/4 / demos.length;
+			return dim.width()/2.5 / demos.length;
 		},
 		
 		categoryclicked = function(d){
@@ -358,10 +360,11 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 				.style("fill", "#fff")
 				.attr("dy", ".2em")
 				.attr("text-anchor", "middle")
-				.style("font-size", (navbarheight() * 2/5) +  "px")
+				.style("font-size", ((navbarheight() * 2/5)*0.7) +  "px")
 				.text(function(d){return d.name})
 				//.on("click", addclicked)  	
-				.call( d3.behavior.drag().on("dragstart", addclicked))						
+				.call( d3.behavior.drag().on("dragstart", addclicked))	
+				.call(util.autofit, demoitemwidth())					
 		}
 		
 	return{
