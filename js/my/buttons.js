@@ -275,13 +275,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		},
 		
 		dragpressed = function(){
-			if (d3.event.defaultPrevented){
-					return;
-			}
-			if (d3.event != null){
-				d3.event.sourceEvent.stopPropagation();
-				d3.event.sourceEvent.preventDefault();
-			}
+			
 			
 			
 			var d = d3.select(this).data()[0];
@@ -410,7 +404,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					.style("stroke-width", 4)
 					.style("fill",function(d){return column[d.name] % 2 == 0 ? "#f47961": "#006f9b"})
 					//.on("click", function(d){pressed(d)})
-					.call( d3.behavior.drag().on("dragstart",dragpressed));
+					.call( d3.behavior.drag().on("dragstart",util.handledrag(dragpressed)));
 			
 			button.append("text")
 					.attr("class", "buttontext")
@@ -421,7 +415,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	  			  	.style("font-size", fontsize + "px")
 	  			  	.text(function(d){return d.name})  	
 	  			  	//.on("click", function(d){pressed(d)})
-	  			  	.call( d3.behavior.drag().on("dragstart", dragpressed))
+	  			  	.call( d3.behavior.drag().on("dragstart", util.handledrag(dragpressed)))
 	  			  	.call(util.autofit , buttonwidth);
 	  			  	
 		},
