@@ -190,9 +190,9 @@ define(['jquery', 'd3'], function($, d3){
 	  	 			
 	  	 			if (id){
 	  	 				d3.selectAll("text." + id).style("font-size", fontsize + "px");
-	  	 			}else{
-	  	 				text.style("font-size", fontsize + "px");
 	  	 			}
+	  	 			text.style("font-size", fontsize + "px");
+	  	 			
 	  	 		}
 	  	 	})
 	  	 	
