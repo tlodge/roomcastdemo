@@ -98,7 +98,8 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					.style("fill","white")
 					.style("stroke-width","4px")
 					.style("stroke","white")
-					.on("click", _select_all)
+					.call( d3.behavior.drag().on("dragstart", _select_all))
+					//.on("click", _select_all)
 				
 				category.append("text")
 				  	.attr("class", "categorytext")
@@ -111,7 +112,8 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					.style("font-weight", "bold")
 					.text(function(d){return d.name})
 					.call(util.autofit, cwidth-(selectboxheight*3), "categorytext")
-					.on("click", _select_all)
+					.call( d3.behavior.drag().on("dragstart", _select_all))
+					//.on("click", _select_all)
 					
 					
 				
@@ -130,7 +132,8 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					.attr("height", cheight)
 					.style("fill",function(d){return column[d.name] % 2 == 0 ? "#999999": "#c8c2ae"})
 					.style("opacity",function(d){return row[d.name] % 2 == 0 ? 1.0: 0.5})
-					.on("click", _select)
+					//.on("click", _select)
+					.call( d3.behavior.drag().on("dragstart", _select))
 					//.on("click", function(d){console.log("pressed!!")})
 				
 				user.append("rect")
@@ -142,7 +145,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					.style("fill","white")
 					.style("stroke-width","4px")
 					.style("stroke","white")
-					.on("click", _select)
+					.call( d3.behavior.drag().on("dragstart", _select))
 					//.on("click", function(d){console.log("pressed!!")})
 				
 				user.append("text")
@@ -157,15 +160,26 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					
 					.text(function(d){return d.name})
 					.call(util.autofit, cwidth-(selectboxheight*3), "usertext")
-					.on("click", _select)
+					.call( d3.behavior.drag().on("dragstart", _select))
 					
 					//.on("click", function(d){console.log("pressed!!")})	
 			};
 			
 			//private functions
 			
-			var _select_all = function(d){
+			var _select_all = function(){
 				
+				
+				if (d3.event.defaultPrevented){
+					return;
+				}
+				if (d3.event != null){
+					d3.event.sourceEvent.stopPropagation();
+					d3.event.sourceEvent.preventDefault();
+				}
+			
+				var d = d3.select(this).data()[0];
+			
 				//if they're not already all selected
 				if (selected[d.name].length != categorytousers[d.name].length){
 					selected[d.name] = [];
@@ -181,7 +195,17 @@ define(['jquery','d3', 'util'], function($,d3,util){
 				
 			};
 		
-			var _select = function(d){
+			var _select = function(){
+				if (d3.event.defaultPrevented){
+					return;
+				}
+				if (d3.event != null){
+					d3.event.sourceEvent.stopPropagation();
+					d3.event.sourceEvent.preventDefault();
+				}
+			
+				var d = d3.select(this).data()[0];
+			
 				var cat = usertocategory[d.id];
 				var idx = selected[cat].indexOf(d.id);
 				if (idx == -1){
