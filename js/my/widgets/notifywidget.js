@@ -154,7 +154,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					
 					.text(function(d){return d.name})
 					.on("click", _select)
-					.call(util.autofit, (cwidth -selectboxheight), "optionsbox")
+					.call(util.autofit, (cwidth -selectboxheight*2), "optionsbox")
 					//.on("click", function(d){console.log("pressed!!")})	
 			};
 			

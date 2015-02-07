@@ -171,6 +171,14 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 		},
 		
 		changestep = function(){
+			if (d3.event.defaultPrevented){
+					return;
+			}
+			if (d3.event != null){
+				d3.event.sourceEvent.stopPropagation();
+				d3.event.sourceEvent.preventDefault();
+			}
+			
 			var d = d3.select(this).data()[0];
 			if (d == "next"){
 				if (currentstep < steps.length-1){
