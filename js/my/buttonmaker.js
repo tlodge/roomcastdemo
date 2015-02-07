@@ -1,4 +1,4 @@
-define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidget', 'widgets/notifywidget'], function($,d3, radio, util, groupwidget, namewidget,notifywidget){
+define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidget', 'widgets/notifywidget','widgets/infowidget'], function($,d3, radio, util, groupwidget, namewidget,notifywidget,infowidget){
 
 	"use strict"
 	
@@ -15,7 +15,7 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 		steps = [
 			{number: 0, name:"name", title:"What is the <strong>name</strong> of your new button?", subtitle:"this is the button's label so try to make it short and snappy", widget:namewidget.chart},
 			{number: 1, name:"group", title:"What <strong>group</strong> will it belong to?", subtitle:"add it to a group, or create a new one", widget:groupwidget.chart},
-			{number: 2, name:"description", title:"<strong>Why</strong> should be pressed?", subtitle:"tell the users why they might need this button", widget:groupwidget.chart},
+			{number: 2, name:"description", title:"<strong>Why</strong> should be pressed?", subtitle:"tell the users why they might need this button", widget:infowidget.chart},
 			{number: 3, name:"notify",title:"Who should be <strong> notified</strong> when it's pressed?", subtitle:"",widget:notifywidget.chart},
 			{number: 4,	name:"context",title:"<strong>What else</strong> do you need to know", subtitle:"get more context when the button is pressed",widget:groupwidget.chart},
 			{number: 5, name:"users",title:"<strong>Who</strong> will get this button?",subtitle:"", widget:groupwidget.chart},
