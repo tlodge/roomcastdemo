@@ -207,8 +207,17 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 			}
 		},
 		
-		eventclicked = function(event){
+		eventclicked = function(){
 			
+			if (d3.event.defaultPrevented){
+				return;
+			}
+			if (d3.event != null){
+				d3.event.sourceEvent.stopPropagation();
+				d3.event.sourceEvent.preventDefault();
+			}
+		
+			var event = d3.select(this).data()[0];
 			if (visibleevent){
 				//if this is the same as the current event, remove it
 				if (visibleevent.id == event.id && visibleevent.flow == event.flow){
@@ -532,8 +541,8 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 					.style("fill", "#dbdbdb")
 					.style("stroke", "#4d4d4d")
 					.style("stroke-width", 2)
-					.on("click", eventclicked);
-		
+					.call( d3.behavior.drag().on("dragstart", eventclicked))
+					
 			flowlist.append("text")
 				  .attr("class", "eventtitle")
 	  			  .attr("x",midx + flowradius()*2)
@@ -541,7 +550,7 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 	  			  .style("fill", "#4d4d4d")
 	  			  .style("font-size",  headerfontsize() + "px")
 	  			  .text(function(d){return eventtotext(d).trunc(30, true)}) 
-	  			  .on("click", eventclicked)
+	  			  .call( d3.behavior.drag().on("dragstart", eventclicked))
 	  			  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
 				
 		
@@ -553,7 +562,8 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 	  			  .style("fill", "#006f9b")
 	  			  .style("font-size",  (headerfontsize()*0.8) + "px")
 	  			  .text(function(d){return moment.unix(d.ts).format("MMM Do, h:mm:ss a")})  
-	  			  .on("click", eventclicked);					
+	  			  .call( d3.behavior.drag().on("dragstart", eventclicked));
+	  			  					
 			flows
 				.exit()
 				.remove();
