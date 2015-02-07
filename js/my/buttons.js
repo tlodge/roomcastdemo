@@ -141,9 +141,15 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.attr("y",opty + optheight - (buttonradius/2))	
 				.style("fill", "#fff")
 				.style("font-size", buttonradius/2.5+ "px")
-				.text("SEND") 	
-				.on("click", function(d){d3.select("g.options").remove()
-										 d3.selectAll("g").style("opacity", 1.0);})
+				.text("SEND") 
+				.call( d3.behavior.drag().on("dragstart", function(){
+					d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);
+				}))	
+				
+				//wrap this with the prevent default stuff!
+				
+				//.on("click", function(d){d3.select("g.options").remove()
+				//						 d3.selectAll("g").style("opacity", 1.0);})
 				
 		
 			
@@ -156,8 +162,12 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.attr("y",opty + optheight - (buttonradius/2))	
 				.style("fill", "#fff")
 				.style("font-size", buttonradius/2.5+ "px")
+				
 				.text("CANCEL") 
-				.on("click", function(d){d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);})
+				.call( d3.behavior.drag().on("dragstart", function(){
+					d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);
+				}))
+				
 			
 			
 			//controls.create(cpanel, optwidth, padding, (width/2-padding), height-padding, controlsdata);
