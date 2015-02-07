@@ -51,7 +51,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					});
 				});
 				
-				console.log(categorytousers);
+				
 				var cwidth = width/users.length;
 				
 				var cheight = height/(maxusers+1);
@@ -90,7 +90,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					.style("opacity",function(d,i){return i % 2 == 0 ? 1.0: 0.5})
 					
 				category.append("rect")
-				  	.attr("class", function(d){ return "optionsbox optionsbox_" + d.name + " optionscat_" + d.name })
+				  	.attr("class", function(d){ return "optionsbox optionscat optionsbox_" + d.name + " optionscat_" + d.name })
 					.attr("x", function(d,i){return xscale(i) + (cheight-selectboxheight)/2})
 					.attr("y", function(d){return (cheight-selectboxheight)/2})
 					.attr("width", selectboxheight)
@@ -111,7 +111,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					.style("font-weight", "bold")
 					.text(function(d){return d.name})
 					.on("click", _select_all)
-					.call(util.autofit, (cwidth -selectboxheight*2), "optionsbox")
+					.call(util.autofit, (cwidth -selectboxheight*3), "optionscat")
 					
 				
 				var user =  d3.selectAll("g.notifycategory")
