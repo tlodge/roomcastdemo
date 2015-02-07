@@ -143,7 +143,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.style("font-size", buttonradius/2.5+ "px")
 				.text("SEND") 
 				.call( d3.behavior.drag().on("dragstart", function(){
-					d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);
+					util.handledrag(function(){
+						d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);
+					});
 				}))	
 				
 				//wrap this with the prevent default stuff!
@@ -165,7 +167,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				
 				.text("CANCEL") 
 				.call( d3.behavior.drag().on("dragstart", function(){
-					d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);
+					util.handledrag(function(){
+						d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);
+					});
 				}))
 				
 			

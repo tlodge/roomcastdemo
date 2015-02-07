@@ -174,6 +174,17 @@ define(['jquery', 'd3'], function($, d3){
 	  		}) + " z";
 	  	},
 	  	
+	  	handledrag = function(callback){
+	  		if (d3.event.defaultPrevented){
+				return;
+			}
+			if (d3.event != null){
+				d3.event.sourceEvent.stopPropagation();
+				d3.event.sourceEvent.preventDefault();
+			}
+	  		callback();
+	  	},
+	  	
 	  	autofit = function(text, width, id) {
 	  		
 	  		
@@ -227,6 +238,7 @@ define(['jquery', 'd3'], function($, d3){
 		shuffle:shuffle,
 		autofit:autofit,
 		boldstyler:boldstyler,
+		handledrag:handledrag,
 		
 	}
 });
