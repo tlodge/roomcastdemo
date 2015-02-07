@@ -156,7 +156,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					.style("font-size", (cheight * 0.3) + "px")
 					
 					.text(function(d){return d.name})
-					.call(util.autofit, (cwidth -(selectboxheight*2)), "usertext")
+					.call(util.autofit, cwidth-(selectboxheight*3), "usertext")
 					.on("click", _select)
 					
 					//.on("click", function(d){console.log("pressed!!")})	
