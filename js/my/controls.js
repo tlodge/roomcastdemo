@@ -48,11 +48,13 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 					  .call(d3.behavior.drag().on("drag", function(d){
 					  		var x = Math.min(Math.max(d3.event.x,options.sliderscale.range()[0]),options.sliderscale.range()[1]);
 					  		var value = options.sliderscale.invert(x);
-					  		var txtout = d3.select("text.option_" + options.id).text(options.formatter(value))
-					  		
+					  		var txtout = d3.select("text.option_" + options.id)
+					  					  .text(options.formatter(value))
+					  					
 					  		if (options.styler != undefined){
 					  			txtout.call(options.styler);
 					  		}
+					  		txtout.call(util.autofit, options.w)
 					  		
 					  		d3.select(this).attr("x",x);
 					  }).on("dragend", function(){
@@ -208,11 +210,8 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				  .style("stroke-width", "2px")
 			 	  .call(buttonlistener);
 			
-			
-			
-		
-			
-			 var opttxt = options.parent.append("text")
+
+		   var opttxt = options.parent.append("text")
 				 .attr("class", function(d){return "buttonlabel buttonlabel_" + d.id})
 				 .attr("text-anchor", "middle")
 				 .attr("x", x1 + (x2-x1)/2)
@@ -221,7 +220,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				 .style("fill", function(d){return d.value ? "black":"#4d4d4d";})
 				 .style("font-size", buttonlabelsize + "px")
 				 .text(function(d){return d.label})
-				 .call(util.autofit, options.dim.w)
+				 .call(util.autofit, options.dim.w, 'buttonlabel')
 			
 			opttxt	 
 				.call(buttonlistener);

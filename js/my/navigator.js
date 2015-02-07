@@ -46,10 +46,10 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 							question:"how shall we contact you?",
 							
 							components:[
-								{name:"c1",id:"c1", type:"button", value: true, label:"tlodge@gmail.com", callback:function(value){
+								{name:"c1",id:"c1", type:"button", value: false, label:"tlodge@gmail.com", callback:function(value){
 									console.log(value);
 								}},
-								{name:"c2",id:"c2", type:"button", value: true, label:"07972639571", callback:function(value){
+								{name:"c2",id:"c2", type:"button", value: false, label:"07972639571", callback:function(value){
 									console.log(value);
 								}},
 								{name:"c3",id:"c3", type:"button", value: true, label:"don't contact me!", callback:function(value){
