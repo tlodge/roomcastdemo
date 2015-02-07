@@ -111,6 +111,8 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					.style("font-weight", "bold")
 					.text(function(d){return d.name})
 					.on("click", _select_all)
+					.call(util.autofit, (cwidth -selectboxheight*2), "optionsbox")
+					
 				
 				var user =  d3.selectAll("g.notifycategory")
 							.selectAll("g.user")
