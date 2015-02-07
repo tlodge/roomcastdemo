@@ -144,7 +144,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.text("SEND") 
 				.call( d3.behavior.drag().on("dragstart", function(){
 					util.handledrag(function(){
-						d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);
+						d3.select("g.options").remove(); 
+						d3.selectAll("g").style("opacity", 1.0);
 					});
 				}))	
 				
@@ -164,11 +165,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.attr("y",opty + optheight - (buttonradius/2))	
 				.style("fill", "#fff")
 				.style("font-size", buttonradius/2.5+ "px")
-				
 				.text("CANCEL") 
 				.call( d3.behavior.drag().on("dragstart", function(){
 					util.handledrag(function(){
-						d3.select("g.options").remove(); d3.selectAll("g").style("opacity", 1.0);
+						d3.select("g.options").remove();
+						d3.selectAll("g").style("opacity", 1.0);
 					});
 				}))
 				
