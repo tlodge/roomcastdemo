@@ -85,7 +85,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		
 		createdatecomponent 	= function(options){
 			var y  =  options.dim.y + options.dim.h/3;
-			var sliderradius = Math.min(options.dim.w/20,options.dim.h/4);
+			var sliderradius = Math.min(options.dim.w/15,options.dim.h/4);
 			var x1 = options.dim.x + sliderradius/4 + (options.dim.w/2)*options.col;
 			var x2 =  options.dim.x + (options.dim.w/2)*options.col + (options.dim.w/2) - sliderradius/4;
 		  
