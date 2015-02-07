@@ -180,7 +180,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 						
 						
 		update  = function(){
-			console.log("buttons - updating!!");
+			
 			//buttons[0].buttons[1].message = "hello again";
 			updatemasks();
 			render();
