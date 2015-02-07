@@ -110,7 +110,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					.style("font-size", (cheight * 0.3) + "px")
 					.style("font-weight", "bold")
 					.text(function(d){return d.name})
-					.call(util.autofit, cwidth-(selectboxheight*4), "categorytext")
+					.call(util.autofit, cwidth-(selectboxheight*3), "categorytext")
 					.on("click", _select_all)
 					
 					
