@@ -13,7 +13,7 @@ define(['jquery','d3'], function($,d3){
 			
 			function my(){		
 				 
-				 console.log("name widget in here!");
+				 
 				 var data = this.data()[0];
 				
 				 
@@ -71,8 +71,7 @@ define(['jquery','d3'], function($,d3){
 			
 			
 			var tboxheight = function(){
-			 	return height/7;
-				
+			 	return height/5;
 			};
 			
 			var tboxwidth = function(){
