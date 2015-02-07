@@ -175,16 +175,15 @@ define(['jquery', 'd3'], function($, d3){
 	  	},
 	  	
 	  	handledrag = function(callback){
-	  		if (d3.event.defaultPrevented){
-	  			
-				return;
-			}
 			if (d3.event != null){
-				
+				if (d3.event.defaultPrevented){
+					return;
+				}
 				d3.event.sourceEvent.stopPropagation();
 				d3.event.sourceEvent.preventDefault();
 			}
-	  		callback();
+			var d = d3.select(this).data()[0];
+	  		callback(d);
 	  	},
 	  	
 	  	autofit = function(text, width, id) {
