@@ -174,7 +174,7 @@ define(['jquery', 'd3'], function($, d3){
 	  		}) + " z";
 	  	},
 	  	
-	  	handledrag = function(callback){
+	  	handledrag = function(d, callback){
 			if (d3.event != null){
 				if (d3.event.defaultPrevented){
 					return;
@@ -182,7 +182,6 @@ define(['jquery', 'd3'], function($, d3){
 				d3.event.sourceEvent.stopPropagation();
 				d3.event.sourceEvent.preventDefault();
 			}
-			var d = d3.select(this).data()[0];
 	  		callback(d);
 	  	},
 	  	
