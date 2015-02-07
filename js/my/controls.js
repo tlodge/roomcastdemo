@@ -217,7 +217,7 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				 .attr("x", x1 + (x2-x1)/2)
 				 .attr("y", y + options.dim.h/2.5)
 				 .attr("dy", ".3em")	
-				 .style("fill", function(d){return d.value ? "black":"#4d4d4d";})
+				 .style("fill", "#4d4d4d")
 				 .style("font-size", buttonlabelsize + "px")
 				 .text(function(d){return d.label})
 				 .call(util.autofit, options.dim.w, 'buttonlabel')
