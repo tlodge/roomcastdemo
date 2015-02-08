@@ -202,7 +202,7 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 			 	  			.selectAll("div.navbutton")
 			 	 			.data(navigatebuttons)
 			 	 
-			 var fontsize = buttonwidth() * 0.8;
+			 var fontsize = buttonwidth() * 0.5;
 			 	 
 			 //update
 			 root.selectAll("div.navbutton")
@@ -234,7 +234,7 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 			
 			 navbutton.append("i")
 			 			
-			 		  .attr("class", function(d){return d=="back" ? "fa fa-arrow-circle-o-up fa-lg":"fa fa-arrow-circle-o-down fa-lg"})
+			 		  .attr("class", function(d){return d=="back" ? "fa fa-arrow-up":"fa fa-arrow-down"})
     				   .style("font-size", fontsize + "px")
     				   .style("line-height", buttonwidth() + "px")
     				   .style("color", "white")
