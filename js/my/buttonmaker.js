@@ -202,6 +202,7 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 			 	  			.selectAll("div.navbutton")
 			 	 			.data(navigatebuttons)
 			 	 
+			 var fontsize = buttonwidth() * 0.8;
 			 	 
 			 //update
 			 root.selectAll("div.navbutton")
@@ -214,20 +215,30 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 			 
 					 
 			 //enter
-			 navb.enter()
-			 	 	.append("div")
-			 	 	.attr("class", "navbutton")
-			 	 	.style("position", "absolute")
-			 	 	.style("z-index", 999999)
-			 	 	.style("left", (dim.width()-buttonwidth()) + "px")
-			 	 	.style("top", function(d){
-			 	 		 return d=="back" ? dim.headerpadding() + "px" : (dim.height()-buttonwidth()) + "px";
-			 	 	})
-			 	 	.style("width",buttonwidth()+"px")
-			 	 	.style("height",buttonwidth()+"px")
-			 	 	.style("background", "#f47961")
-			 		//.on("click",changestep);
-					.call( d3.behavior.drag().on("dragstart", changestep))
+			 var navbutton = navb.enter()
+								.append("div")
+								.attr("class", "navbutton")
+								.style("position", "absolute")
+								.style("z-index", 999999)
+								.style("left", (dim.width()-buttonwidth()) + "px")
+								.style("top", function(d){
+									 return d=="back" ? dim.headerpadding() + "px" : (dim.height()-buttonwidth()) + "px";
+								})
+								.style("width",buttonwidth()+"px")
+								.style("height",buttonwidth()+"px")
+								.style("background", "#f47961")
+								.style("text-align", "center")
+								
+								//.on("click",changestep);
+								.call( d3.behavior.drag().on("dragstart", changestep))
+			
+			 navbutton.append("i")
+			 			
+			 		  .attr("class", function(d){return d=="back" ? "fa fa-arrow-circle-o-up fa-lg":"fa fa-arrow-circle-o-down fa-lg"})
+    				   .style("font-size", fontsize + "px")
+    				   .style("line-height", buttonwidth() + "px")
+    				   .style("color", "white")
+			
 			 navb.exit()
 			 	 	.remove();
 		},

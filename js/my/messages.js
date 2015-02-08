@@ -586,6 +586,7 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 		},
 	
 		render = function(){
+			console.log("Message box in render!");
 			updatescales();
 			renderflows(true);
 			updatemessagebox();
