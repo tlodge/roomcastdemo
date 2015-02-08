@@ -66,20 +66,20 @@ define(['jquery','d3', 'util'], function($,d3,util){
 				
 				var svg = this
 				 				.append("svg")
-				 				.attr("id", "notifywidget")
+				 				.attr("id", "mywidget")
 				 				.style("x", x + "px")
 				 				.style("y", y + "px")
 				 				.style("width",  (width+x) + "px")
 				 				.style("height", (height+y) + "px")
 				 						
 				
-				var categories = svg.selectAll("g.notifycategory")
+				var categories = svg.selectAll("g.mycategory")
   								.data(users, function(d){return d.name+users.length})
   								
   								
   				var category = categories.enter()
 						  				 .append("g")
-						  				 .attr("class", "notifycategory")
+						  				 .attr("class", "mycategory")
 				
 				category.append("rect")
 					.attr("x", function(d,i){return xscale(i)})
@@ -117,7 +117,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					
 					
 				
-				var user =  d3.selectAll("g.notifycategory")
+				var user =  d3.selectAll("g.mycategory")
 							.selectAll("g.user")
 							 .data(function(d){return d.users})
 							 .enter()

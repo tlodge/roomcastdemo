@@ -1,4 +1,4 @@
-define(['jquery','d3'], function($,d3){
+define(['jquery','d3', 'util'], function($,d3, util){
 	
 	"use strict";
 	
@@ -35,10 +35,12 @@ define(['jquery','d3'], function($,d3){
 				 	.style("width",  labelwidth() + "px")
 				 	.style("height", tboxheight() + "px")
 				 	.style("line-height", tboxheight() + "px")
+				 	.style("background", "#006f9b")
+				 	.append("span")
 				 	.text("button name")
 				 	.style("color", "white")
-				 	.style("background", "#006f9b")
 				 	.style("font-size", (tboxheight()*0.8) + "px")
+				 	.call(util.cssautofit, labelwidth())
 				 	
 				textcontainer	
 				 	.append("div")

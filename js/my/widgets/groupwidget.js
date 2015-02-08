@@ -26,7 +26,7 @@ define(['jquery','d3'], function($,d3){
 								
 				 
 				var groupselectcontainer = groupchoicecontainer.append("div")
-				 									.attr("class", "textwidgetcontainer")
+				 									.attr("class", "groupwidgetcontainer")
 				 									.style("top",  ((groupheight()-tboxheight())/2) +  "px")
 				 									.style("left", (x + width/2 - tboxwidth()/2 - labelwidth()/2) + "px")
 				 									.style("width",  labelwidth() + tboxwidth() + "px")
@@ -36,7 +36,7 @@ define(['jquery','d3'], function($,d3){
 				
 				groupselectcontainer	
 				 	.append("div")
-				 	.attr("class", "groupnamelabelbox")
+				 	.attr("class", "groupchoicelabelbox")
 				 	.style("text-align", "center")
 				 	.style("width",  labelwidth() + "px")
 				 	.style("height", tboxheight() + "px")
@@ -87,7 +87,7 @@ define(['jquery','d3'], function($,d3){
 										.style("background", "#ececec") 		
 				
 				var groupinputcontainer = groupcreatecontainer.append("div")
-				 									.attr("class", "textwidgetcontainer")
+				 									.attr("class", "groupwidgetcontainer")
 				 									.style("top",  ((groupheight()-tboxheight())/2) +  "px")
 				 									.style("left", (x + width/2 - tboxwidth()/2 - labelwidth()/2) + "px")
 				 									.style("width",  labelwidth() + tboxwidth() + "px")

@@ -69,27 +69,9 @@ define(['jquery','d3'], function($,d3){
 			};
 			
 			my.update = function(){
-				console.log("name widget updating with " + width  + " " + height);
+				console.log("name info widget updating with " + width  + " " + height);
 				
-				d3.select("div.textwidgetcontainer")
-				 	.style("top",  (y + height/2) -  tareaheight() +  "px")
-				 	.style("left", (x + width/2 - tareawidth()/2 - labelwidth()/2) + "px")
-				 	.style("width",  labelwidth() + tareawidth() + "px")
-				 	.style("height", tareaheight() + "px")
 				
-				d3.select("div.labelbox")
-				 	.style("width",  labelwidth() + "px")
-				 	.style("height", tareaheight() + "px")
-				 	.style("line-height", tareaheight() + "px")
-				 	.style("font-size", (tareaheight()*0.8) + "px")
-				 
-				d3.select("div.inputarea")
-				 	.style("left", labelwidth() + "px")
-				 	.select("input")
-				 	.style("padding-left", ((tareaheight()*0.8)/8) + "px") 
-				 	.style("width",  tareawidth() + "px")
-				 	.style("height", tareaheight() + "px")
-				 	.style("font-size", (tareaheight()*0.8) + "px")
 				
 			};
 				

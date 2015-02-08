@@ -185,6 +185,25 @@ define(['jquery', 'd3'], function($, d3){
 	  		callback(d);
 	  	},
 	  	
+	  	cssautofit = function(text, width) {
+	  		
+	  		//need to put text in span?? rather than in div box - that way text width is calculated on span!
+	  		
+	  		var guard = 0;
+	  		
+	  	 	text.each(function(){
+	  	 		var text = d3.select(this);
+	  	 		console.log("****" + $(text.node()).width()); 
+	  	 		while($(text.node()).width() > width * 0.9 && guard++ < 100){
+	  	 			console.log("---> " + $(text.node()).width());
+	  	 			var fontsize = Math.floor(text.style("font-size").replace("px",'')) - 2;
+	  	 			console.log("setting font size to " + fontsize);
+	  	 			text.style("font-size", fontsize + "px");
+	  	 		}
+	  	 	}) 	
+	  	},
+	  	
+	  	
 	  	autofit = function(text, width, id) {
 	  		
 	  		
@@ -239,6 +258,7 @@ define(['jquery', 'd3'], function($, d3){
 		autofit:autofit,
 		boldstyler:boldstyler,
 		handledrag:handledrag,
+		cssautofit:cssautofit,
 		
 	}
 });
