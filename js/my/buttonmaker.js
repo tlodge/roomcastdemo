@@ -1,4 +1,4 @@
-define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidget', 'widgets/notifywidget','widgets/infowidget'], function($,d3, radio, util, groupwidget, namewidget,notifywidget,infowidget){
+define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidget', 'widgets/notifywidget','widgets/infowidget', 'widgets/contextwidget', 'widgets/userwidget','widgets/summarywidget'], function($,d3, radio, util, groupwidget, namewidget,notifywidget,infowidget,contextwidget,userwidget,summarywidget){
 
 	"use strict"
 	
@@ -13,13 +13,13 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 		
 		
 		steps = [
-			{number: 0, name:"name", title:"What is the <strong>name</strong> of your new button?", subtitle:"this is the button's label so try to make it short and snappy", widget:namewidget.chart},
-			{number: 1, name:"group", title:"What <strong>group</strong> will it belong to?", subtitle:"add it to a group, or create a new one", widget:groupwidget.chart},
-			{number: 2, name:"description", title:"<strong>Why</strong> should be pressed?", subtitle:"tell the users why they might need this button", widget:infowidget.chart},
-			{number: 3, name:"notify",title:"Who should be <strong> notified</strong> when it's pressed?", subtitle:"",widget:notifywidget.chart},
-			{number: 4,	name:"context",title:"<strong>What else</strong> do you need to know", subtitle:"get more context when the button is pressed",widget:groupwidget.chart},
-			{number: 5, name:"users",title:"<strong>Who</strong> will get this button?",subtitle:"", widget:groupwidget.chart},
-			{number: 6, name:"summary",title:"A <strong>summary</strong>",subtitle:"",widget:groupwidget.chart}
+			{number: 0, name:"name", title:"What is the <strong>name</strong> of your new button?", subtitle:"this is the button's label so try to make it short and snappy", widget:namewidget},
+			{number: 1, name:"group", title:"What <strong>group</strong> will it belong to?", subtitle:"add it to a group, or create a new one", widget:groupwidget},
+			{number: 2, name:"description", title:"<strong>Why</strong> should be pressed?", subtitle:"tell the users why they might need this button", widget:infowidget},
+			{number: 3, name:"notify",title:"Who should be <strong> notified</strong> when it's pressed?", subtitle:"",widget:notifywidget},
+			{number: 4,	name:"context",title:"<strong>What else</strong> do you need to know", subtitle:"get more context when the button is pressed",widget:contextwidget},
+			{number: 5, name:"users",title:"<strong>Who</strong> will get this button?",subtitle:"", widget:userwidget},
+			{number: 6, name:"summary",title:"A <strong>summary</strong>",subtitle:"",widget:summarywidget}
 		],
 		
 		currentstep = 0,
@@ -103,7 +103,8 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 			
 			content.selectAll("div.createback")
 					.each(function(d){
-						d.widget()
+						d.widget
+						 .chart()
 						.width(dim.width())
 						.height(dim.height() - dim.headerpadding() - backtitleheight - buttonwidth())
 						.update();
@@ -154,7 +155,7 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 					
 					d3.select(this)
 						.datum(["one", "two"])
-						.call(d.widget()
+						.call(d.widget.chart()
 							.x(0)
 							.y(0)
 							.width(dim.width())

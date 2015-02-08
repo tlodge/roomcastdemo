@@ -1,4 +1,4 @@
-define(['jquery','d3'], function($,d3){
+define(['jquery','d3', 'util'], function($,d3,util){
 
 	"use strict";
 	var 
@@ -41,10 +41,12 @@ define(['jquery','d3'], function($,d3){
 				 	.style("width",  labelwidth() + "px")
 				 	.style("height", tboxheight() + "px")
 				 	.style("line-height", tboxheight() + "px")
+				 	.style("background", "#006f9b")
+				 	.append("span")
 				 	.text("choose group")
 				 	.style("color", "white")
-				 	.style("background", "#006f9b")
 				 	.style("font-size", (tboxheight()*0.8) + "px")
+				 	.call(util.cssautofit, labelwidth())
 				 	
 				var select = groupselectcontainer	
 				 	.append("div")
@@ -74,7 +76,7 @@ define(['jquery','d3'], function($,d3){
 									.text("security")
 									
 				select.append("option")
-									.text("mainenance")
+									.text("maintenance")
 				
 				
 				 var groupcreatecontainer = this
@@ -101,11 +103,12 @@ define(['jquery','d3'], function($,d3){
 				 	.style("width",  labelwidth() + "px")
 				 	.style("height", tboxheight() + "px")
 				 	.style("line-height", tboxheight() + "px")
+				 	.style("background", "#006f9b")
+				 	.append("span")
 				 	.text("create new group")
 				 	.style("color", "white")
-				 	.style("background", "#006f9b")
-				 	.style("font-size", (tboxheight()*0.7) + "px")
-				 	
+				 	.style("font-size", (tboxheight()*0.8) + "px")
+				 	.call(util.cssautofit, labelwidth())
 				 	
 				groupinputcontainer	
 				 	.append("div")
