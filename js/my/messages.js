@@ -235,7 +235,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			});
 			
 			
-			renderflows(true);
+			renderflows(false);
 		},	
 		
 		dragslider = d3.behavior.drag()
