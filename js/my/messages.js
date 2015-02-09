@@ -213,9 +213,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		addevent = function(d){
 			
 			
-			console.log("adding an event");
-			console.log(d);
-			
+		
 			var msgids = messages.map(function(item){
 				return item.id;
 			})
@@ -228,8 +226,6 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 				edges.push({from:lastevent, to:d.event});
 			}
 			
-			console.log("before");
-			console.log(messages);
 			
 			//e-sort based on most recent event!
 			messages.sort(function(a,b){
@@ -238,10 +234,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 				return (amax > bmax) ? 1 : (amax < bmax) ? -1 : 0;
 			});
 			
-			console.log("after");
-			console.log(messages);
 			
-			renderflows(false);
+			renderflows(true);
 		},	
 		
 		dragslider = d3.behavior.drag()
@@ -485,7 +479,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		renderflows		= function(animated){
 			
 			if (maxevents >= 5){
-				//flowwindow = 1;
+				flowwindow = 1;
 				updatescales();
 			}
 				
