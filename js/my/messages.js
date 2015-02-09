@@ -10,6 +10,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 		maxevents = 0,
 		
+		padding = 10,
+		
 		messages = [
 			{
 				
@@ -272,29 +274,30 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		redrawmessagebox = function(){
 			var msgbox = d3.select("g.message")
 			
-						   
+			var xpos = Math.floor(d3.select("rect.messagecolumn").attr("x"))		   
+			
 			msgbox.select("rect.message")						
-					.attr("x", messagex())
+					.attr("x", xpos - messagewidth() + padding)
 					.attr("y", messagey())
 					.attr("width", messagewidth())
 					.attr("height", messageheight())
 				
 			
 			msgbox.select("rect.messageheader")
-					.attr("x", messagex())
+					.attr("x",  xpos - messagewidth() + padding)
 					.attr("y", messagey())
 					.attr("width", messagewidth())
 					.attr("height",messageheaderheight())
 					
 			
 			msgbox.select("circle.outermessageflowcircle")
-					.attr("cx", messagex()+messagewidth()+flowradius())
+					.attr("cx", xpos + flowradius() + padding)
 					.attr("cy", messagey() + messageheight()/2)
 					.attr("r", flowradius()+2)
 					
 			
 			msgbox.select("circle.innermessageflowcircle")
-					.attr("cx", messagex()+messagewidth()+flowradius())
+					.attr("cx", xpos + flowradius() + padding)
 					.attr("cy", messagey() + messageheight()/2)
 					.attr("r", flowradius()*0.9)
 			
@@ -369,6 +372,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			
 			selectoffset = 0;
 			
+			var xpos = Math.floor(d3.select("rect.messagecolumn").attr("x"))
 			var flowty = d3.transform(d3.select("g.flows").attr("transform")).translate[1] || 0;
 			
 			var flowcontainer = d3.select("g#main")
@@ -378,7 +382,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			
 			flowcontainer.append("rect")					
 					.attr("class", "message")
-					.attr("x", messagex())
+					.attr("x", xpos - messagewidth() + padding)
 					.attr("y", messagey())
 					.attr("width", messagewidth())
 					.attr("height", messageheight())
@@ -387,7 +391,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			
 			flowcontainer.append("rect")
 					.attr("class", "messageheader")
-					.attr("x", messagex())
+					.attr("x", xpos - messagewidth() + padding)
 					.attr("y", messagey())
 					.attr("width", messagewidth())
 					.attr("height",messageheaderheight())
@@ -396,7 +400,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			
 			flowcontainer.append("circle")
 					.attr("class", "outermessageflowcircle")
-					.attr("cx", messagex()+messagewidth()+flowradius())
+					.attr("cx", xpos + flowradius() + padding)
 					.attr("cy", messagey() + messageheight()/2)
 					.attr("r", flowradius()+2)
 					.style("fill", "none")
@@ -406,7 +410,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			
 			flowcontainer.append("circle")
 					.attr("class", "innermessageflowcircle")
-					.attr("cx", messagex()+messagewidth()+flowradius())
+					.attr("cx", xpos + flowradius()+ padding)
 					.attr("cy", messagey() + messageheight()/2)
 					.attr("r", flowradius()*0.9)
 					.style("fill", "none")
@@ -449,25 +453,26 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 				updatescales();
 			}
 				
+			
 			cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));
 			var titlefontsize = flowradius() * 0.8;
 			var datefontsize = titlefontsize * 0.8;
 			var xpos = Math.floor(d3.select("rect.messagecolumn").attr("x"));
-			var midx = xpos + flowradius() * 2.5;
+			var midx = xpos + flowradius() + padding;
 			
 			
 			
 			d3.selectAll("text.eventtitle")
-	  			  .attr("x",midx + flowradius()*2)
+	  			  .attr("x",midx + flowradius() + padding)
 				  .attr("y", function(d){return eventypos(d) - headerfontsize() + flowradius()/2})
 	  			  .style("font-size",  titlefontsize + "px")	
 				  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
 				  
 			d3.selectAll("text.eventdate")
-	  			  .attr("x",midx + flowradius()*2)
+	  			  .attr("x",midx + flowradius() + padding)
 				  .attr("y", function(d){return eventypos(d) +  flowradius()/1.5})
 	  			  .style("font-size",  datefontsize + "px")
-	  		
+	  		 	  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
 			
 			
 			d3.selectAll('text.icon')
@@ -605,7 +610,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
     	
 			event.append("text")
 				  .attr("class", "eventtitle")
-	  			  .attr("x",midx + flowradius()*2)
+	  			  .attr("x",midx + flowradius() + 7)
 				  .attr("y", function(d){return eventypos(d) - headerfontsize() + flowradius()/2})
 	  			  .style("fill", "#4d4d4d")
 	  			  .style("font-size", titlefontsize+ "px")
@@ -617,13 +622,13 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 				 
 			event.append("text")
 				  .attr("class", "eventdate")
-	  			  .attr("x",midx + flowradius()*2)
+	  			  .attr("x",midx + flowradius() + 7)
 				  .attr("y", function(d){return eventypos(d) +  flowradius()/1.5})
 	  			  .style("fill", "#006f9b")
 	  			  .style("font-size",  datefontsize + "px")
 	  			  .text(function(d){return moment.unix(d.ts).format("MMM Do, h:mm:ss a")})  
-	  			  .call( d3.behavior.drag().on("dragstart", eventclicked));
-	  	
+	  			  .call( d3.behavior.drag().on("dragstart", eventclicked))
+	  			  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
 	  			  					
 			flows
 				.exit()
