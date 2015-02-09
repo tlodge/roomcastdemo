@@ -478,10 +478,10 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 		renderflows		= function(animated){
 			
-			if (maxevents >= 5){
-				flowwindow = 1;
-				updatescales();
-			}
+			//if (maxevents >= 5){
+			//	flowwindow = 1;
+			//	updatescales();
+			//}
 				
 			
 			cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));
