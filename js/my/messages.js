@@ -477,7 +477,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		renderflows		= function(animated){
 			
 			if (maxevents >= 5){
-				flowwindow = 1;
+				//flowwindow = 1;
 				updatescales();
 			}
 				
@@ -487,7 +487,6 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			var datefontsize = titlefontsize * 0.8;
 			var xpos = Math.floor(d3.select("rect.messagecolumn").attr("x"));
 			var midx = xpos + flowradius() + padding;
-			
 			
 			
 			d3.selectAll("text.eventtitle")
