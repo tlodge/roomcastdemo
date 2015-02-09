@@ -434,7 +434,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .style("fill", "#fff")
 	  			  .style("font-size",  fontsize() + "px")
 	  			  .text(currentmessage().data)  
-		
+				  .call(util.autofit, messagewidth()- (messagex() + 2*iconradius()));
+				  
 			flowcontainer.append("text")
 				  .attr("class", "messageboxheader")
 				  .attr("dy", ".3em")
@@ -443,6 +444,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .style("fill", "#000")
 	  			  .style("font-size",  headerfontsize() + "px")
 	  			  .text(currentmessage().button)  
+	  			  .call(util.autofit, messagewidth()- (messagex() +iconpadding() + headerfontsize()/2));
 		},
 	
 		
@@ -615,7 +617,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .style("fill", "#4d4d4d")
 	  			  .style("font-size", titlefontsize+ "px")
 	  			  .text(function(d){return eventtotext(d).trunc(30, true)}) 
-	  			  .call( d3.behavior.drag().on("dragstart", eventclicked))
+	  			 // .call( d3.behavior.drag().on("dragstart", eventclicked))
 	  			  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
 				
 		
@@ -627,7 +629,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .style("fill", "#006f9b")
 	  			  .style("font-size",  datefontsize + "px")
 	  			  .text(function(d){return moment.unix(d.ts).format("MMM Do, h:mm:ss a")})  
-	  			  .call( d3.behavior.drag().on("dragstart", eventclicked))
+	  			 // .call( d3.behavior.drag().on("dragstart", eventclicked))
 	  			  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
 	  			  					
 			flows
