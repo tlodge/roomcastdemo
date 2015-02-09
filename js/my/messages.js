@@ -123,7 +123,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 		messagex = function(){
 			var xpos = Math.floor(d3.select("rect.messagecolumn").attr("x"));
-			return xpos - corewidth();
+			return xpos - padding - flowradius()/2 - corewidth() - 1;
+			
 		},
 		
 		messagey = function(){
@@ -434,7 +435,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .style("fill", "#fff")
 	  			  .style("font-size",  fontsize() + "px")
 	  			  .text(currentmessage().data)  
-				  .call(util.autofit, messagewidth()- (messagex() + 2*iconradius()));
+				  .call(util.autofit, messagewidth() - ((iconradius() - (2 * iconpadding()))*2  + headerfontsize()/2));
 				  
 			flowcontainer.append("text")
 				  .attr("class", "messageboxheader")
@@ -444,7 +445,9 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .style("fill", "#000")
 	  			  .style("font-size",  headerfontsize() + "px")
 	  			  .text(currentmessage().button)  
-	  			  .call(util.autofit, messagewidth()- (messagex() +iconpadding() + headerfontsize()/2));
+	  			  .call(util.autofit, messagewidth());
+	  			  
+	  		
 		},
 	
 		
