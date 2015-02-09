@@ -318,7 +318,12 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 				  .attr("y", messagey() +iconpadding() + headerfontsize()/2)
 	  			  .text(currentmessage().button)  
 				  .call(util.autofit, messagewidth());
-				 			
+			
+			 msgbox.select('text.bigicon')
+    			  .attr("x", messagex()+ iconradius()+1)
+    			  .attr("y",  messagey() + messageheaderheight() + iconradius() + (iconradius()/4))
+    			  .style('font-size', iconradius() + "px")
+    			  .text(currentmessage().type=="press" ? '\uf0a2' : '\uf0e5')	 			
 		},
 		
 		
@@ -345,7 +350,9 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			d3.select("text.messageboxtext")
 	  			 .text(currentmessage().data)
 	  			 .call(util.autofit, messagewidth() - ((iconradius() - (2 * iconpadding()))*2  + headerfontsize()/2));
-				 
+			
+			d3.select("text.bigicon")
+    		   .text(currentmessage().type=="press" ? '\uf0a2' : '\uf0e5')	 
 		},
 		
 		currentmessage = function(){
@@ -430,6 +437,18 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 					.style("fill", "#006f9b")
 					.style("stroke", "white")
 					.style("stroke-width", 3)
+			
+			 flowcontainer.append('text')
+			 	  .attr("class", "bigicon")
+    			  .attr('font-family', 'FontAwesome')
+    			  .attr("text-anchor", "middle")
+    			  .attr("x", messagex()+ iconradius()+1)
+    			  .attr("y",  messagey() + messageheaderheight() + iconradius() + (iconradius()/4))
+    			  .style('font-size', iconradius() + "px")
+    			  .style("fill", "white")
+    			  .text(currentmessage().type=="press" ? '\uf0a2' : '\uf0e5')
+    			
+			
 						
 			flowcontainer.append("text")
 				  .attr("class", "messageboxtext")
