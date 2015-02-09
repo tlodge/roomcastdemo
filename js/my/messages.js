@@ -311,12 +311,14 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .attr("x", messagex() + 2*iconradius())
 				  .attr("y", messagey() + messageheaderheight() + fontsize()/2 + iconpadding())
 	  			  .style("font-size",  fontsize() + "px")
-	  			  
+	  			  .call(util.autofit, messagewidth() - ((iconradius() - (2 * iconpadding()))*2  + headerfontsize()/2));
+				 
 			msgbox.select("text.messageboxheader")
 	  			  .attr("x", messagex() +iconpadding() + headerfontsize()/2)
 				  .attr("y", messagey() +iconpadding() + headerfontsize()/2)
 	  			  .text(currentmessage().button)  
-							
+				  .call(util.autofit, messagewidth());
+				 			
 		},
 		
 		
