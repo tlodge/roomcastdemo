@@ -344,6 +344,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 					
 			d3.select("text.messageboxtext")
 	  			 .text(currentmessage().data)
+	  			 .call(util.autofit, messagewidth() - ((iconradius() - (2 * iconpadding()))*2  + headerfontsize()/2));
+				 
 		},
 		
 		currentmessage = function(){
