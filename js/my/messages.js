@@ -213,6 +213,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		addevent = function(d){
 			
 			
+			console.log("adding an event");
+			console.log(d);
 			
 			var msgids = messages.map(function(item){
 				return item.id;
@@ -226,14 +228,20 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 				edges.push({from:lastevent, to:d.event});
 			}
 			
+			console.log("before");
+			console.log(messages);
+			
 			//e-sort based on most recent event!
 			messages.sort(function(a,b){
 				var amax = Math.max.apply(Math, a.events.map(function(item){return item.ts}));
 				var bmax = Math.max.apply(Math, b.events.map(function(item){return item.ts}));
-				return amax > bmax;
+				return (amax > bmax) ? 1 : (amax < bmax) ? -1 : 0;
 			});
 			
-			renderflows(true);
+			console.log("after");
+			console.log(messages);
+			
+			renderflows(false);
 		},	
 		
 		dragslider = d3.behavior.drag()
