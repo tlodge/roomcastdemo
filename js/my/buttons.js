@@ -84,10 +84,12 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				]
 			}
 		],
-			
-
 		
-			
+		send = function(d){
+			console.log(d);
+			radio('buttonpress').broadcast(d);
+			//messages.addmessage(d);
+		},
 			
 		selectoptions = function(d){
 		
@@ -146,6 +148,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					util.handledrag(d, function(d){
 						d3.select("g.options").remove(); 
 						d3.selectAll("g").style("opacity", 1.0);
+						send(d);
 					});
 				}));	
 				
@@ -207,7 +210,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			rendermessagecolumn();
 			renderbuttons();
 			renderheading();
-			messages.render();
+			messages.update();
 		},	
 		
 		renderheading = function(){
@@ -268,14 +271,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.text(function(d){return d.category}) 	
 				.call(util.autofit, cwidth())		
 		},
-		
-		pressed = function(d){
-			messages.addmessage(d);
-			selectoptions(d);
-		},
 	
 		dragpressed = function(d){		
-			messages.addmessage(d);
 			selectoptions(d);
 		},
 		

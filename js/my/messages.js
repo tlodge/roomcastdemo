@@ -1,4 +1,4 @@
-define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
+define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, radio){
 	
 	"use strict";
 	
@@ -6,48 +6,59 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 	
 		dim,
 		
+		cwidth,
+		
+		maxevents = 0,
+		
 		messages = [
 			{
-				flow: 0,
+				
+				id: 765,
 				button: "a",
 				label: "help me!",
-				events: [{ts:1420804800, type:"press"}, {ts:1420805700, type:"response", data:"ok will get onto it"},{ts:1420810700, type:"response", data:"ok will get onto it"}]
+				events: [{id:1, ts:1420804800, type:"press"}, {id:2,ts:1420805700, type:"response", data:"ok will get onto it"},{id:3,ts:1420810700, type:"response", data:"ok will get onto it"}]
 			},
 			{
-				flow: 1,
+				
+				id: 735,
 				button: "c",
 				label: "plumbing!",
-				events: [{ts:1420815600, type:"press"}, {ts:1420819200, type:"response", data:"will do what I can!"}]
+				events: [{id:4, ts:1420815600, type:"press"}, {id:5,ts:1420819200, type:"response", data:"will do what I can!"}]
 			},
 			{
-				flow: 2,
+				
+				id: 745,
 				button: "d",
 				label: "another thing",
-				events: [{ts:1421266914, type:"press"}, {ts:1421276914, type:"response", data:"will do what I can!"},{ts:1421296914, type:"response", data:"this is an important message!! so deal with it!"},{ts:1421316914, type:"response", data:"on our way to save the day"}]
+				events: [{id:6,ts:1421266914, type:"press"}, {id:7,ts:1421276914, type:"response", data:"will do what I can!"},{id:8,ts:1421296914, type:"response", data:"this is an important message!! so deal with it!"},{id:9,ts:1421316914, type:"response", data:"on our way to save the day"}]
 			},
 			{
-				flow: 3,
+				
+				id: 785,
 				button: "e",
 				label: "another thing1",
-				events: [{ts:1421266914, type:"press"}, {ts:1421276914, type:"response", data:"will do what I can!"},{ts:1421296914, type:"response", data:"will do what I can!"},{ts:1421316914, type:"response", data:"bite me!"}]
+				events: [{id:10,ts:1421266914, type:"press"}, {id:11,ts:1421276914, type:"response", data:"will do what I can!"},{id:12,ts:1421296914, type:"response", data:"will do what I can!"},{id:13,ts:1421316914, type:"response", data:"bite me!"}]
 			},
 			{
-				flow: 4,
+				
+				id: 762,
 				button: "f",
 				label: "another thing2",
-				events: [{ts:1421366914, type:"press"}, {ts:1421386914, type:"response", data:"will do what I can!"},{ts:1421396914, type:"response", data:"ok this needs some work do what I can!"},{ts:1421416914, type:"response", data:"this could work quite well i reckon!"}]
+				events: [{id:14,ts:1421366914, type:"press"}, {id:15,ts:1421386914, type:"response", data:"will do what I can!"},{id:16,ts:1421396914, type:"response", data:"ok this needs some work do what I can!"},{id:17,ts:1421416914, type:"response", data:"this could work quite well i reckon!"}]
 			},
 			{
-				flow: 5,
+				
+				id: 775,
 				button: "g",
 				label: "another thing3",
-				events: [{ts:1421266914, type:"press"}, {ts:1421276914, type:"response", data:"will do what I can!"},{ts:1421296914, type:"response", data:"my bag!"},{ts:1421316914, type:"response", data:"this is nice and deals with an issue!"}]
+				events: [{id:18,ts:1421266914, type:"press"}, {id:19,ts:1421276914, type:"response", data:"will do what I can!"},{id:20,ts:1421296914, type:"response", data:"my bag!"},{id:21,ts:1421316914, type:"response", data:"this is nice and deals with an issue!"}]
 			},
 			{
-				flow: 6,
+				
+				id: 715,
 				button: "h",
 				label: "another thing4",
-				events: [{ts:1421266914, type:"press"}, {ts:1421276914, type:"response", data:"will do what I can!"},{ts:1421296914, type:"response", data:"ready to help"},{ts:1421316914, type:"response", data:"getting there at around the right time"}]
+				events: [{id:22,ts:1421266914, type:"press"}, {id:23,ts:1421276914, type:"response", data:"will do what I can!"},{id:24,ts:1421296914, type:"response", data:"ready to help"},{id:25,ts:1421316914, type:"response", data:"getting there at around the right time"}]
 			},
 			
 		],
@@ -57,8 +68,6 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 		startpos,
 		
 		oldty,
-		
-		flowindex = {},
 		
 		flowsheight,
 	
@@ -78,16 +87,19 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 		
 		selectoffset = 0,
 		
-		flidx = function(message){
-			return flowindex[message.flow];
-		},
 		
+		messageforevent = {},
+		
+		//silly - just need to flip mscale domain...
 		inverseflidx = function(message){
-			return messages.length-1-flidx(message);
+			return messages.length-1-messages.indexOf(message);
 		},
 		
-		cpos = function(d){
-			return  mscale(inverseflidx(d)) + (d.id * (flowsheight/messages[flidx(d)].events.length))  + (flowsheight/messages[flidx(d)].events.length)/2;
+		eventypos = function(event){
+			var message 	= messageforevent[event.id];
+			var mindex  	= inverseflidx(message);
+			var eventindex 	= message.events.indexOf(event);
+			return mscale(mindex) + (eventindex * (flowsheight/message.events.length)) + (flowsheight/message.events.length)/2;
 		},
 		
 		
@@ -113,7 +125,7 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 		},
 		
 		messagey = function(){
-			return cpos(visibleevent) - messageheight()/2
+			return eventypos(visibleevent) - messageheight()/2
 		},
 		
 		messageheaderheight = function(){
@@ -170,6 +182,7 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 			if (ty < bottomstop){
 			 ty=bottomstop;
 			}
+			
 			d3.select("g.flows")
 				.attr("transform", function(d,i){return "translate(0," + ty + ")"})  
 			
@@ -180,22 +193,45 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 			
 		},
 		
-		addmessage = function(d){
-			var lastmessage = messages[messages.length-1];
-			 
-			messages.push({
-				flow: lastmessage.flow+1,
-				button: "h",
-				label: "another thingy 4",
-				events: [{flow:lastmessage.flow+1, id:0, ts:1421466914, type:"press"}]
-			}),
-			//messages.forEach(function(message, i){
-			flowindex[lastmessage.flow+1] = lastmessage.flow+1;
-			//});
+		addmessage = function(message){
+			
+			messages.push(message);
+			
+			message.events.forEach(function(e){
+				messageforevent[e.id] = message;
+			});
+			
+			maxevents = Math.max(maxevents, message.events.length);
 			sliderscale.domain([0,messages.length])
 			renderflows(true);
 			updatemessagebox();
 		},
+		
+		addevent = function(d){
+			
+			
+			
+			var msgids = messages.map(function(item){
+				return item.id;
+			})
+			var idx = msgids.indexOf(d.id);
+			if (idx != -1){
+				var lastevent = messages[idx].events[messages[idx].events.length-1];
+				messages[idx].events.push(d.event);
+				maxevents = Math.max(maxevents, messages[idx].events.length);
+				messageforevent[d.event.id] = messages[idx];
+				edges.push({from:lastevent, to:d.event});
+			}
+			
+			//e-sort based on most recent event!
+			messages.sort(function(a,b){
+				var amax = Math.max.apply(Math, a.events.map(function(item){return item.ts}));
+				var bmax = Math.max.apply(Math, b.events.map(function(item){return item.ts}));
+				return amax > bmax;
+			});
+			
+			renderflows(true);
+		},	
 		
 		dragslider = d3.behavior.drag()
   					   .on("drag", dragslidermove)
@@ -220,7 +256,7 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 			var event = d3.select(this).data()[0];
 			if (visibleevent){
 				//if this is the same as the current event, remove it
-				if (visibleevent.id == event.id && visibleevent.flow == event.flow){
+				if (visibleevent.id == event.id && visibleevent.id == event.id){
 					visibleevent = undefined;
 					d3.select("g.message").remove();
 				}else{
@@ -287,7 +323,7 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 			//$("g.message").appendTo("g.flows");
 			
 				
-			var messagey = cpos(visibleevent) - messageheight/2;
+			var messagey = eventypos(visibleevent) - messageheight/2;
 			
 			
 			var flowty = d3.transform(d3.select("g.flows").attr("transform")).translate[1] || 0;
@@ -307,7 +343,8 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 		currentmessage = function(){
 			
 			if (visibleevent){
-				var message  = messages[flowindex[visibleevent.flow]];
+				
+				var message = messageforevent[visibleevent.id];
 				
 				var cm = {
 					type: visibleevent.type,
@@ -323,7 +360,7 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 		},
 		
 		eventtotext = function(event){
-			var message  = messages[flowindex[event.flow]];
+			var message  = messageforevent[event.id];
 		 	return event.type == "press" ? "the '" +  message.button + "' button was pressed" : event.data;
 		},
 		
@@ -407,12 +444,36 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 		
 		renderflows		= function(animated){
 			
-			
-			
-			var cwidth =  Math.floor(d3.select("rect.messagecolumn").attr("width"));
+			if (maxevents >= 5){
+				flowwindow = 1;
+				updatescales();
+			}
+				
+			cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));
+			var titlefontsize = flowradius() * 0.8;
+			var datefontsize = titlefontsize * 0.8;
 			var xpos = Math.floor(d3.select("rect.messagecolumn").attr("x"));
 			var midx = xpos + flowradius() * 2.5;
 			
+			
+			
+			d3.selectAll("text.eventtitle")
+	  			  .attr("x",midx + flowradius()*2)
+				  .attr("y", function(d){return eventypos(d) - headerfontsize() + flowradius()/2})
+	  			  .style("font-size",  titlefontsize + "px")	
+				  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
+				  
+			d3.selectAll("text.eventdate")
+	  			  .attr("x",midx + flowradius()*2)
+				  .attr("y", function(d){return eventypos(d) +  flowradius()/1.5})
+	  			  .style("font-size",  datefontsize + "px")
+	  		
+			
+			
+			d3.selectAll('text.icon')
+    			  .attr("x", midx+1)
+    			  .attr("y",  function(d){return eventypos(d) + flowradius()/2})
+    			  .style('font-size', (titlefontsize)*1.5 + "px");  
 			
 			if (!animated){
 			//update current
@@ -424,25 +485,16 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 				  
 				d3.selectAll("circle.event")
 					.attr("cx", midx)
-					.attr("cy", function(d){return cpos(d)})
+					.attr("cy", function(d){return eventypos(d)})
 					.attr("r", flowradius())
 			
 				d3.selectAll("line.edge")
 					.attr("x1",midx)
 					.attr("x2",midx)
-					.attr("y1",function(d){return cpos(d.from) + flowradius()})
-					.attr("y2",function(d){return cpos(d.to) - flowradius()})
+					.attr("y1",function(d){return eventypos(d.from) + flowradius()})
+					.attr("y2",function(d){return eventypos(d.to) - flowradius()})
 						 
-				d3.selectAll("text.eventtitle")
-	  			  .attr("x",midx + flowradius()*2)
-				  .attr("y", function(d){return cpos(d) - headerfontsize() + flowradius()/2})
-	  			  .style("font-size",  headerfontsize() + "px")	
-				  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
-				  
-				d3.selectAll("text.eventdate")
-	  			  .attr("x",midx + flowradius()*2)
-				  .attr("y", function(d){return cpos(d) +  flowradius()/1.5})
-	  			  .style("font-size",  (headerfontsize()*0.8) + "px")
+				
 	  			 
 			}
 			else{
@@ -458,7 +510,7 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 				 	.transition()
 					 .duration(500)
 					.attr("cx", midx)
-					.attr("cy", function(d){return cpos(d)})
+					.attr("cy", function(d){return eventypos(d)})
 					.attr("r", flowradius())
 			
 				d3.selectAll("line.edge")
@@ -466,32 +518,17 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 					 .duration(500)
 					.attr("x1",midx)
 					.attr("x2",midx)
-					.attr("y1",function(d){return cpos(d.from) + flowradius()})
-					.attr("y2",function(d){return cpos(d.to) - flowradius()})
+					.attr("y1",function(d){return eventypos(d.from) + flowradius()})
+					.attr("y2",function(d){return eventypos(d.to) - flowradius()})
 					
-				d3.selectAll("text.eventtitle")
-				  .transition()
-				  .duration(500)
-	  			  .attr("x",midx + flowradius()*2)
-				  .attr("y", function(d){return cpos(d) - headerfontsize() + flowradius()/2})
-	  			  .style("font-size",  headerfontsize() + "px")	
-				  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
-				    
-				d3.selectAll("text.eventdate")
-				 .transition()
-				  .duration(500)
-	  			  .attr("x",midx + flowradius()*2)
-				  .attr("y", function(d){return cpos(d) +  flowradius()/1.5})
-	  			  .style("font-size",  (headerfontsize()*0.8) + "px")
 			}
 				
 			
-			d3.select("g.flows")
-						.call(dragslider)
+			d3.select("g.flows").call(dragslider);
 			
 			var flows = d3.select("g.flows")		
 						.selectAll("g.flow")
-						.data(messages, function(d,i){return d.flow})
+						.data(messages, function(d){return d.id})
 						
 						
 			var flow = flows.enter()
@@ -520,62 +557,90 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 					.attr("class", "edge")
 					.attr("x1",midx)
 					.attr("x2",midx)
-					.attr("y1",function(d){return cpos(d.from) + flowradius()})
-					.attr("y2",function(d){return cpos(d.to) - flowradius()})
+					.attr("y1",function(d){return eventypos(d.from) + flowradius()})
+					.attr("y2",function(d){return eventypos(d.to) - flowradius()})
 					.style("stroke", "black")
 					.style("stroke-width", 2);
+			
 									
 			var flowlist =  d3.selectAll("g.flow")
 							.selectAll("g.event")
-							.data(function(d){return d.events}, function(event){return event.ts})	 
-							.enter()
+							.data(function(d){return d.events}, function(event){return event.id})	 
+							
+							
+			var event = flowlist.enter()
 							.append("g")
 							.attr("class", "event")
 							
 							
-			flowlist.append("circle")
+			event.append("circle")
 					.attr("class", "event")
 					.attr("cx", midx)
-					.attr("cy", function(d){return cpos(d)})
+					.attr("cy", function(d){return eventypos(d)})
 					.attr("r", flowradius())
-					.style("fill", "#dbdbdb")
+					 .style("fill", function(d){
+    			  		return d.type=="press" ? "#006f9b":"white";
+    			  		
+    			  	})
 					.style("stroke", "#4d4d4d")
 					.style("stroke-width", 2)
 					.call( d3.behavior.drag().on("dragstart", eventclicked))
-					
-			flowlist.append("text")
+			
+			
+			 event.append('text')
+			 	   .attr("class", "icon")
+    			  .attr('font-family', 'FontAwesome')
+    			  .attr("text-anchor", "middle")
+    			  .attr("x", midx+1)
+    			  .attr("y",  function(d){return eventypos(d) + flowradius()/2})
+    			  .style('font-size', (titlefontsize)*1.5 + "px")
+    			  .style("fill", function(d){
+    			  		return d.type=="press" ? "white" : "#4d4d4d";
+    			  		
+    			  })
+    			  .text(function(d){
+    					return d.type=="press" ? '\uf0a2' : '\uf0e5';
+    			  })
+    			  .call( d3.behavior.drag().on("dragstart", eventclicked)) 
+    	
+			event.append("text")
 				  .attr("class", "eventtitle")
 	  			  .attr("x",midx + flowradius()*2)
-				  .attr("y", function(d){return cpos(d) - headerfontsize() + flowradius()/2})
+				  .attr("y", function(d){return eventypos(d) - headerfontsize() + flowradius()/2})
 	  			  .style("fill", "#4d4d4d")
-	  			  .style("font-size",  headerfontsize() + "px")
+	  			  .style("font-size", titlefontsize+ "px")
 	  			  .text(function(d){return eventtotext(d).trunc(30, true)}) 
 	  			  .call( d3.behavior.drag().on("dragstart", eventclicked))
 	  			  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
 				
 		
 				 
-			flowlist.append("text")
+			event.append("text")
 				  .attr("class", "eventdate")
 	  			  .attr("x",midx + flowradius()*2)
-				  .attr("y", function(d){return cpos(d) +  flowradius()/1.5})
+				  .attr("y", function(d){return eventypos(d) +  flowradius()/1.5})
 	  			  .style("fill", "#006f9b")
-	  			  .style("font-size",  (headerfontsize()*0.8) + "px")
+	  			  .style("font-size",  datefontsize + "px")
 	  			  .text(function(d){return moment.unix(d.ts).format("MMM Do, h:mm:ss a")})  
 	  			  .call( d3.behavior.drag().on("dragstart", eventclicked));
+	  	
 	  			  					
 			flows
 				.exit()
 				.remove();
-			
+
+			flowlist.exit()
+				.remove();
+
 			flowedges.exit()
 					.remove();
 		
 		},
 		
 		flowradius = function(){
-			var cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));
-			return Math.min(cwidth, dim.height())/20;
+			
+			return ((flowsheight / maxevents)/2) * 0.6;
+			//return Math.min(cwidth, dim.height())/20;
 		},
 		
 		updatescales = function(){
@@ -585,21 +650,37 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 			flowsheight = (mscale.range()[1]-mscale.range()[0])/(mscale.domain()[1]-mscale.domain()[0]);
 		},
 	
+		update = function(){
+			render();
+		},
+		
 		render = function(){
-			console.log("Message box in render!");
+			
+			
 			updatescales();
 			renderflows(true);
 			updatemessagebox();
 		},
-				
+			
+			
+			
+		subscribe = function(){
+			radio('message').subscribe(addmessage);
+			radio('event').subscribe(addevent);
+		},
+		
+			
 		init = function(d){
 			dim = d;
 			
-			var times = messages.map(function(flow,i){
-				flowindex[flow.flow] = i;
-				return flow.events.map(function(event,i){
-					event.flow = flow.flow;
-					event.id = i;
+			messages.forEach(function(message){
+				maxevents = Math.max(maxevents, message.events.length);
+			});
+			
+			var times = messages.map(function(message,i){
+			
+				return message.events.map(function(event,i){
+					messageforevent[event.id] = message;
 					return event.ts;
 				});
 			}).reduce(function(a,b){
@@ -618,6 +699,7 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
 				return a.concat(b);	
   			});	
   			
+  			
   			//set up slider scale
   			sliderscale = d3.scale.linear().range([dim.padding(), dim.height()]);		
   			sliderscale.domain([0, messages.length]);
@@ -626,12 +708,13 @@ define(['jquery','d3', 'moment', 'util'], function($,d3,moment,util){
   			//set up message scale
   			mscale 		= d3.scale.linear().range([dim.padding(), dim.height()]);
 			//render();
+			subscribe();
 			
 		}
 
 	return {
 		init: init,
-		render: render,
+		update: update,
 		addmessage:addmessage,
 	}
 

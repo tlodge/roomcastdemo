@@ -1,40 +1,43 @@
-define(['pusher' /*, 'pubnub'*/], function(pusher /*, pubnub*/){
+define(['radio'], function(radio){
 	
 	var 
 		
-		pusher = new Pusher('8e22d04310c8ee0d5159'),
+		msgidcount = 789,
+		eventidcount = 30,
 		
-		/*PUBNUB_demo = PUBNUB.init({
-				publish_key: 'demo',
-				subscribe_key: 'demo'
-		}),*/
+		timer,
 		
-		send = function(){
-			console.log("great!! send!!");
-			//client events can only be done on private channels, and need to make sure they're set up in settings for this app!
-			//see pusher docs!
+		send = function(message){
+		
+			var msg = {};
 			
-			/*PUBNUB_demo.publish({
-					channel: 'demo_tutorial',
-					message: {"text":"Hey!"}
-			});*/
-
-			/*var channel = pusher.subscribe('private-channel');
+			//do something, then when successfully sent, let messages know!
 			
-			channel.bind('pusher:subscription_succeeded', function() {
-			  console.log("nice, about to trigger an event!");
-			  var triggered = channel.trigger('my_event', { message: 'hello!' });
-			});
-			*/
+			msg.id = msgidcount++;
+			
+			
+			msg.button = message.name;
+			
+			msg.events = [{id:eventidcount++, ts:Math.floor((new Date().getTime())/1000), type:"press"}];
+			
+			radio('message').broadcast(msg);
+			
+			timer = window.setTimeout(function(){
+					//msg.id	
+					radio('event').broadcast({id: 785, event:{id:eventidcount++, ts:Math.floor((new Date().getTime())/1000), type:"response", data:"hello e, thanks for this, we'll have it sorted soon."}});
+			}, 2000);
+		},
+		
+		subscribe = function(){
+			radio('buttonpress').subscribe(send);
 		},
 		
 		init = function(){
-			console.log("nice am initing!!!");
+			subscribe();
 		}
 	
 	return{
 		init:init,
-		send: send
 	}
 	
 });

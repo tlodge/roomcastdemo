@@ -14,7 +14,9 @@ require.config({
     }
 });
 
-require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 'dimensions', 'd3'], function($, buttons, buttonmaker, stats, dashboard, nav, Dimensions, d3) {
+require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 'dimensions', 'd3', 'communicator'], function($, buttons, buttonmaker, stats, dashboard, nav, Dimensions, d3, communicator) {
+	
+	communicator.init(); //pubsub comms between modules!
 	
 	$(document).bind(
 		'touchmove',
@@ -54,7 +56,7 @@ require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 
 			width: function(){ return $(window).width()},
 			
 			margins:{
-				top: function(){return 25},
+				top: function(){return 15},
 				right: function(){return 0},
 				bottom: function(){return 0},
 				left: function(){return 0}
