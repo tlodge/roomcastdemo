@@ -1,0 +1,218 @@
+[
+	{
+		"category":"concierge",
+		
+		"buttons": 
+		[
+			{
+				"name":"urgent delivery expected!",
+				"id": 3,
+				"info": "if you have an <strong>urgent</strong> parcel delivery and want to be contacted when it arrives, use this button",
+				"options":
+				[
+					{
+						"name":"when",
+						"question":"when is the estimated delivery time/date?",
+						"components":[
+								{"name":"rows", "id":"rows", "type":"date", "min":"today", "max":10, "value":"today"}
+						]
+					},
+					{
+						"name":"contact",
+						"question":"how do you want to be notified when it arrives?",
+						"components":[
+							{"name":"c1","id":"c1", "type":"button", "value": false, "label":"tlodge@gmail.com"},
+							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"07972639571"},
+							{"name":"c3","id":"c3", "type":"button", "value": true, "label":"come to my apartment"}
+						]
+					}
+				]		
+			}			
+		]
+	},
+	
+	
+	{
+		"category":"security",
+		
+		"buttons": 
+		[
+			{
+				"name":"I can't get in!",
+				"id": 4,
+				"info": "use this if you are stuck outside the building and need to get in",
+				"options":
+				[
+					{
+						"name":"contact",
+						"question":"where are you?",
+						"components":[
+							{"name":"c1","id":"c1", "type":"button", "value": true, "label":"main gate"},
+							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"foyer door"},
+							{"name":"c3","id":"c3", "type":"button", "value": false, "label":"block A door"},
+							{"name":"c4","id":"c4", "type":"button", "value": false, "label":"block B door"},
+							{"name":"c5","id":"c5", "type":"button", "value": false, "label":"underground parking"}
+						]
+					}
+				]		
+			},
+			{
+				"name":"vandalism",
+				"id": 8,
+				"info": "use this button if you have noticed any vandalism in or around the estate",
+				"options":
+				[
+					{
+						"name":"where",
+						"question":"where has the vandalism occurred?",
+						"components":[
+							{"name":"c12","id":"c12", "type":"button", "value": false, "label":"grounds"},
+							{"name":"c13","id":"c13", "type":"button", "value": false, "label":"block A"},
+							{"name":"c14","id":"c14", "type":"button", "value": false, "label":"block B"},
+							{"name":"c15","id":"c15", "type":"button", "value": false, "label":"parking"}
+						]
+					}
+				]		
+			}
+		]
+	},
+	
+	{
+		"category":"maintenance",
+		
+		"buttons": 
+		[
+			{
+				"name":"LEAK!",
+				"id": 9,
+				"info": "use this if you have noticed a leak.  We aim to respond to all leaks <strong>immediately</strong>",
+				"options":
+				[
+					{
+						"name":"contact",
+						"question":"how bad is it?",
+						"components":[
+							{"name":"c1","id":"c1", "type":"button", "value": true, "label":"urgent!"},
+							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"minor"}
+						]
+					},
+					{
+						"name":"contact",
+						"question":"where is it coming from",
+						"components":[
+							{"name":"c1","id":"c1", "type":"button", "value": true, "label":"don't know"},
+							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"inside my apartment"},
+							{"name":"c3","id":"c3", "type":"button", "value": false, "label":"above my apartment"},
+							{"name":"c4","id":"c4", "type":"button", "value": false, "label":"bathroom"}
+						]
+					}
+				]		
+			},
+			{
+				"name":"water pressure",
+				"id": 10,
+				"info": "use this to notify us if your water pressure has dipped.  We will check this against all other reports to determine whether it is site wide",
+				"options":
+				[
+					{
+						"name":"contact",
+						"question":"how long have you noticed low pressure?",
+						"components":[
+							{"name":"duration", "id":"duration", "type":"slider", "min":1, "max":24, "value":1, "valueLabel":"hours"}				
+						]
+					}
+				]		
+			}
+		]
+	},
+	{
+		"category":"parking",
+		
+		"buttons": 
+		[
+			{
+				"name":"visitor permit",
+				"id": 13,
+				"info": "use this if you are going to need a visitor permit.  We will try our best to reserve a slot for you.  If we cannot, we have secured discounted rates at the NCP garage.  You can phone them on <strong>0208 765431</strong> and use the discount code: <strong>JJKHGYH</strong>",
+				"options":
+				[
+					{
+						"name":"when",
+						"question":"when will your visitor be arriving",
+						"components":[
+								{"name":"rows", "id":"rows", "type":"date", "min":"today", "max":10, "value":"today"}
+						]
+					},
+					{
+						"name":"duration",
+						"question":"how long will they need the permit for?",
+						"components":[
+							{"name":"duration", "id":"duration", "type":"slider", "min":1, "max":20, "value":10, "valueLabel":"hours"}				
+						]
+					}
+				]		
+			}
+		]
+	},
+	{
+	"category":"rental",
+		
+		"buttons": 
+		[
+			{
+				"name":"new tenants",
+				"id": 17,
+				"info": "use this to let us know about an impending change of occupancy.  We will meet and greet your new tenants and ensure that they get settled in comfortably",
+				"options":
+				[
+					
+					{
+						"name":"when",
+						"question":"when will the current occupants be moving out",
+						"components":[
+								{"name":"rows", "id":"rows", "type":"date", "min":"today", "max":10, "value":"today"}
+						]
+					},
+					{
+						"name":"when",
+						"question":"when will the new occupants be moving in?",
+						"components":[
+								{"name":"rows", "id":"rows", "type":"date", "min":"today", "max":10, "value":"today"}
+						]
+					}
+				]		
+			},
+			{
+				"name":"I'm letting",
+				"id": 18,
+				"info": "use this if you'd like us to help advertise your property for rental",
+				"options":
+				[
+					{
+						"name":"when",
+						"question":"when will the your flat be coming available",
+						"components":[
+								{"name":"rows", "id":"rows", "type":"date", "min":"today", "max":10, "value":"today"}
+						]
+					}
+				]		
+			},
+			{
+				"name":"I'm selling!",
+				"id": 19,
+				"info": "use this if you'd like us to help advertise the sale of your property",
+				"options":
+				[
+					{
+						"name":"when",
+						"question":"when will the your flat be coming available",
+						"components":[
+								{"name":"rows", "id":"rows", "type":"date", "min":"today", "max":10, "value":"today"}
+						]
+					}
+				]		
+			}
+		]
+	}
+]
+

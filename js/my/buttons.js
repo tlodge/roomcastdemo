@@ -4,6 +4,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	
 	var 
 	
+		library,
+		
 		bcount = 0,
 	
 		dim,
@@ -49,62 +51,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		 							.domain([0, buttons.length+1]);
 		},
 		
-		buttons = [
-			{
-				category:"concierge",
-				colour:"#1cb78c",
-				buttons: [
-				
-				{
-						name:"key release",
-						
-						info: "use this button when you would like the concierge to provide a key to a <strong>visitor</strong> (a contractor or friend.)  We will need to know when the key is to be released and how long for",
-						
-						options:[
-						{
-							name:"when",
-							question:"roughly when would you like the key to be released?",
-							components:[
-									{name:"rows", id:"rows", type:"date", min:"today", max:10, value:"today", callback:function(value){
-											console.log(value);
-									}}
-							]
-						},
-						{
-							name:"duration",
-							
-							question:"roughly how long for?",
-							
-							components:[
-								{name:"duration", id:"duration", type:"slider", min:1, max:20, value:10, callback:function(value){
-									console.log(value);
-								}, formatter:function(d){
-											return Math.floor(d) + " hours";
-								}},
-							]
-						},
-						{
-							name:"contact",
-							
-							question:"how shall we contact you?",
-							
-							components:[
-								{name:"c1",id:"c1", type:"button", value: false, label:"tlodge@gmail.com", callback:function(value){
-									console.log(value);
-								}},
-								{name:"c2",id:"c2", type:"button", value: false, label:"07972639571", callback:function(value){
-									console.log(value);
-								}},
-								{name:"c3",id:"c3", type:"button", value: true, label:"don't contact me!", callback:function(value){
-									console.log(value);
-								}},
-							]
-						}
-					]	
-				}
-				]
-			}
-		],
+		buttons = [],
 		
 		send = function(d){
 			console.log(d);
@@ -152,12 +99,12 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.style("fill", "white")
 			
 			option.append("text")
-				.attr("class", "optionsend")
+				.attr("class", "optionsinfo")
 				.attr("dy", ".3em")
 				.attr("x", optx + infopadding)
 				.attr("y",opty + buttonradius/2 + buttonradius/6)	
-				.style("fill", "#000")
-				.style("font-size", buttonradius + "px")
+				.style("fill", "#4d4d4d")
+				.style("font-size", (buttonradius * 0.8) + "px")
 				.text(function(d){return d.name}) 
 					
 			option.append("foreignObject")
@@ -395,9 +342,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					.attr("y", function(d){return buttony(d.name)})
 					.attr("width", buttonwidth)
 					.attr("height", buttonheight)
-			
-			
-	  				
+			  				
 			svg.selectAll("text.buttontext")
 					.attr("x", function(d){return buttonx(d.name) + buttonwidth/2 })
 					.attr("y", function(d){return buttony(d.name) + buttonheight/2 + fontsize/4})	
@@ -408,9 +353,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					
 	  			  		
   			///handle new data					 
-  		   	var categories = svg.selectAll("g.category")
+  		   	var cat = svg.selectAll("g.category")
   								.data(buttons, function(d){return d.category+buttons.length})
-  								.enter()
+  			
+  			var categories = cat.enter()
 								.insert("g", "g.message")
 								.attr("class", "category")
   						
@@ -431,12 +377,13 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			
 			//crucial bit to ensure that new buttons are picked up!
 			
-			var button =  d3.selectAll("g.category")
+			var butts =  d3.selectAll("g.category")
 							.selectAll("g.button")
-							 .data(function(d){return d.buttons})
-							 .enter()
-							 .append("g")
-							.attr("class", "button");
+							 .data(function(d){return d.buttons}, function(d){return d.id})
+							 
+			var button = butts.enter()
+							  .append("g")
+							  .attr("class", "button");
 			
 			
 			button.append("rect")
@@ -463,7 +410,14 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	  			  	
 	  		txt.call(d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 	  		
-	  			  	
+	  		cat
+	  			.exit()
+	  			.remove();
+	  		
+	  		butts
+	  			.exit()
+	  			.remove();  	
+		
 		},
 		
 		
@@ -624,34 +578,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.attr("height", dim.height());	
 		},
 		
-	
-		init = function(d){
-			
-			dim = d;
-			messages.init(dim);
-			
-			d3.select("#buttons")
-  				.select("svg")
-  			 	.attr("width", dim.width() + dim.margin().left + dim.margin().right)
-				.attr("height",dim.height() + dim.margin().top + dim.margin().bottom)
-					
-			d3.select("g#main")
-				.attr("transform", "translate(" + dim.margin().left + "," + dim.margin().top + ")");
-				
-			
-			var params = {}
-			
-			if (location.search){
-				var parts = location.search.substring(1).split('&');
-				for (var i=0 ; i<parts.length; i++){
-					var nv = parts[i].split("=");
-					if (!nv[0]) continue;
-					params[nv[0]] = nv[1] || true;
-				}
-			}
-			
-			createmasks();
-			
+		subscribe = function(){
 			radio('newbutton').subscribe(function(button){
 			
 				var categories = buttons.map(function(d){
@@ -672,8 +599,59 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				}
 				update();
 			});
+		
+			radio('refreshbuttons').subscribe(function(newbuttons){
+				buttons = newbuttons;	
+				update();
+			});
+		},
+		
+		init = function(d){
 			
-			render();
+			dim = d;
+			messages.init(dim);
+			
+			d3.select("#buttons")
+  				.select("svg")
+  			 	.attr("width", dim.width() + dim.margin().left + dim.margin().right)
+				.attr("height",dim.height() + dim.margin().top + dim.margin().bottom)
+					
+			d3.select("g#main")
+				.attr("transform", "translate(" + dim.margin().left + "," + dim.margin().top + ")");
+				
+			
+			createmasks();
+			
+			subscribe();
+			
+			
+			
+			d3.json("buttons/demo.json", function(error, json){
+				if (error){
+					console.log(error);
+				}
+				
+				buttons = json;
+				
+				buttons.forEach(function(category){
+					category.buttons.forEach(function(button){
+						button.options.forEach(function(option){
+							option.components.forEach(function(component){
+								if (component.valueLabel){
+									component.formatter = function(value){
+										return Math.floor(value) + " " + component.valueLabel;
+									}
+								}
+								component.callback = function(value){
+									console.log(value);
+								}
+							});
+						});
+					});
+				});
+
+				render();
+			});
 			
 			
 		}

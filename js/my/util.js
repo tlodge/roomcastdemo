@@ -215,17 +215,27 @@ define(['jquery', 'd3'], function($, d3){
 	  		
 	  	 	text.each(function(){
 	  	 		var text = d3.select(this);
+	  	 		var fontsize = Math.floor(text.style("font-size").replace("px",''));
 	  	 		
 	  	 		while(text.node().getComputedTextLength() > width * 0.9 && guard++ < 100){
-	  	 			var fontsize = Math.floor(text.style("font-size").replace("px",'')) - 2;
-	  	 			
-	  	 			if (id){
-	  	 				d3.selectAll("text." + id).style("font-size", fontsize + "px");
-	  	 			}
+	  	 			fontsize = Math.floor(text.style("font-size").replace("px",'')) - 2;
 	  	 			text.style("font-size", fontsize + "px");
-	  	 			
-	  	 		}
+	  	 		}	
 	  	 	})
+	  	},
+	  	
+	  	unify = function(text,id){
+	  		var minsize = 999999;
+	  		
+	  		d3.selectAll("text." + id)
+	  		  .each(function(d){
+	  			 var element = d3.select(this);
+	  	 		 var fs = Math.floor(element.style("font-size").replace("px",''));		
+	  		   	 minsize = Math.min(minsize, fs);
+	  		   });
+	  	 
+	  	 	d3.selectAll("text." + id)
+	  		  .style("font-size", minsize + "px"); 
 	  	 	
 	  	},
 	  	
@@ -260,6 +270,7 @@ define(['jquery', 'd3'], function($, d3){
 		boldstyler:boldstyler,
 		handledrag:handledrag,
 		cssautofit:cssautofit,
+		unify:unify,
 		
 	}
 });

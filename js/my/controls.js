@@ -221,8 +221,8 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				 .style("fill", "#4d4d4d")
 				 .style("font-size", buttonlabelsize + "px")
 				 .text(function(d){return d.label})
-				 .call(util.autofit, options.dim.w, 'buttonlabel')
-			
+				 .call(util.autofit, options.dim.w)
+				 .call(util.unify, 'buttonlabel')
 			opttxt	 
 				.call(buttonlistener);
 				

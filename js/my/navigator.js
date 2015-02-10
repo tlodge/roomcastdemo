@@ -13,106 +13,101 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 		
 		viewpos = {},
 		
-		buttons = [
-		{
-			category:"concierge",
-			name:"parking",
-			options:[
-						{
-							name:"when",
-							question:"roughly when would you like the key to be released?",
-							components:[
-									{name:"rows", id:"rows", type:"date", min:"today", max:10, value:"today", callback:function(value){
-											console.log(value);
-									}}
-							]
-						},
-						{
-							name:"duration",
-							
-							question:"roughly how long for?",
-							
-							components:[
-								{name:"duration", id:"duration", type:"slider", min:1, max:20, value:10, callback:function(value){
-									console.log(value);
-								}, formatter:function(d){
-											return Math.floor(d) + " hours";
-								}},
-							]
-						},
-						{
-							name:"contact",
-							
-							question:"how shall we contact you?",
-							
-							components:[
-								{name:"c1",id:"c1", type:"button", value: false, label:"tlodge@gmail.com", callback:function(value){
-									console.log(value);
-								}},
-								{name:"c2",id:"c2", type:"button", value: false, label:"07972639571", callback:function(value){
-									console.log(value);
-								}},
-								{name:"c3",id:"c3", type:"button", value: true, label:"don't contact me!", callback:function(value){
-									console.log(value);
-								}},
-							]
-						}
-					]					
-				
-			},
-			
-			{
-					category:"concierge",
-					name:"parking permit for today",
-					options:[
-						{
-							name:"when",
-							question:"you sure you want a permit?",
-							components:[
-									{name:"rows", id:"rows", type:"slider", min:1, max:20, value:8, callback:function(value){
-										console.log(value);
-									}},
-								
-									{name:"cols", id:"cols",type:"slider", min:1, max:20, value:8, callback:function(value){
-										console.log(value);
-									}}
-							]
-						}
-					]
-				
-			},
-			{
-						category:"security",
-						name: "escort me",
-						options:[
-						{
-							name:"help",
-							question:"here is a video",
-							components:[
-								{name:"video", id:"myvideo", type:"video", src:"video/test.mp4", callback:function(value){
-									console.log(value);
-								}}
-							]
-						}]
-			}
-		],
+		buttons = [],
 		
-		
+		lastid = -1,
 		
 		addclicked = function(){
-			if (buttonindex < buttons.length){
-				radio('newbutton').broadcast(buttons[buttonindex]);
+			
+			
+			if (lastid != -1){
+				lastid = -1;
+				
+				buttons = [];
+				
+				d3.json("buttons/additions.json", function(error, json){
+					
+					if (error){
+						console.log(error);
+					}
+					
+					json.forEach(function(category){
+						category.buttons.forEach(function(button){
+						
+							button.category = category.category;
+						
+							button.options.forEach(function(option){
+								option.components.forEach(function(component){
+									if (component.valueLabel){
+										component.formatter = function(value){
+											return Math.floor(value) + " " + component.valueLabel;
+										}
+									}
+									component.callback = function(value){
+										console.log(value);
+									}
+								});
+							});
+						
+							buttons.push(button);
+						});
+					});
+				});
+				if (buttonindex < buttons.length){
+					radio('newbutton').broadcast(buttons[buttonindex]);
+				}
+				buttonindex++;
+			}else{
+				if (buttonindex < buttons.length){
+					radio('newbutton').broadcast(buttons[buttonindex]);
+				}
+				buttonindex++;
 			}
-			buttonindex++;
+		},
+		
+		
+		refresh = function(d){
+			
+			lastid = d.id;
+			
+			console.log("am in refresh!");
+			
+			d3.json("buttons/" + d.id + ".json", function(error, json){
+				if (error){
+					console.log(error);
+					return;
+				}
+				
+				buttons = json;	
+				
+				buttons.forEach(function(category){
+					category.buttons.forEach(function(button){
+						button.options.forEach(function(option){
+							option.components.forEach(function(component){
+								if (component.valueLabel){
+									component.formatter = function(value){
+										return Math.floor(value) + " " + component.valueLabel;
+									}
+								}
+								component.callback = function(value){
+									console.log(value);
+								}
+							});
+						});
+					});
+				});
+				
+				radio('refreshbuttons').broadcast(buttons);
+			});
 		},
 		
 		
 		
 		demos 	 = [ 
 						{name:"+ add button", callback:addclicked},
-						{name:"andy (leaseholder)", callback:addclicked},
-						{name:"sue (tenant)", callback:addclicked},
-						{name:"dave (leaseholder)", callback:addclicked},
+						{id:"andy", name:"andy (leaseholder)", callback:refresh},
+						{id:"sue",  name:"sue (tenant)", callback:refresh},
+						{id:"dave", name:"dave (leaseholder)", callback:refresh},
 				   ],
 		
 		screens  = [
@@ -139,6 +134,7 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 		categoryclicked = function(d){
 		
 		},
+		
 		
 		
 		slide = function(d){
@@ -254,15 +250,7 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 		},
 		
 		
-		init = function(d, ids){
-		
-			screens.forEach(function(item,i){
-				viewpos[item.name] = i;
-			});
-			
-			dim = d;
-			
-			
+		render = function(){
 			var buttonwidth = navbarheight() * 0.8;
 			
 			
@@ -362,9 +350,52 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 				.attr("text-anchor", "middle")
 				.style("font-size", ((navbarheight() * 2/5)*0.7) +  "px")
 				.text(function(d){return d.name})
-				//.on("click", addclicked)  	
-				.call( d3.behavior.drag().on("dragstart", addclicked))	
-				.call(util.autofit, demoitemwidth())					
+				.on("click", function(d){d.callback(d)})  	
+				//.call( d3.behavior.drag().on("dragstart", function(d){
+				//	d.callback(d);
+				//}))
+				.call(util.autofit, demoitemwidth())
+		},
+		
+		
+		init = function(d, ids){
+		
+			d3.json("buttons/additions.json", function(error, json){
+				if (error){
+					console.log(error);
+				}
+					
+				json.forEach(function(category){
+					category.buttons.forEach(function(button){
+						
+						button.category = category.category;
+						
+						button.options.forEach(function(option){
+							option.components.forEach(function(component){
+								if (component.valueLabel){
+									component.formatter = function(value){
+										return Math.floor(value) + " " + component.valueLabel;
+									}
+								}
+								component.callback = function(value){
+									console.log(value);
+								}
+							});
+						});
+						
+						buttons.push(button);
+					});
+				});
+
+				render();
+			});
+			
+			screens.forEach(function(item,i){
+				viewpos[item.name] = i;
+			});
+			
+			dim = d;
+								
 		}
 		
 	return{
