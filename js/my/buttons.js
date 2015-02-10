@@ -112,8 +112,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		selectoptions = function(d){
 		
 			var buttonradius = dim.height()/15;
-			var optwidth  = dim.width() /1.5;
+			var optwidth  = dim.width() /1.2;
 			var optheight = dim.height() * 0.8;
+			
+			var infoboxwidth = optwidth/4;
 			
 			var opty = (dim.height() - optheight)/2;
 			var optx = (dim.width() - optwidth)/2;
@@ -138,22 +140,39 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			var cpanel = option.append("g")
 				   			   .attr("class", "hook");
 				   			   	
+			options.append("rect")
+				.attr("x", optx)
+				.attr("y", opty)
+				.attr("width", infoboxwidth)
+				.attr("height", optheight)
+				.style("fill", "white")
+				
+			options.append("foreignObject")
+    			 	.attr("x", optx)
+					.attr("y", opty)
+					.attr("width", infoboxwidth)
+					.attr("height", optheight)
+  				   .append("xhtml:body")
+    			   .style("background", "transparent")
+    			   .style("padding", "5px")
+    			   .html("<p> Vivamus eu metus eget est hendrerit rutrum. Curabitur vitae orci et leo interdum egestas ut sit amet dui. In varius enim ut sem posuere in tristique metus ultrices.<p>Integer mollis massa at orci porta vestibulum. Pellentesque dignissim turpis ut tortor ultricies condimentum et quis nibh.");
 			
-			option.append("rect")
+			
+			options.append("rect")
 				.attr("x", optx)
 				.attr("y", opty)
 				.attr("width", optwidth)
 				.attr("height", buttonradius/6)
 				.style("fill", "#4d4d4d")
 				
-			option.append("rect")
+			options.append("rect")
 				.attr("x", optx)
 				.attr("y", opty+optheight-buttonradius)
 				.attr("width", optwidth)
 				.attr("height", buttonradius)
 				.style("fill", "#4d4d4d")
 			
-			option.append("text")
+			options.append("text")
 				.attr("class", "optionsend")
 				.attr("dy", ".3em")
 				.attr("text-anchor", "middle")
@@ -178,7 +197,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		
 			
 			
-			option.append("text")
+			options.append("text")
 				.attr("class", "optionsend")
 				.attr("dy", ".3em")
 				.attr("text-anchor", "middle")
@@ -199,9 +218,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			//controls.create(cpanel, optwidth, padding, (width/2-padding), height-padding, controlsdata);
 			controls.create({
 					hook: cpanel,
-					x: optx, 
+					x: optx+infoboxwidth, 
 					y: opty, 
-					w: optwidth, 
+					w: optwidth-infoboxwidth, 
 					h: optheight - buttonradius, 
 					data: d.options
 				}
