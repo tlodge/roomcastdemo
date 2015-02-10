@@ -102,6 +102,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.style("fill", "#4d4d4d")
 				.style("font-size", (buttonradius * 0.8) + "px")
 				.text(function(d){return d.name}) 
+				.call(util.autofit, infoboxwidth)
 					
 			option.append("foreignObject")
     			 	.attr("x", optx )
