@@ -30,7 +30,7 @@ define(['jquery','d3'], function($,d3){
 				  var padding = 5;
 				  var paddingtop = 20;
 				  var cwidth = width/(slice.length+1);
-				  var cheight = height/4;
+				  var cheight = height/5;
 				 
 				
 				  var bwidth = cwidth/10;
@@ -79,7 +79,6 @@ define(['jquery','d3'], function($,d3){
 					 .attr("x",function(d,i){return padding + (cwidth*slice.length+1) + (cwidth/2)} )
 				 	 .attr("text-anchor", "middle")
 				 	 .attr("y", ypos+cheight/4)
-				 	 .attr("dy", "0.2em")
 				 	 .style("fill", "white")
 				 	 .style("font-size", cheight/2.5 + "px")
 				 	 .text("more..")
