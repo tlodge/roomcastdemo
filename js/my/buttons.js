@@ -19,7 +19,24 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		//taken back these from dim (now don't need to auto update domains etc)
 		
 		cwidth = function(){
+			if (buttons.length == 1){
+				return dim.width() * 3/4;
+			}
 			return dim.width() / (buttons.length+1);
+		},
+		
+		mwidth = function(){
+			return dim.width() - cwidth()*buttons.length;	
+		},
+		
+		mxscale = function(d){
+			 if (buttons.length == 1){
+			 	return function(d){
+			 		return dim.width() * 3/4;
+			 	}
+			 }
+			 return d3.scale.linear().range([0, dim.width()])
+		 						 .domain([0, buttons.length+1]);
 		},
 		
 		xscale = function(){
@@ -39,47 +56,48 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				buttons: [
 				
 				{
-						name:"valet",
+						name:"key release",
 						options:[
-							{
-								name:"when",
-								question:"roughly when would you like the key to be released?",
-								components:[
-										{name:"rows", id:"rows", type:"date", min:"today", max:10, value:"today", callback:function(value){
+						{
+							name:"when",
+							question:"roughly when would you like the key to be released?",
+							components:[
+									{name:"rows", id:"rows", type:"date", min:"today", max:10, value:"today", callback:function(value){
 											console.log(value);
-										}}
-								]
-							}
-						]
-				}
-				]
-			},
-			{
-				category:"SOMETHING",
-				colour:"#1cb78c",
-				buttons: [
-				
-				{
-						name:"oooh",
-						options:[
-							{
-								name:"when",
-								question:"roughly when would you like the key to be released?",
-								components:[
-										{name:"rows", id:"rows", type:"slider", min:1, max:20, value:8, callback:function(value){
-											console.log(value);
-										}, formatter:function(d){
+									}}
+							]
+						},
+						{
+							name:"duration",
+							
+							question:"roughly how long for?",
+							
+							components:[
+								{name:"duration", id:"duration", type:"slider", min:1, max:20, value:10, callback:function(value){
+									console.log(value);
+								}, formatter:function(d){
 											return Math.floor(d) + " hours";
-										}},
-								
-										{name:"cols", id:"cols",type:"slider", min:1, max:20, value:8, callback:function(value){
-											console.log(value);
-										},formatter:function(d){
-											return Math.floor(d) + " hours";
-										}}
-								]
-							}
-						]
+								}},
+							]
+						},
+						{
+							name:"contact",
+							
+							question:"how shall we contact you?",
+							
+							components:[
+								{name:"c1",id:"c1", type:"button", value: false, label:"tlodge@gmail.com", callback:function(value){
+									console.log(value);
+								}},
+								{name:"c2",id:"c2", type:"button", value: false, label:"07972639571", callback:function(value){
+									console.log(value);
+								}},
+								{name:"c3",id:"c3", type:"button", value: true, label:"don't contact me!", callback:function(value){
+									console.log(value);
+								}},
+							]
+						}
+					]	
 				}
 				]
 			}
@@ -93,7 +111,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			
 		selectoptions = function(d){
 		
-			var buttonradius = cwidth()/8;
+			var buttonradius = dim.height()/15;
 			var optwidth  = dim.width() /1.5;
 			var optheight = dim.height() * 0.8;
 			
@@ -417,6 +435,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		
 		rendermessagecolumn = function(){
 			
+			
+			
 			svg = d3.select("#buttons")
 					.select("svg")
 					.select("g#main");
@@ -425,22 +445,22 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			
 			//update columns
 			d3.selectAll("rect.messagecolumn")
-			  .attr("x", function(d){return  xscale()(d)})
+			  .attr("x", function(d){return mxscale()(d)})
 			  .attr("y", 0)
-			  .attr("width",cwidth())
+			  .attr("width",mwidth())
 			  .attr("height",dim.height());
 			
 			d3.selectAll("rect.messageheaderpadding")
-			 	.attr("x", function(d) {return xscale()(d)})
+			 	.attr("x", function(d) {return mxscale()(d)})
 				.attr("y", 0)
-				.attr("width",cwidth())
+				.attr("width",mwidth())
 				.attr("height",dim.headerpadding());
 			
 			d3.selectAll("text.messageheadertext")
-	  			.attr("x",  function(d) {return xscale()(d) + cwidth()/2})
+	  			.attr("x",  function(d) {return mxscale()(d) + mwidth()/2})
 				.attr("y", dim.headerpadding()/2)	
 	  			.style("font-size", (dim.headerpadding*0.5 + "px"))
-	  			.call(util.autofit, cwidth())
+	  			.call(util.autofit, mwidth())
 	  			
 	  		var msgs = svg
 							.selectAll("g.messages")
@@ -455,9 +475,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				
 			messages.append("rect")
 				.attr("class", "messagecolumn")
-				.attr("x", function(d){return  xscale()(d)})
+				.attr("x", function(d){return  mxscale()(d)})
 			    .attr("y", 0)
-				.attr("width",cwidth())
+				.attr("width",mwidth())
 				.attr("height",dim.height())
 			 	.style("stroke-width",1)
 				.style("stroke", "black")
@@ -470,22 +490,22 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	
 			messages.append("rect")
 				.attr("class", "messageheaderpadding")
-					 .attr("x", function(d) {return xscale()(d)})
+					 .attr("x", function(d) {return mxscale()(d)})
 					 .attr("y", 0)
-					 .attr("width",cwidth())
+					 .attr("width",mwidth())
 					 .attr("height",dim.headerpadding())
 					 .style("fill", "#006f9b")
 			
 			messages.append("text")
 			 		.attr("class", "messageheadertext")
 				  .attr("dy", ".3em")
-	  			  .attr("x",  function(d) {return xscale()(d) + cwidth()/2})
+	  			  .attr("x",  function(d) {return mxscale()(d) + mwidth()/2})
 				  .attr("y", dim.headerpadding()/2)	
 				  .attr("text-anchor", "middle")
 	  			  .style("fill", "white")
 	  			  .style("font-size", (dim.headerpadding()*0.5 + "px"))
 	  			  .text("timeline")  
-	  			  .call(util.autofit, cwidth())
+	  			  .call(util.autofit, mwidth())
 	  		//remove old
 	  		msgs
 				.exit()
@@ -616,7 +636,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 								})
 					
 				}
-				render();
+				update();
 			});
 			
 			render();
