@@ -57,6 +57,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				
 				{
 						name:"key release",
+						
+						info: "use this button when you would like the concierge to provide a key to a <strong>visitor</strong> (a contractor or friend.)  We will need to know when the key is to be released and how long for",
+						
 						options:[
 						{
 							name:"when",
@@ -115,10 +118,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			var optwidth  = dim.width() /1.2;
 			var optheight = dim.height() * 0.8;
 			
-			var infoboxwidth = optwidth/4;
+			var infoboxwidth = optwidth/3;
 			
 			var opty = (dim.height() - optheight)/2;
 			var optx = (dim.width() - optwidth)/2;
+			var infopadding = 7;
 			
 			d3.selectAll("g")
 				.style("opacity", 0.5);
@@ -140,22 +144,33 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			var cpanel = option.append("g")
 				   			   .attr("class", "hook");
 				   			   	
-			options.append("rect")
+			option.append("rect")
 				.attr("x", optx)
 				.attr("y", opty)
 				.attr("width", infoboxwidth)
 				.attr("height", optheight)
 				.style("fill", "white")
-				
-			options.append("foreignObject")
-    			 	.attr("x", optx)
-					.attr("y", opty)
+			
+			option.append("text")
+				.attr("class", "optionsend")
+				.attr("dy", ".3em")
+				.attr("x", optx + infopadding)
+				.attr("y",opty + buttonradius/2 + buttonradius/6)	
+				.style("fill", "#000")
+				.style("font-size", buttonradius + "px")
+				.text(function(d){return d.name}) 
+					
+			option.append("foreignObject")
+    			 	.attr("x", optx )
+					.attr("y", opty + buttonradius/2 + buttonradius/6 + buttonradius/2)
 					.attr("width", infoboxwidth)
 					.attr("height", optheight)
   				   .append("xhtml:body")
     			   .style("background", "transparent")
-    			   .style("padding", "5px")
-    			   .html("<p> Vivamus eu metus eget est hendrerit rutrum. Curabitur vitae orci et leo interdum egestas ut sit amet dui. In varius enim ut sem posuere in tristique metus ultrices.<p>Integer mollis massa at orci porta vestibulum. Pellentesque dignissim turpis ut tortor ultricies condimentum et quis nibh.");
+    			   .style("line-height", "1.5em")
+    			   .style("padding", infopadding + "px")
+    			  
+    			   .html(function(d){return d.info});
 			
 			
 			options.append("rect")
