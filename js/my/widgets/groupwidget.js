@@ -86,7 +86,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 				 						.style("left", x +  "px")
 				 						.style("width",  width + "px")
 				 						.style("height", groupheight() + "px")
-										.style("background", "#ececec") 		
+										.style("background", "#999999") 		
 				
 				var groupinputcontainer = groupcreatecontainer.append("div")
 				 									.attr("class", "groupwidgetcontainer")

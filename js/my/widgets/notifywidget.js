@@ -66,7 +66,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 				
 				var svg = this
 				 				.append("svg")
-				 				.attr("id", "mywidget")
+				 				.attr("id", "notifywidget")
 				 				.style("x", x + "px")
 				 				.style("y", y + "px")
 				 				.style("width",  (width+x) + "px")

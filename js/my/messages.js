@@ -480,7 +480,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			
 			//if (maxevents >= 5){
 			//	flowwindow = 1;
-			//	updatescales();
+			//	updatescales(); //this is not updating everything - need to find where failinG!
 			//}
 				
 			
