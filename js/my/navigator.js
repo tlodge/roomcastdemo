@@ -52,22 +52,28 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 							buttons.push(button);
 						});
 					});
+					if (buttonindex < buttons.length){
+						radio('newbutton').broadcast(buttons[buttonindex]);
+					}
+					buttonindex = (buttonindex+1)%buttons.length;	
 				});
-				if (buttonindex < buttons.length){
-					radio('newbutton').broadcast(buttons[buttonindex]);
-				}
-				buttonindex++;
 			}else{
 				if (buttonindex < buttons.length){
 					radio('newbutton').broadcast(buttons[buttonindex]);
 				}
-				buttonindex++;
+			
+				buttonindex = (buttonindex+1)%buttons.length;
+				console.log(buttonindex);
 			}
 		},
 		
 		
 		refresh = function(d){
 			
+			//don't bother refreshing if already on this one.
+			if (d.id == lastid)
+				return;
+				
 			lastid = d.id;
 			
 			console.log("am in refresh!");
@@ -326,7 +332,13 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 				.attr("text-anchor", "middle")
 				.style("font-size", (navbarheight() * 2/5) +  "px")
 				.text(function(d){return d.name}) 	
-				.on("click", slide)
+				//.on("click", slide)
+				.call( d3.behavior.drag().on("dragstart", function(d){
+					util.handledrag(d, function(d){
+						
+						slide(d);
+					});
+				}))
 				.call(util.autofit, viewitemwidth())
 			
 			var demonavs = svg.selectAll("g.demoitem")
@@ -350,10 +362,13 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 				.attr("text-anchor", "middle")
 				.style("font-size", ((navbarheight() * 2/5)*0.7) +  "px")
 				.text(function(d){return d.name})
-				.on("click", function(d){d.callback(d)})  	
-				//.call( d3.behavior.drag().on("dragstart", function(d){
-				//	d.callback(d);
-				//}))
+				//.on("click", function(d){d.callback(d)})  	
+				.call( d3.behavior.drag().on("dragstart", function(d){
+					util.handledrag(d, function(d){
+						d.callback(d)
+					});
+				}))
+			
 				.call(util.autofit, demoitemwidth())
 		},
 		

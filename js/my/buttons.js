@@ -3,11 +3,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	"use strict";
 	
 	var 
-	
-		library,
-		
-		bcount = 0,
-	
+
 		dim,
 		
 		svg  = d3.select("#buttons")
@@ -197,15 +193,13 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 						
 						
 		update  = function(){
-			
-			//buttons[0].buttons[1].message = "hello again";
-			updatemasks();
 			render();
 		},
 		
 		//perhaps differentiate between renders for screen size change and renders for data change
 		//as would be more efficient.
 		render = function(){
+			updatemasks();
 			rendermessagecolumn();
 			renderbuttons();
 			renderheading();
@@ -218,7 +212,6 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			
 			
 			//update
-			
 			d3.select("path.heading")
 				.attr("d", function(d){
   					return util.categoryheading(d.width, d.height, d.points)
@@ -253,11 +246,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 						
 			var text = svg.select("g.heading")
 							.selectAll("text.categoryheading")
-							.data(buttons)
-							.enter()
+							.data(buttons, function(d){return d.category})
 							
 							
-			text.append("text")
+			text.enter()
+				.append("text")
 				.attr("class", "categoryheading")
 				.attr("dy", ".3em")
 				.attr("x", function(d,i){
@@ -268,7 +261,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.style("fill", "white")
 				.style("font-size", (dim.headerpadding()*0.4 + "px"))
 				.text(function(d){return d.category}) 	
-				.call(util.autofit, cwidth())		
+				.call(util.autofit, cwidth())	
+			
+			text
+				.exit()
+				.remove();	
 		},
 	
 		dragpressed = function(d){		
@@ -284,17 +281,16 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.attr("height",dim.height() + dim.margin().top)
 				
   			var maxbuttons =	d3.max(buttons.map(function(item){return item.buttons.length}));
-  		
+
   			var column = {};
   			var row = {};
   			
   			buttons.forEach(function(item, i){
   				item.buttons.forEach(function (b, j){
-  					column[b.name] = i;
-  					row[b.name] = j;
+  					column[b.id] = i;
+  					row[b.id] = j;
   				});
   			});
-  			 
   			 
   			var buttonwidth 	= cwidth() - dim.padding()*2;
   			var buttonheight 	= (((dim.height() - dim.headerpadding()) - dim.padding()*2) / maxbuttons) - dim.padding() ; 
@@ -306,55 +302,27 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
   			var noteradius = dim.padding()/2.5;		
   		   
   			
-  			var buttonx = function(name){
-  				return cwidth() * column[name] + dim.padding();
+  			var buttonx = function(id){
+  				return cwidth() * column[id] + dim.padding();
   			}				
   			
-  			var buttony = function(name){
-  				return  newyscale(row[name]);
+  			var buttony = function(id){
+  				return  newyscale(row[id]);
   			}	
   			
-  			var notex = function(name){
-  				return xscale()(column[name]) + cwidth() - noteradius
+  			var notex = function(id){
+  				return xscale()(column[id]) + cwidth() - noteradius
   			}
   			
-  			var notey = function(name){
-  				return  yscale()(row[name]);
+  			var notey = function(id){
+  				return  yscale()(row[id]);
   			}
   			
-  			svg.selectAll("rect.column")
-  			   .transition()
-  			   .duration(500)
-  			   .attr("x", function(d,i){return xscale()(i)})
-			   .attr("width",cwidth())
-			   .attr("height",dim.height())
   			
-  			svg.selectAll("rect.headerpadding")
-  			 	.attr("x", function(d,i){return xscale()(i)})
-				.attr("y", 0)
-				.attr("width",cwidth())
-				.attr("height",dim.headerpadding())
-  			
-  			svg.selectAll("rect.button")
-  					.transition()
-  					.duration(500)
-					.attr("x", function(d){return buttonx(d.name)})
-					.attr("y", function(d){return buttony(d.name)})
-					.attr("width", buttonwidth)
-					.attr("height", buttonheight)
-			  				
-			svg.selectAll("text.buttontext")
-					.attr("x", function(d){return buttonx(d.name) + buttonwidth/2 })
-					.attr("y", function(d){return buttony(d.name) + buttonheight/2 + fontsize/4})	
-	  			  	.style("font-size", fontsize + "px")
-	  			  	.text(function(d){return d.name})  	
-	  			  	.call(util.autofit , buttonwidth);
-	  			  	
-					
 	  			  		
   			///handle new data					 
   		   	var cat = svg.selectAll("g.category")
-  								.data(buttons, function(d){return d.category+buttons.length})
+  								.data(buttons);//, function(d){return d.category+d.buttons.length})
   			
   			var categories = cat.enter()
 								.insert("g", "g.message")
@@ -385,39 +353,68 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 							  .append("g")
 							  .attr("class", "button");
 			
-			
+		
 			button.append("rect")
 				  	.attr("class", "button")
-					.attr("x", function(d){return buttonx(d.name)})
-					.attr("y", function(d){return buttony(d.name)})
+					.attr("x", function(d){return buttonx(d.id)})
+					.attr("y", function(d){return buttony(d.id)})
 					.attr("width", buttonwidth)
 					.attr("height", buttonheight)
 					.style("stroke", "white")
 					.style("stroke-width", 4)
-					.style("fill",function(d){return column[d.name] % 2 == 0 ? "#f47961": "#006f9b"})
+					.style("fill",function(d){return column[d.id] % 2 == 0 ? "#f47961": "#006f9b"})
 					.call( d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 						
-					
-			var txt = button.append("text")
+			
+			 button.append("text")
 							.attr("class", "buttontext")
-	  			  			.attr("x", function(d){return buttonx(d.name) + buttonwidth/2 })
-							.attr("y", function(d){return buttony(d.name) + buttonheight/2 + fontsize/4})	
+	  			  			.attr("x", function(d){return buttonx(d.id) + buttonwidth/2 })
+							.attr("y", function(d){return buttony(d.id) + buttonheight/2 + fontsize/4})	
 				  			.attr("text-anchor", "middle")
 	  			  			.style("fill", "white")
 	  			  			.style("font-size", fontsize + "px")
 	  			  			.text(function(d){return d.name})  	
-	  			  			.call(util.autofit , buttonwidth);
-	  			  	
-	  		txt.call(d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
+	  			  			.call(util.autofit , buttonwidth)
+	  						.call(d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 	  		
 	  		cat
 	  			.exit()
-	  			.remove();
+	  			.remove()
 	  		
 	  		butts
 	  			.exit()
-	  			.remove();  	
-		
+	  			.remove()
+	  			
+	  		svg.selectAll("rect.column")
+  			   .transition()
+  			   .duration(500)
+  			   .attr("x", function(d,i){return xscale()(i)})
+			   .attr("width",cwidth())
+			   .attr("height",dim.height())
+  			
+  			
+  			svg.selectAll("rect.headerpadding")
+  			 	.attr("x", function(d,i){return xscale()(i)})
+				.attr("y", 0)
+				.attr("width",cwidth())
+				.attr("height",dim.headerpadding())
+  			
+  			svg.selectAll("rect.button")
+  					.transition()
+  					.duration(500)
+					.attr("x", function(d){return buttonx(d.id)})
+					.attr("y", function(d){return buttony(d.id)})
+					.attr("width", buttonwidth)
+					.attr("height", buttonheight)
+			  				
+			svg.selectAll("text.buttontext")
+					.attr("x", function(d){return buttonx(d.id) + buttonwidth/2 })
+					.attr("y", function(d){return buttony(d.id) + buttonheight/2 + fontsize/4})	
+	  			  	.style("font-size", fontsize + "px")
+	  			  	.text(function(d){return d.name})  	
+	  			  	.call(util.autofit , buttonwidth);
+	  			
+			
 		},
 		
 		
@@ -588,7 +585,15 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				var categoryindex = categories.indexOf(button.category);
 				
 				if (categoryindex != -1){
-					buttons[categoryindex].buttons.push(button);
+					var idx = (buttons[categoryindex].buttons.map(function(item){
+						return item.id;
+					}).indexOf(button.id));
+					
+					if (idx == -1)
+						buttons[categoryindex].buttons.push(button);
+					else{
+						console.log("already got " + button.id + " so not adding!");
+					}
 				}else{
 					//create a new category
 					buttons.push(
@@ -601,8 +606,15 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			});
 		
 			radio('refreshbuttons').subscribe(function(newbuttons){
+				
+				d3.selectAll("g.category")
+					.remove();
+					
+				d3.selectAll("g.heading")
+					.remove();	
+				
 				buttons = newbuttons;	
-				update();
+				render();
 			});
 		},
 		
