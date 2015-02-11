@@ -220,7 +220,7 @@ define(['jquery', 'd3'], function($, d3){
 	  	 			console.log("font width is " + text.node().getComputedTextLength())
 	  	 			console.log("space width is " + width);
 	  	 		}
-	  	 		while(text.node().getComputedTextLength() > width){// * 0.9 && guard++ < 100){
+	  	 		while(text.node().getComputedTextLength() > (width*0.9)){// * 0.9 && guard++ < 100){
 	  	 			console.log(text.text());
 	  	 			if (text.text() == "getting there at around the..."){
 	  	 				console.log("now font width is " + text.node().getComputedTextLength())
