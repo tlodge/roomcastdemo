@@ -73,6 +73,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 								
 			var cpanel = option.append("g")
 				   			   .attr("class", "hook");
+			
+			
 				   			   	
 			option.append("rect")
 				.attr("x", optx)
@@ -104,6 +106,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
     			   .html(function(d){return d.info});
 			
 			
+				
 			options.append("rect")
 				.attr("x", optx)
 				.attr("y", opty)

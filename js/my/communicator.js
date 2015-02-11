@@ -21,11 +21,20 @@ define(['radio'], function(radio){
 			msg.events = [{id:eventidcount++, ts:Math.floor((new Date().getTime())/1000), type:"press"}];
 			
 			radio('message').broadcast(msg);
-			console.log("broadcast a message!");
+			
 			timer = window.setTimeout(function(){
-					console.log("adding a new message (2s passed!)");
-					radio('event').broadcast({id: 785, event:{id:eventidcount++, ts:Math.floor((new Date().getTime())/1000), type:"response", data:"hello e, thanks for this, we'll have it sorted soon."}});
-			}, 2000);
+					respond(msg,0);
+			},  Math.random() * 5000);
+		},
+		
+		respond = function(msg, count){
+			radio('event').broadcast({id: msg.id, event:{id:eventidcount++, ts:Math.floor((new Date().getTime())/1000), type:"response", data:"hello e, thanks for this, we'll have it sorted soon."}});
+			count = count + 1;
+			if (count < 3){
+				timer = window.setTimeout(function(){
+					respond(msg, count);
+				}, Math.random() * 5000);	
+			}
 		},
 		
 		subscribe = function(){

@@ -6,6 +6,7 @@ require.config({
 		"d3": "../d3/d3",
 	 	"radio": "../radio/radio.min",	
 	 	"moment": "../moment/moment.min",
+	 	"ramda": "../ramda/ramda.min"
     },
     
 	//"pubnub": "//cdn.pubnub.com/pubnub.min"
@@ -14,7 +15,7 @@ require.config({
     }
 });
 
-require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 'dimensions', 'd3', 'communicator'], function($, buttons, buttonmaker, stats, dashboard, nav, Dimensions, d3, communicator) {
+require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 'dimensions', 'd3', 'communicator', 'd3building','model', 'uidelegate'], function($, buttons, buttonmaker, stats, dashboard, nav, Dimensions, d3, communicator, building, model, ui) {
 	
 	communicator.init(); //pubsub comms between modules!
 	
@@ -157,8 +158,35 @@ require(['jquery', 'buttons', 'buttonmaker', 'stats', 'dashboard', 'navigator', 
 		buttonmaker.update();
 		nav.update();
 	});
-			
 	
+	//model stuff
+	model.init();
+
+	//view stuff
+	ui.init(model);
+ 	
+	building.init(new Dimensions({
+			
+			anchor:{
+				x: function(){return $(window).width()*3}, 
+				y: function(){return 0},
+			},
+			
+			height: function(){ return $(window).height()},
+			
+			width: function(){ return $(window).width()},
+			
+			margins:{
+				top: function(){return 0},
+				right: function(){return 0},
+				bottom: function(){return 0},
+				left: function(){return 0}
+			}
+	}));
+	
+	building.setdelegate(ui);
+	
+			
 	/*cpanel.init(
 		new Dimensions({
 			

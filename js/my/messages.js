@@ -12,7 +12,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 		padding = 10,
 		
-		messages = [
+		messages = [],
+		/*
 			{
 				
 				id: 765,
@@ -63,7 +64,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 				events: [{id:22,ts:1421266914, type:"press"}, {id:23,ts:1421276914, type:"response", data:"will do what I can!"},{id:24,ts:1421296914, type:"response", data:"ready to help"},{id:25,ts:1421316914, type:"response", data:"getting there at around the right time"}]
 			},
 			
-		],
+		],*/
 		
 		svg,
 		
@@ -719,32 +720,34 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			
 			//cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));
 			
-			messages.forEach(function(message){
-				maxevents = Math.max(maxevents, message.events.length);
-			});
-			
-			var times = messages.map(function(message,i){
-			
-				return message.events.map(function(event,i){
-					messageforevent[event.id] = message;
-					return event.ts;
+			if (messages.length > 0){
+				messages.forEach(function(message){
+					maxevents = Math.max(maxevents, message.events.length);
 				});
-			}).reduce(function(a,b){
-				return a.concat(b);	
-			});
+			
+			
+				var times = messages.map(function(message,i){
+			
+					return message.events.map(function(event,i){
+						messageforevent[event.id] = message;
+						return event.ts;
+					});
+				}).reduce(function(a,b){
+					return a.concat(b);	
+				});
 				
 
-			edges = messages.map(function(message){
-  				return message.events.map(function (event, index){
-  					if (index < message.events.length -1)
-  						return {from:event, to:message.events[index+1]};
-  				}).filter(function(item, index){
-  					return index < message.events.length -1;
-  				});
-  			}).reduce(function(a,b){
-				return a.concat(b);	
-  			});	
-  			
+				edges = messages.map(function(message){
+					return message.events.map(function (event, index){
+						if (index < message.events.length -1)
+							return {from:event, to:message.events[index+1]};
+					}).filter(function(item, index){
+						return index < message.events.length -1;
+					});
+				}).reduce(function(a,b){
+					return a.concat(b);	
+				});	
+			}  			
   			
   			//set up slider scale
   			sliderscale = d3.scale.linear().range([dim.padding(), dim.height()]);		

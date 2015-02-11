@@ -113,14 +113,14 @@ define(['jquery','d3','radio', 'util'], function($,d3, radio, util){
 						{name:"+ add button", callback:addclicked},
 						{id:"andy", name:"andy (leaseholder)", callback:refresh},
 						{id:"sue",  name:"sue (tenant)", callback:refresh},
-						{id:"dave", name:"dave (leaseholder)", callback:refresh},
+						{id:"dave", name:"dave (tenant)", callback:refresh},
 				   ],
 		
 		screens  = [
 						{name:"user", id:"buttons"},
 						{name:"button maker", id:"buttonmaker"},
 						{name:"dashboard", id:"dashboard"},
-						{name:"stats", id:"stats"}
+						{name:"stats", id:"building"}
 					],
 		
 		currentscreen  = screens[0],

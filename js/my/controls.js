@@ -295,6 +295,13 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 			var groups = options.hook.append("g")
 							 .attr("class", "groups")
 			
+			groups.append("rect")
+				  .attr("x", options.x)
+				  .attr("y", options.y)
+				  .attr("width", options.w)
+				  .attr("height", options.h)
+				  .attr("fill", "white");
+				  
 			var group  = groups.selectAll("g.group")
 							   .data(options.data);
 			

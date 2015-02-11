@@ -1,12 +1,9 @@
-define(['jquery','d3', 'util', 'numeric', 'pubnub'], function($,d3,util,numeric, pubnub){
+define(['jquery','d3', 'util'], function($,d3,util){
 
 	"use strict";
 	var 
 	
-		channel = PUBNUB.init({
-			publish_key: 'pub-c-5ee6dec5-e3fe-4454-b7ea-fd95dc2d9702',
-			subscribe_key: 'sub-c-8a8c2a78-6b54-11e4-bf8f-02ee2ddab7fe'
-		}),
+		root,
 		
 		delegate,
 		
@@ -981,7 +978,7 @@ define(['jquery','d3', 'util', 'numeric', 'pubnub'], function($,d3,util,numeric,
 	  	subscribe = function(chnl){	
 	  	
 	  		
-			channel.subscribe({
+			/*channel.subscribe({
 				channel: 'photo',
 				message: function(m){
 					
@@ -1000,15 +997,20 @@ define(['jquery','d3', 'util', 'numeric', 'pubnub'], function($,d3,util,numeric,
 						.attr("xlink:href",m);
 						
 				}
-			});	
+			});	*/
 		},
 		
-	  	init = function(){
+	  	init = function(dim){
 	  	
+	  		d3.select("#building")
+					 .style("width", dim.width() + "px")
+					 .style("height", dim.height()  + "px")
+					 .style("top", dim.y()  + "px")
+					 .style("left",dim.x()  + "px")
+					 
 	  		
-	  		
-	  		var screenwidth  = $(document).width();
-	  		var screenheight = $(document).height();
+	  		var screenwidth  = dim.width();
+	  		var screenheight = dim.height();
 	  		var bottompadding = 30;
 	  		
 	  		
@@ -1016,8 +1018,6 @@ define(['jquery','d3', 'util', 'numeric', 'pubnub'], function($,d3,util,numeric,
   			svg.append("g").attr("class","flooroverlays");
   			svg.append("g").attr("class","apartmentdetail")
   							.call(dragrooms);
-  			
-  			
   							
 	  		d3.json("data/building.json", function(error, json) {
   				if (error) 
