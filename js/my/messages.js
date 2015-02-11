@@ -639,12 +639,12 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
     			  })
     			  .call( d3.behavior.drag().on("dragstart", eventclicked)) 
     	
-    		event.append("rect")
+    		/*event.append("rect")
     			 .attr("x", midx + flowradius() + 7)
     			 .attr("y", function(d){return eventypos(d) - headerfontsize() + flowradius()/2})
     			 .attr("width", maxtextwidth)
     			 .attr("height",30)
-    			 .attr("fill", "red")
+    			 .attr("fill", "red")*/
     			 
 			event.append("text")
 				  .attr("class", "eventtitle")
