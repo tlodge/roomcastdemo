@@ -180,18 +180,19 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		},	
 						
 						
-		update  = function(){
-			render();
-		},
-		
-		//perhaps differentiate between renders for screen size change and renders for data change
-		//as would be more efficient.
-		render = function(){
-			
-			
+		//called on screen size update
+		update  = function(){	
 			renderbuttons();
 			renderheading();
-			//messages.update();
+			rendermessagecolumn();
+			messages.update();
+			updatemasks();
+		},
+		
+		//called when new buttons added
+		render = function(){
+			renderbuttons();
+			renderheading();
 		},	
 		
 		renderheading = function(){
@@ -540,7 +541,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 								})
 					
 				}
-				update();
+				render();
 			});
 		
 			radio('refreshbuttons').subscribe(function(newbuttons){
@@ -600,10 +601,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					});
 				});
 
-				render();
-				rendermessagecolumn();
-				messages.update();
-				updatemasks();
+				update();
 			});
 			
 			
