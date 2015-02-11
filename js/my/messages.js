@@ -620,7 +620,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 					.attr("cy", function(d){return eventypos(d)})
 					.attr("r", flowradius())
 					 .style("fill", function(d){
-    			  		return d.type=="press" ? "#020f43":"white";
+    			  		return d.type=="press" ? "#41464d":"white";
     			  		
     			  	})
 					.style("stroke", "#4d4d4d")
