@@ -211,28 +211,17 @@ define(['jquery', 'd3'], function($, d3){
 	  		if (width <= 0)
 	  			return;
 	  			
-	  		var guard = 0;
+	  		
 	  		
 	  	 	text.each(function(){
 	  	 		var text = d3.select(this);
 	  	 		var fontsize = Math.floor(text.style("font-size").replace("px",''));
-	  	 		//if (text.text() == "getting there at around the..."){
-	  	 		//	console.log("font width is " + text.node().getComputedTextLength())
-	  	 		//	console.log("space width is " + width);
-	  	 		//}
+	  	 		
 	  	 		while(text.node().getComputedTextLength() > (width*0.9)){
-	  	 		//	console.log(text.text());
-	  	 		//	if (text.text() == "getting there at around the..."){
-	  	 		//		console.log("now font width is " + text.node().getComputedTextLength())
-	  	 				
-	  	 		//	}
+	  	 		
 	  	 			fontsize = Math.floor(text.style("font-size").replace("px",'')) - 2;
 	  	 			text.style("font-size", fontsize + "px");
-	  	 		//	if (text.text() == "getting there at around the..."){
-	  	 		//		console.log("set font size to " + fontsize);
-	  	 		//	}
-	  	 		//	if (++guard > 100)
-	  	 		//		break;
+	  	 		
 	  	 		}	
 	  	 	})
 	  	},
