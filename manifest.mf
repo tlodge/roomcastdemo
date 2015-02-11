@@ -52,3 +52,7 @@ css/font-awesome-4.3.0/fonts/fontawesome-webfont.woff?v=4.3.0
 css/font-awesome-4.3.0/fonts/fontawesome-webfont.ttf
 css/font-awesome-4.3.0/fonts/fontawesome-webfont.ttf?v=4.3.0
 css/font-awesome-4.3.0/fonts/fontawesome-webfont.svg#fontawesomeregular
+
+#data
+data/apartment.json
+data/building.json
