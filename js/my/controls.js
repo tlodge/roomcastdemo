@@ -192,11 +192,10 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 		
 		createbuttoncomponent = function(options){
 			var y  =  options.dim.y + options.dim.h/3;
-			var buttonradius = options.dim.h/4;
+			var buttonradius = Math.min(options.dim.h/4, options.dim.w/4);
 			var buttonlabelsize = buttonradius/1.2;
 			  
-			
-			
+		
 			var x1 = options.dim.x + buttonradius*2 + options.dim.w*options.col;
 			var x2 =  options.dim.x + options.dim.w*options.col + options.dim.w - buttonradius*2;
 				
@@ -216,15 +215,14 @@ define(['jquery','d3', 'dimensions', 'util', 'moment'], function($, d3, dim, uti
 				 .attr("class", function(d){return "buttonlabel buttonlabel_" + d.id})
 				 .attr("text-anchor", "middle")
 				 .attr("x", x1 + (x2-x1)/2)
-				 .attr("y", y + options.dim.h/2.5)
+				 .attr("y", (y - buttonradius/2) + buttonradius + buttonlabelsize)
 				 .attr("dy", ".3em")	
 				 .style("fill", "#4d4d4d")
 				 .style("font-size", buttonlabelsize + "px")
 				 .text(function(d){return d.label})
 				 .call(util.autofit, options.dim.w)
 				 .call(util.unify, 'buttonlabel')
-			opttxt	 
-				.call(buttonlistener);
+			 	 .call(buttonlistener);
 				
 		},
 		
