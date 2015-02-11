@@ -424,8 +424,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
     			  .style('font-size', iconradius() + "px")
     			  .style("fill", "white")
     			  .text(currentmessage().type=="press" ? '\uf0a2' : '\uf0e5')
-    			
-			
+    				
 						
 			flowcontainer.append("text")
 				  .attr("class", "messageboxtext")
