@@ -211,6 +211,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			message.events.forEach(function(e){
 				messageforevent[e.id] = message;
 			});
+			
 			updatescales();
 			maxevents = Math.max(maxevents, message.events.length);
 			renderflows(true);
@@ -219,12 +220,11 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 		addevent = function(d){
 			
-			
-		
 			var msgids = messages.map(function(item){
 				return item.id;
 			})
 			var idx = msgids.indexOf(d.id);
+			
 			if (idx != -1){
 				var lastevent = messages[idx].events[messages[idx].events.length-1];
 				messages[idx].events.push(d.event);
@@ -255,17 +255,15 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			}
 		},
 		
-		eventclicked = function(){
+		eventclicked = function(event){
 			
-			if (d3.event.defaultPrevented){
-				return;
-			}
-			if (d3.event != null){
-				d3.event.sourceEvent.stopPropagation();
-				d3.event.sourceEvent.preventDefault();
-			}
 		
-			var event = d3.select(this).data()[0];
+			var msg = messageforevent[event.id];
+			
+			if (msg){
+				radio('readmessage').broadcast(msg.buttonid);
+			}
+			
 			if (visibleevent){
 				//if this is the same as the current event, remove it
 				if (visibleevent.id == event.id && visibleevent.id == event.id){
@@ -484,7 +482,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	
 		
 		renderflows		= function(animated){
-			console.log("rendering flows and cwidth is " + cwidth);
+			
 			//if (maxevents >= 5){
 			//	flowwindow() = 1;
 			//	updatescales(); //this is not updating everything - need to find where failinG!
@@ -627,8 +625,13 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
     			  	})
 					.style("stroke", "#4d4d4d")
 					.style("stroke-width", 2)
-					.call( d3.behavior.drag().on("dragstart", eventclicked))
-			
+					.call( d3.behavior.drag().on("dragstart", function(d){
+							util.handledrag(d, function(d){
+								eventclicked(d);
+							});
+					}))
+						
+					
 			
 			 event.append('text')
 			 	   .attr("class", "icon")
@@ -644,7 +647,11 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
     			  .text(function(d){
     					return d.type=="press" ? '\uf0a2' : '\uf0e5';
     			  })
-    			  .call( d3.behavior.drag().on("dragstart", eventclicked)) 
+    			  .call( d3.behavior.drag().on("dragstart", function(d){
+							util.handledrag(d, function(d){
+								eventclicked(d);
+							});
+					}))
     	
     		/*event.append("rect")
     			 .attr("x", midx + flowradius() + 7)
@@ -724,7 +731,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 			
 		init = function(d){
-			console.log("AM INITING MESSAGES");
+			
 			dim = d;
 			
 			//cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));

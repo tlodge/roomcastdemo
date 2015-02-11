@@ -13,9 +13,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			.attr("id", "main")
 			.attr("class", "bigclip"),
 		
+		column = {},
 		
-		//taken back these from dim (now don't need to auto update domains etc)
-		
+		row = {},
+  			
 		cwidth = function(){
 			return Math.floor((dim.width() - dim.width()/5)  / buttons.length+1);
 		},
@@ -34,7 +35,35 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		 						 .domain([0, buttons.length]);
 		},
 		
+		yscale = function(){
+			return d3.scale.linear().range([dim.headerpadding() + dim.padding(), dim.height()])
+  			 								  .domain([0, maxbuttons]);
+  		},
+  			 								  
+		buttonx = function(id){
+  			return cwidth() * column[id] + dim.padding();
+  		},				
+  			
+  		buttony = function(id){
+  			return  yscale()(row[id]);
+  		},
+  		
+  		buttonwidth = function(){
+  			return Math.floor(cwidth() - dim.padding()*2);
+  		},
+  		
+  		buttonheight = function(){
+  			return (((dim.height() - dim.headerpadding()) - dim.padding()*2) / maxbuttons) - dim.padding()
+  		},
+  		
+  		
+  		maxbuttons = 0,
+  			
+  			
 		buttons = [],
+		
+		newmessages  = [],
+		
 		
 		send = function(d){
 
@@ -275,34 +304,24 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
   				.attr("width", dim.width() + dim.margin().left)
 				.attr("height",dim.height() + dim.margin().top)
 				
-  			var maxbuttons =	d3.max(buttons.map(function(item){return item.buttons.length}));
+  			maxbuttons = d3.max(buttons.map(function(item){return item.buttons.length}));
 
-  			var column = {};
-  			var row = {};
+  			
+  			column = {};
+  			
+  			row = {};
+  			
   			
   			buttons.forEach(function(item, i){
   				item.buttons.forEach(function (b, j){
   					column[b.id] = i;
   					row[b.id] = j;
   				});
+  				
   			});
   			 
-  			var buttonwidth  = Math.floor(cwidth() - dim.padding()*2);
-  			var buttonheight = (((dim.height() - dim.headerpadding()) - dim.padding()*2) / maxbuttons) - dim.padding() ; 
-  		
-  			var fontsize = buttonheight*0.2;
+  			var fontsize = buttonheight()*0.2;
   			
-  			var yscale = d3.scale.linear().range([dim.headerpadding() + dim.padding(), dim.height()])
-  			 								  .domain([0, maxbuttons]);
-  			
-  			var buttonx = function(id){
-  				return cwidth() * column[id] + dim.padding();
-  			}				
-  			
-  			var buttony = function(id){
-  				return  yscale(row[id]);
-  			}	
-	  			  		
   			///handle new data					 
   		   	var cat = svg.selectAll("g.category")
   								.data(buttons);//, function(d){return d.category+d.buttons.length})
@@ -341,8 +360,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				  	.attr("class", "button")
 					.attr("x", function(d){return buttonx(d.id)})
 					.attr("y", function(d){return buttony(d.id)})
-					.attr("width", buttonwidth)
-					.attr("height", buttonheight)
+					.attr("width", buttonwidth())
+					.attr("height", buttonheight())
 					.style("stroke", "white")
 					.style("stroke-width", 4)
 					.style("fill",function(d){return column[d.id] % 2 == 0 ? "#f47961": "#006f9b"})
@@ -351,13 +370,13 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			
 			 button.append("text")
 							.attr("class", "buttontext")
-	  			  			.attr("x", function(d){return buttonx(d.id) + buttonwidth/2 })
-							.attr("y", function(d){return buttony(d.id) + buttonheight/2 + fontsize/4})	
+	  			  			.attr("x", function(d){return buttonx(d.id) + buttonwidth()/2 })
+							.attr("y", function(d){return buttony(d.id) + buttonheight()/2 + fontsize/4})	
 				  			.attr("text-anchor", "middle")
 	  			  			.style("fill", "white")
 	  			  			.style("font-size", fontsize + "px")
 	  			  			.text(function(d){return d.name})  	
-	  			  			.call(util.autofit , buttonwidth)
+	  			  			.call(util.autofit , buttonwidth())
 	  						.call(d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 	  		
 	  		cat
@@ -387,19 +406,70 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
   					.duration(500)
 					.attr("x", function(d){return buttonx(d.id)})
 					.attr("y", function(d){return buttony(d.id)})
-					.attr("width", buttonwidth)
-					.attr("height", buttonheight)
+					.attr("width", buttonwidth())
+					.attr("height", buttonheight())
 			  				
 			svg.selectAll("text.buttontext")
-					.attr("x", function(d){return buttonx(d.id) + buttonwidth/2 })
-					.attr("y", function(d){return buttony(d.id) + buttonheight/2 + fontsize/4})	
+					.attr("x", function(d){return buttonx(d.id) + buttonwidth()/2 })
+					.attr("y", function(d){return buttony(d.id) + buttonheight()/2 + fontsize/4})	
 	  			  	.style("font-size", fontsize + "px")
 	  			  	.text(function(d){return d.name})  	
-	  			  	.call(util.autofit , buttonwidth);
-	  			
-			
+	  			  	.call(util.autofit , buttonwidth());
+	  		
+	  		rendernewmessages();
 		},
 		
+		rendernewmessages = function(){
+		
+			var messageradius = Math.min(buttonheight()/4,buttonwidth()/4);
+	  		
+	  		var messages = svg.selectAll("g.newmessage")
+  								 .data(newmessages, function(d){return d.id});
+  			
+  			//handle updates
+  			messages.selectAll("circle.messagecircle")
+  					.transition()
+  					.duration(500)
+  					.attr("cx", function(d){return buttonx(d.id) + buttonwidth() - messageradius/2})
+  					.attr("cy", function(d){return buttony(d.id) + messageradius/2})
+  					.attr("r", messageradius)		 
+  			
+  			messages.selectAll("text.newmessageicon")
+  					.attr("x",  function(d){return buttonx(d.id) + buttonwidth() - messageradius/2})
+    			    .attr("y",  function(d){return buttony(d.id) + messageradius/2})
+    			    .style('font-size', messageradius + "px")
+  			
+  			
+  			var message = messages.enter()
+  								 .append("g")
+  								 .attr("class", "newmessage");
+  			
+  			message
+  					.append("circle")
+  					.attr("class", "messagecircle")
+  					.attr("cx", function(d){return buttonx(d.id) + buttonwidth() - messageradius/2})
+  					.attr("cy", function(d){return buttony(d.id) + messageradius/2})
+  					.attr("r", messageradius)
+  					.style("fill", "#dc1633")
+  					.style("stroke", "white")
+  					.style("stroke-width", 3)
+  			
+  			message.append('text')
+			 	  .attr("class", "newmessageicon")
+    			  .attr('font-family', 'FontAwesome')
+    			  .attr("text-anchor", "middle")
+    			  .attr("dy", "0.3em")
+    			  .attr("x",  function(d){return buttonx(d.id) + buttonwidth() - messageradius/2})
+    			  .attr("y",  function(d){return buttony(d.id) + messageradius/2})
+    			  .style('font-size', messageradius + "px")
+    			  .style("fill", "white")
+    			  .text('\uf003')
+  			
+  			messages
+  					.exit()
+  					.remove();	
+			
+		},
 		
 		rendermessagecolumn = function(){
 			
@@ -558,8 +628,33 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				d3.selectAll("g.heading")
 					.remove();	
 				
+				d3.selectAll("g.newmessage")
+					.remove();	
+					
+				newmessages = [];
+				
 				buttons = newbuttons;	
+				
 				render();
+			});
+			
+			
+			radio('event').subscribe(function(message){
+				
+				newmessages.push({id:message.buttonid});
+				rendernewmessages();
+				
+			});
+			
+			//should just pass this in - buttons doesn't want to have anything to do with managing the messages array!
+			radio('readmessage').subscribe(function(id){
+			
+				var idx = newmessages.map(function(item){return item.id}).indexOf(id);
+				
+				if (idx != -1){
+					newmessages.splice(idx,1);
+					rendernewmessages();
+				}
 			});
 		},
 		
@@ -575,10 +670,6 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					
 			d3.select("g#main")
 				.attr("transform", "translate(" + dim.margin().left + "," + dim.margin().top + ")");
-				
-			
-			
-			
 			
 			
 			d3.json("buttons/demo.json", function(error, json){

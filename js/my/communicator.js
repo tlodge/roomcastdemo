@@ -16,7 +16,8 @@ define(['radio'], function(radio){
 			msg.id = msgidcount++;
 			
 			
-			msg.button = message.name;
+			msg.button 	 = message.name;
+			msg.buttonid = message.id;
 			
 			msg.events = [{id:eventidcount++, ts:Math.floor((new Date().getTime())/1000), type:"press"}];
 			
@@ -28,7 +29,7 @@ define(['radio'], function(radio){
 		},
 		
 		respond = function(msg, count){
-			radio('event').broadcast({id: msg.id, event:{id:eventidcount++, ts:Math.floor((new Date().getTime())/1000), type:"response", data:"hello e, thanks for this, we'll have it sorted soon."}});
+			radio('event').broadcast({id: msg.id, buttonid:msg.buttonid, event:{id:eventidcount++, ts:Math.floor((new Date().getTime())/1000), type:"response", data:"hello e, thanks for this, we'll have it sorted soon."}});
 			count = count + 1;
 			if (count < 3){
 				timer = window.setTimeout(function(){

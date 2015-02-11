@@ -111,7 +111,7 @@ define(['jquery','d3', 'ramda'], function($,d3,R){
 					});
 				});
 				
-				console.log(roomdata);
+				
 				//create room dict
 				//Object.keys(roomdata).forEach(function(room){
 					
