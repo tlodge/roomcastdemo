@@ -6,7 +6,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	
 		dim,
 		
-		cwidth,
+		cwidth = 0,
 		
 		maxevents = 0,
 		
@@ -108,7 +108,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		//bunch of functions for positioning messages
 		
 		corewidth =  function(){
-			var cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));
+			
 			return Math.min(2*cwidth,dim.width()/2)
 		},
 		
@@ -477,14 +477,14 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	
 		
 		renderflows		= function(animated){
-			
+			console.log("rendering flows and cwidth is " + cwidth);
 			//if (maxevents >= 5){
 			//	flowwindow = 1;
 			//	updatescales(); //this is not updating everything - need to find where failinG!
 			//}
 				
 			
-			cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));
+			//cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));
 			var titlefontsize = flowradius() * 0.8;
 			var datefontsize = titlefontsize * 0.8;
 			var xpos = Math.floor(d3.select("rect.messagecolumn").attr("x"));
@@ -684,7 +684,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			flowsheight = (mscale.range()[1]-mscale.range()[0])/(mscale.domain()[1]-mscale.domain()[0]);
 		},
 	
-		update = function(){
+		update = function(w){
+			cwidth = w;
 			render();
 		},
 		
@@ -706,6 +707,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			
 		init = function(d){
 			dim = d;
+			
+			//cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));
 			
 			messages.forEach(function(message){
 				maxevents = Math.max(maxevents, message.events.length);

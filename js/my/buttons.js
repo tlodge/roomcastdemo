@@ -37,7 +37,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		buttons = [],
 		
 		send = function(d){
-			console.log(d);
+
 			radio('buttonpress').broadcast(d);
 			//messages.addmessage(d);
 		},
@@ -185,7 +185,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			renderbuttons();
 			renderheading();
 			rendermessagecolumn();
-			messages.update();
+			messages.update(mwidth());
 			updatemasks();
 		},
 		
@@ -283,7 +283,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
   			 
   			var buttonwidth  = Math.floor(cwidth() - dim.padding()*2);
   			var buttonheight = (((dim.height() - dim.headerpadding()) - dim.padding()*2) / maxbuttons) - dim.padding() ; 
-  			 
+  		
   			var fontsize = buttonheight*0.2;
   			
   			var yscale = d3.scale.linear().range([dim.headerpadding() + dim.padding(), dim.height()])
@@ -571,9 +571,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				.attr("transform", "translate(" + dim.margin().left + "," + dim.margin().top + ")");
 				
 			
-			createmasks();
 			
-			subscribe();
 			
 			
 			
@@ -600,8 +598,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 						});
 					});
 				});
-
+				createmasks();
 				update();
+				subscribe();
+				
 			});
 			
 			
