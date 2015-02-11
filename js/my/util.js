@@ -233,7 +233,7 @@ define(['jquery', 'd3'], function($, d3){
 	  	 		//	}
 	  	 		//	if (++guard > 100)
 	  	 		//		break;
-	  	 		//}	
+	  	 		}	
 	  	 	})
 	  	},
 	  	
