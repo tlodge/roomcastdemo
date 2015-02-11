@@ -257,7 +257,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
   						.attr("d", function(d){		
   							return util.categoryheading(d.width, d.height, d.points)
   						})
-  						.style("fill", "black")
+  						.style("fill", "#41464d")
   								
 						
 			//get rid of old data
@@ -364,7 +364,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					.attr("height", buttonheight())
 					.style("stroke", "white")
 					.style("stroke-width", 4)
-					.style("fill",function(d){return column[d.id] % 2 == 0 ? "#f47961": "#006f9b"})
+					.style("fill",function(d){return column[d.id] % 2 == 0 ? "#e44230": "#1b80a1"})
 					.call( d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 						
 			
@@ -450,7 +450,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
   					.attr("cx", function(d){return buttonx(d.id) + buttonwidth() - messageradius/2})
   					.attr("cy", function(d){return buttony(d.id) + messageradius/2})
   					.attr("r", messageradius)
-  					.style("fill", "#dc1633")
+  					.style("fill", "#020f43")
   					.style("stroke", "white")
   					.style("stroke-width", 3)
   			
@@ -528,7 +528,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 					 .attr("y", 0)
 					 .attr("width",mwidth())
 					 .attr("height",dim.headerpadding())
-					 .style("fill", "#006f9b")
+					 .style("fill", "#020f43")
 			
 			messages.append("text")
 			 		.attr("class", "messageheadertext")

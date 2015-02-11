@@ -29,37 +29,6 @@
 				]		
 			},
 			{
-				"name":"dry cleaning",
-				"id": 2,
-				"info": "the concierge runs a dry cleaning service where we will pick up and clean clothes.  If you would like to use the service, the prices are <ul> <li> socks £0.80</li><li> t-shirts £1.50</li><li> fur coats £25.00 </li><li> suits: £30</li></ul> we will send you the full cost before we proceed",
-				"options":
-				[
-					{
-						"name":"how many",
-						"question":"how many items need cleaning?",
-						"components":[
-								{"name":"rows", "id":"rows", "type":"slider", "min":1, "max":15, "value":1, "valueLabel":"items"}
-						]
-					},
-					{
-						"name":"where",
-						"question":"when should we come and collect your items?",
-						"components":[
-								{"name":"rows", "id":"rows", "type":"date", "min":"today", "max":10, "value":"today"}
-						]
-					},
-					{
-						"name":"contact",
-						"question":"how do you want to be notified of the cost?",
-						"components":[
-							{"name":"c1","id":"c1", "type":"button", "value": false, "label":"tlodge@gmail.com"},
-							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"07972639571"},
-							{"name":"c3","id":"c3", "type":"button", "value": true, "label":"do not contact me!"}
-						]
-					}
-				]		
-			},
-			{
 				"name":"urgent delivery expected!",
 				"id": 3,
 				"info": "if you have an <strong>urgent</strong> parcel delivery and want to be contacted when it arrives, use this button",
@@ -93,25 +62,6 @@
 		"buttons": 
 		[
 			{
-				"name":"I can't get in!",
-				"id": 4,
-				"info": "use this if you are stuck outside the building and need to get in",
-				"options":
-				[
-					{
-						"name":"contact",
-						"question":"where are you?",
-						"components":[
-							{"name":"c1","id":"c1", "type":"button", "value": true, "label":"main gate"},
-							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"foyer door"},
-							{"name":"c3","id":"c3", "type":"button", "value": false, "label":"block A door"},
-							{"name":"c4","id":"c4", "type":"button", "value": false, "label":"block B door"},
-							{"name":"c5","id":"c5", "type":"button", "value": false, "label":"underground parking"}
-						]
-					}
-				]		
-			},
-			{
 				"name":"trespasser",
 				"id": 5,
 				"info": "use this if you notice someone who you do not recognise.  <strong> do not approach the person <strong>.  Our security team are trained to deal with this situation",
@@ -131,40 +81,6 @@
 					{
 						"name":"contact",
 						"question":"can you still see them now?",
-						"components":[
-							{"name":"c16","id":"c16", "type":"button", "value": false, "label":"yes"},
-							{"name":"c17","id":"c17", "type":"button", "value": false, "label":"no"}
-						]
-					}
-				]		
-			},
-			{
-				"name":"noise",
-				"id": 6,
-				"info": "use this button to report a noise nuisance.  All button presses are logged and correlated against other reports.  The lease prohibits excessive noise between <strong> 10pm </strong> and <strong> 7am </strong>",
-				"options":
-				[
-					{
-						"name":"where",
-						"question":"where is the noise coming from?",
-						"components":[
-							{"name":"c11","id":"c11", "type":"button", "value": true, "label":"in the building"},
-							{"name":"c12","id":"c12", "type":"button", "value": false, "label":"upstairs"},
-							{"name":"c13","id":"c13", "type":"button", "value": false, "label":"neighbours"},
-							{"name":"c14","id":"c14", "type":"button", "value": false, "label":"outside building"}
-						]
-					},
-					{
-						"name":"now",
-						"question":"is it happening now?",
-						"components":[
-							{"name":"c16","id":"c16", "type":"button", "value": false, "label":"yes"},
-							{"name":"c17","id":"c17", "type":"button", "value": false, "label":"no"}
-						]
-					},
-					{
-						"name":"before",
-						"question":"has this noise occurred before?",
 						"components":[
 							{"name":"c16","id":"c16", "type":"button", "value": false, "label":"yes"},
 							{"name":"c17","id":"c17", "type":"button", "value": false, "label":"no"}
