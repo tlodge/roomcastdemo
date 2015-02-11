@@ -11,11 +11,11 @@ define([], function(){
 			
   			if (room){
 				if (room.beds == 1)
-					return "#fbefe3";
+					return "#f47961";
 				if (room.beds == 2){
 					if (room.study)
-						return "#e9af7d";
-					return "#f4d3b5";
+						return "#006f9b";
+					return "#4d4d4d";
 				}
   			}
   		 	return "white";

@@ -16,10 +16,10 @@ define(['jquery','d3', 'radio', 'util', 'widgets/groupwidget', 'widgets/namewidg
 			{number: 0, name:"name", title:"What is the <strong>name</strong> of your new button?", subtitle:"this is the button's label so try to make it short and snappy", widget:namewidget},
 			{number: 1, name:"group", title:"What <strong>group</strong> will it belong to?", subtitle:"add it to a group, or create a new one", widget:groupwidget},
 			{number: 2, name:"description", title:"<strong>Why</strong> should be pressed?", subtitle:"tell the users why they might need this button", widget:infowidget},
-			{number: 3, name:"notify",title:"Who should be <strong> notified</strong> when it's pressed?", subtitle:"",widget:notifywidget},
+			{number: 3, name:"notify",title:"Who should be <strong> notified</strong> when it's pressed?", subtitle:"messages will be sent to these people on each press",widget:notifywidget},
 			{number: 4,	name:"context",title:"<strong>What else</strong> do you need to know", subtitle:"get more context when the button is pressed",widget:contextwidget},
-			{number: 5, name:"users",title:"<strong>Who</strong> will get this button?",subtitle:"", widget:userwidget},
-			{number: 6, name:"summary",title:"A <strong>summary</strong>",subtitle:"",widget:summarywidget}
+			{number: 5, name:"users",title:"<strong>Who</strong> will get this button?",subtitle:"select just the residents who should see it", widget:userwidget},
+			{number: 6, name:"summary",title:"A <strong>summary</strong>",subtitle:"this is what it looks like",widget:summarywidget}
 		],
 		
 		currentstep = 0,

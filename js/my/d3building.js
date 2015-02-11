@@ -279,7 +279,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
   						.attr("y", function(d){return d.y})
   						.attr("width", function(d){return d.width})
   						.attr("height", function(d){return d.height})
-  						.style("fill", "#d78242")
+  						.style("fill", "#f47961")
   						.style("fill-opacity", 0.0)
   						.style("stroke", "black")
   						
@@ -293,7 +293,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
   						.attr("y", function(d){return d.bounds.miny})
   						.attr("width", function(d){return  (d.bounds.maxx-d.bounds.minx)})		
   						.attr("height", function(d){return (d.bounds.maxy-d.bounds.miny)})
-  						.style("fill", "#d78242")
+  						.style("fill", "#f47961")
   						.style("fill-opacity", 0)
   						.on("click", floorselected)
   						.call(dragfloors)
@@ -596,7 +596,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 				 .attr("height", function(d){return d.coords.height/5})	
 				 .style("stroke-width", function(d){return 1/sfx(d)})
 				 .style("stroke", "black")
-				 .style("fill", "#d78242")
+				 .style("fill", "#f47961")
 				 .style("fill-opacity", 0.9)
 			
 			room.append("text")
@@ -735,7 +735,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 				 .attr("height", function(d){return labelheight(d)})	
 				 .style("stroke-width", function(d){return 1})
 				 .style("stroke", "black")
-				 .style("fill", "#d78242")
+				 .style("fill", "#f47961")
 				 .style("fill-opacity", 0.9)
 			
 			
@@ -826,7 +826,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
 					.attr("height", maxaspect(rc.cols,rc.rows) - (2*roompadding))	
 					.style("stroke-width", 1)
 					.style("stroke", "black")
-					.style("fill", "#d78242")
+					.style("fill", "#f47961")
 					.style("fill-opacity", 0)
 						
 				apt.append("circle")

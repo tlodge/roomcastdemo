@@ -76,12 +76,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	
 		MAXFLOWWINDOW = 2,
 		
-		flowwindow 	 = function(){
-			if (messages.length == 0) 
-				return 1;
-				
-			//console.log("flow window is now " + Math.min(messages.length+1, 2))
-			return Math.min(messages.length, MAXFLOWWINDOW);
+		flowwindow 	 = function(){	
+			return Math.min(Math.max(1,messages.length), MAXFLOWWINDOW);
 		},
 			
 		visibleevent,
