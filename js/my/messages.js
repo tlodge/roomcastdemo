@@ -74,7 +74,15 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 		flowsheight,
 	
-		flowwindow 	 = 2,
+		MAXFLOWWINDOW = 2,
+		
+		flowwindow 	 = function(){
+			if (messages.length == 0) 
+				return 1;
+				
+			//console.log("flow window is now " + Math.min(messages.length+1, 2))
+			return Math.min(messages.length, MAXFLOWWINDOW);
+		},
 			
 		visibleevent,
 		
@@ -154,6 +162,9 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 		dragslidermove = function(){
 		
+			if (flowwindow() >= messages.length)
+				return;
+				
 			var topstop    = 0;
 			var bottomstop = -(messages.length*flowsheight) + (dim.height()-dim.padding());
 			
@@ -204,9 +215,8 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			message.events.forEach(function(e){
 				messageforevent[e.id] = message;
 			});
-			
+			updatescales();
 			maxevents = Math.max(maxevents, message.events.length);
-			sliderscale.domain([0,messages.length])
 			renderflows(true);
 			updatemessagebox();
 		},
@@ -480,7 +490,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		renderflows		= function(animated){
 			console.log("rendering flows and cwidth is " + cwidth);
 			//if (maxevents >= 5){
-			//	flowwindow = 1;
+			//	flowwindow() = 1;
 			//	updatescales(); //this is not updating everything - need to find where failinG!
 			//}
 				
@@ -687,9 +697,12 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		},
 		
 		updatescales = function(){
-			sliderscale.range([dim.padding(), dim.height()]);
-			mscale.range([dim.headerpadding(), dim.height()]);
-			mscale.domain([0,  flowwindow])
+			sliderscale.range([dim.padding(), dim.height()])
+					   .domain([0,messages.length])
+					   
+			mscale.range([dim.headerpadding(), dim.height()])
+				  .domain([0,  flowwindow()])
+				  
 			flowsheight = (mscale.range()[1]-mscale.range()[0])/(mscale.domain()[1]-mscale.domain()[0]);
 		},
 	
