@@ -254,7 +254,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			
 			text
 				.exit()
-				.remove();	
+				.remove();
+			
+			//replace the messages at the front of the doc!	
+			$("g.messages").appendTo("g#main");	
 		},
 	
 		dragpressed = function(d){		

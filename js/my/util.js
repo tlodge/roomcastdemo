@@ -79,7 +79,7 @@ define(['jquery', 'd3'], function($, d3){
 	  		var path =  "M 0,0 v " + h;
 	  		
 	  		for (var i = 0; i < points; i++){
-	  			path += " h " + ((w/2)-tw) + " l " + tw + " " + th + " l " + tw + " " + -th + " h " + ((w/2)-(tw));  
+	  			path += " h " + Math.round((w/2)-tw) + " l " + tw + " " + th + " l " + tw + " " + -th + " h " + Math.round((w/2)-(tw));  
 	  		}
 	  		
 	  		path += " v " + (-h);
