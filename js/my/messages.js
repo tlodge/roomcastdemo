@@ -714,6 +714,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 			
 		init = function(d){
+			console.log("AM INITING MESSAGES");
 			dim = d;
 			
 			//cwidth = Math.floor(d3.select("rect.messagecolumn").attr("width"));
