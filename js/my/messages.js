@@ -501,7 +501,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .attr("x",midx + flowradius() + padding)
 				  .attr("y", function(d){return eventypos(d) +  flowradius()/1.5})
 	  			  .style("font-size",  datefontsize + "px")
-	  		 	  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
+	  		 	  .call(util.autofit, cwidth-((midx + flowradius()*2)-xpos));
 			
 			
 			d3.selectAll('text.icon')
@@ -637,12 +637,12 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
     			  })
     			  .call( d3.behavior.drag().on("dragstart", eventclicked)) 
     	
-    		/*event.append("rect")
+    		event.append("rect")
     			 .attr("x", midx)
     			 .attr("y", function(d){return eventypos(d) - headerfontsize() + flowradius()/2})
     			 .attr("width", cwidth-((midx + flowradius()*2)-xpos))
     			 .attr("height",30)
-    			 .attr("fill", "red")*/
+    			 .attr("fill", "red")
     			 
 			event.append("text")
 				  .attr("class", "eventtitle")
