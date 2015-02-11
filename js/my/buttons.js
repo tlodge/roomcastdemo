@@ -17,29 +17,25 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		//taken back these from dim (now don't need to auto update domains etc)
 		
 		cwidth = function(){
-			if (buttons.length == 1){
-				return dim.width() * 3/4;
-			}
-			return dim.width() / (buttons.length+1);
+			
+			//if(buttons.length == 0)
+			  //return dim.width() - dim.width()/5;
+			  
+			return (dim.width() - dim.width()/5)  / buttons.length+1;
 		},
 		
 		mwidth = function(){
-			return dim.width() - cwidth()*buttons.length;	
+			return dim.width()/5;//dim.width() - cwidth()*buttons.length;	
 		},
 		
 		mxscale = function(d){
-			 if (buttons.length == 1){
-			 	return function(d){
-			 		return dim.width() * 3/4;
-			 	}
-			 }
-			 return d3.scale.linear().range([0, dim.width()])
-		 						 .domain([0, buttons.length+1]);
+			 return d3.scale.linear().range([0, dim.width()-dim.width()/5])
+		 						 .domain([0, buttons.length]);
 		},
 		
 		xscale = function(){
-			 return d3.scale.linear().range([0, dim.width()])
-		 						 .domain([0, buttons.length+1]);
+			 return d3.scale.linear().range([0, dim.width()-dim.width()/5])
+		 						 .domain([0, buttons.length]);
 		},
 		
 		yscale = function(){
@@ -498,40 +494,6 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 	  			.remove();
 	  	},		
 	  			
-	    wrap = function(text, width, height) {
-	    
-	    
-		  text.each(function() {
-			var text = d3.select(this),
-				words = text.text().split(/\s+/).reverse(),
-				word,
-				line = [],
-				lineNumber = 0,
-				lineHeight = 1.1, // ems
-				y = text.attr("y"),
-				x = text.attr("x"),
-				dy = parseFloat(text.attr("dy")),
-				tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
-			while (word = words.pop()) {
-			  line.push(word);
-			  tspan.text(line.join(" "));
-			  if (tspan.node().getComputedTextLength() > width) {
-				line.pop();
-				tspan.text(line.join(" "));
-				line = [word];
-				tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-			  }
-			}
-			
-			//adjust y if multiple lines
-			if (lineNumber > 0){
-				var adjust = parseFloat(text.style("font-size"))/1.5;
-				text.selectAll("tspan")
-					.attr("y", function(d){return d3.select(this).attr("y")-(lineNumber*adjust)});
-			}
-		  });
-		},
-		
 		
 		updatemasks = function(){
 			
@@ -544,7 +506,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			defs.select("rect.messageClip")
 				.attr("x",cwidth()*buttons.length)
 				.attr("y",0)
-				.attr("width", cwidth()+dim.padding())
+				.attr("width", mwidth())
 				.attr("height", dim.height());
 		},	
 		
