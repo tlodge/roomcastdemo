@@ -231,9 +231,9 @@ define(['jquery', 'd3'], function($, d3){
 	  	 		//	if (text.text() == "getting there at around the..."){
 	  	 		//		console.log("set font size to " + fontsize);
 	  	 		//	}
-	  	 			if (++guard > 100)
-	  	 				break;
-	  	 		}	
+	  	 		//	if (++guard > 100)
+	  	 		//		break;
+	  	 		//}	
 	  	 	})
 	  	},
 	  	
