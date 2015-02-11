@@ -56,3 +56,4 @@ css/font-awesome-4.3.0/fonts/fontawesome-webfont.svg#fontawesomeregular
 #data
 data/apartment.json
 data/building.json
+data/buildingdata.json
