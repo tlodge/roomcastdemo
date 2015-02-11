@@ -12,59 +12,24 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 		padding = 10,
 		
-		messages = [],
-		/*
+		messages = [
+		
 			{
 				
 				id: 765,
-				button: "a",
-				label: "help me!",
-				events: [{id:1, ts:1420804800, type:"press"}, {id:2,ts:1420805700, type:"response", data:"ok will get onto it"},{id:3,ts:1420810700, type:"response", data:"ok will get onto it"}]
+				button: "welcome",
+				label: "welcome!",
+				events: [{id:2,ts:1420805700, type:"info", data:"welcome to Canary Riverside.  Feel free to have a play with the buttons"},{id:3,ts:1420810700, type:"response", data:"by the way, if you want a run through, come and see us"}]
 			},
 			{
 				
-				id: 735,
-				button: "c",
-				label: "plumbing!",
-				events: [{id:4, ts:1420815600, type:"press"}, {id:5,ts:1420819200, type:"response", data:"will do what I can!"}]
-			},
-			{
-				
-				id: 745,
-				button: "d",
-				label: "another thing",
-				events: [{id:6,ts:1421266914, type:"press"}, {id:7,ts:1421276914, type:"response", data:"will do what I can!"},{id:8,ts:1421296914, type:"response", data:"this is an important message!! so deal with it!"},{id:9,ts:1421316914, type:"response", data:"on our way to save the day"}]
-			},
-			{
-				
-				id: 785,
-				button: "e",
-				label: "another thing1",
-				events: [{id:10,ts:1421266914, type:"press"}, {id:11,ts:1421276914, type:"response", data:"will do what I can!"},{id:12,ts:1421296914, type:"response", data:"will do what I can!"},{id:13,ts:1421316914, type:"response", data:"bite me!"}]
-			},
-			{
-				
-				id: 762,
-				button: "f",
-				label: "another thing2",
-				events: [{id:14,ts:1421366914, type:"press"}, {id:15,ts:1421386914, type:"response", data:"will do what I can!"},{id:16,ts:1421396914, type:"response", data:"ok this needs some work do what I can!"},{id:17,ts:1421416914, type:"response", data:"this could work quite well i reckon!"}]
-			},
-			{
-				
-				id: 775,
-				button: "g",
-				label: "another thing3",
-				events: [{id:18,ts:1421266914, type:"press"}, {id:19,ts:1421276914, type:"response", data:"will do what I can!"},{id:20,ts:1421296914, type:"response", data:"my bag!"},{id:21,ts:1421316914, type:"response", data:"this is nice and deals with an issue!"}]
-			},
-			{
-				
-				id: 715,
-				button: "h",
-				label: "another thing4",
-				events: [{id:22,ts:1421266914, type:"press"}, {id:23,ts:1421276914, type:"response", data:"will do what I can!"},{id:24,ts:1421296914, type:"response", data:"ready to help"},{id:25,ts:1421316914, type:"response", data:"getting there at around the right time"}]
-			},
+				id: 767,
+				button: "removal",
+				label: "removal",
+				events: [{id:4,ts:1420805700, type:"info", data:"we'd recommend all removal vans park by the river - you are allowed a 40 minute stay every morning"},{id:5,ts:1420810700, type:"response", data:"there is an upcoming slot tomorrow if you'd like it"}, {id:6,ts:1420810700, type:"response", data:"there is another available in 3 days"}]
+			}
 			
-		],*/
+		],
 		
 		svg,
 		
@@ -356,7 +321,12 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 					
 			d3.select("text.messageboxtext")
 	  			 .text(currentmessage().data)
-	  			 .call(util.autofit, messagewidth() - ((iconradius() - (2 * iconpadding()))*2  + headerfontsize()/2));
+	  			 .call(util.wrap, messagewidth() - ((iconradius() - (2 * iconpadding()))*2  + headerfontsize()/2));
+			
+			
+			d3.select("text.messageboxheader")
+	  			  .text(currentmessage().button)  
+	  		
 			
 			d3.select("text.bigicon")
     		   .text(currentmessage().type=="press" ? '\uf0a2' : '\uf0e5')	 
@@ -465,7 +435,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .style("fill", "#fff")
 	  			  .style("font-size",  fontsize() + "px")
 	  			  .text(currentmessage().data)  
-				  .call(util.autofit, messagewidth() - ((iconradius() - (2 * iconpadding()))*2  + headerfontsize()/2));
+				  .call(util.wrap, messagewidth() - ((iconradius() - (2 * iconpadding()))*2  + headerfontsize()/2));
 				  
 			flowcontainer.append("text")
 				  .attr("class", "messageboxheader")

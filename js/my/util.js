@@ -241,7 +241,7 @@ define(['jquery', 'd3'], function($, d3){
 	  	 	
 	  	},
 	  	
-	  	wrap = function(text, width, height) {
+	  	wrap = function(text, width) {
 	    
 	    
 		  text.each(function() {
@@ -267,11 +267,11 @@ define(['jquery', 'd3'], function($, d3){
 			}
 			
 			//adjust y if multiple lines
-			if (lineNumber > 0){
+			/*if (lineNumber > 0){
 				var adjust = parseFloat(text.style("font-size"))/1.5;
 				text.selectAll("tspan")
 					.attr("y", function(d){return d3.select(this).attr("y")-(lineNumber*adjust)});
-			}
+			}*/
 		  });
 		},
 	  	boldstyler = function(text){
