@@ -17,15 +17,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		//taken back these from dim (now don't need to auto update domains etc)
 		
 		cwidth = function(){
-			
-			//if(buttons.length == 0)
-			  //return dim.width() - dim.width()/5;
-			  
-			return (dim.width() - dim.width()/5)  / buttons.length+1;
+			return Math.floor((dim.width() - dim.width()/5)  / buttons.length+1);
 		},
 		
 		mwidth = function(){
-			return dim.width()/5;//dim.width() - cwidth()*buttons.length;	
+			return Math.floor(dim.width()/5);
 		},
 		
 		mxscale = function(d){
@@ -34,13 +30,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		},
 		
 		xscale = function(){
-			 return d3.scale.linear().range([0, dim.width()-dim.width()/5])
+			 return d3.scale.linear().range([0, dim.width()-(dim.width()/5)])
 		 						 .domain([0, buttons.length]);
-		},
-		
-		yscale = function(){
-			return d3.scale.linear().range([dim.headerpadding(), dim.height()])
-		 							.domain([0, buttons.length+1]);
 		},
 		
 		buttons = [],
@@ -196,11 +187,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		//perhaps differentiate between renders for screen size change and renders for data change
 		//as would be more efficient.
 		render = function(){
-			updatemasks();
-			rendermessagecolumn();
+			
+			
 			renderbuttons();
 			renderheading();
-			messages.update();
+			//messages.update();
 		},	
 		
 		renderheading = function(){
@@ -289,33 +280,21 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
   				});
   			});
   			 
-  			var buttonwidth 	= cwidth() - dim.padding()*2;
-  			var buttonheight 	= (((dim.height() - dim.headerpadding()) - dim.padding()*2) / maxbuttons) - dim.padding() ; 
+  			var buttonwidth  = Math.floor(cwidth() - dim.padding()*2);
+  			var buttonheight = (((dim.height() - dim.headerpadding()) - dim.padding()*2) / maxbuttons) - dim.padding() ; 
   			 
   			var fontsize = buttonheight*0.2;
-  			var newyscale = d3.scale.linear().range([dim.headerpadding() + dim.padding(), dim.height()])
+  			
+  			var yscale = d3.scale.linear().range([dim.headerpadding() + dim.padding(), dim.height()])
   			 								  .domain([0, maxbuttons]);
-			
-  			var noteradius = dim.padding()/2.5;		
-  		   
   			
   			var buttonx = function(id){
   				return cwidth() * column[id] + dim.padding();
   			}				
   			
   			var buttony = function(id){
-  				return  newyscale(row[id]);
+  				return  yscale(row[id]);
   			}	
-  			
-  			var notex = function(id){
-  				return xscale()(column[id]) + cwidth() - noteradius
-  			}
-  			
-  			var notey = function(id){
-  				return  yscale()(row[id]);
-  			}
-  			
-  			
 	  			  		
   			///handle new data					 
   		   	var cat = svg.selectAll("g.category")
@@ -417,8 +396,6 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 		
 		rendermessagecolumn = function(){
 			
-			
-			
 			svg = d3.select("#buttons")
 					.select("svg")
 					.select("g#main");
@@ -461,8 +438,6 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			    .attr("y", 0)
 				.attr("width",mwidth())
 				.attr("height",dim.height())
-			 	.style("stroke-width",1)
-				.style("stroke", "black")
 				.style("fill", "none")
 			
 					 
@@ -626,6 +601,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				});
 
 				render();
+				rendermessagecolumn();
+				messages.update();
+				updatemasks();
 			});
 			
 			
