@@ -652,7 +652,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 				  .attr("y", function(d){return eventypos(d) - headerfontsize() + flowradius()/2})
 	  			  .style("fill", "#4d4d4d")
 	  			  .style("font-size", titlefontsize+ "px")
-	  			  .text(function(d){return eventtotext(d).trunc(30, true)}) 
+	  			  .text(function(d){return eventtotext(d).trunc(20, true)}) 
 	  			  .call(util.autofit, maxtextwidth);
 				
 		
