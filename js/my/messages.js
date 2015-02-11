@@ -681,7 +681,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 		
 		flowradius = function(){
 			
-			return ((flowsheight / maxevents)/2) * 0.6;
+			return Math.min(cwidth/10,  ((flowsheight / maxevents)/2) * 0.6);
 			//return Math.min(cwidth, dim.height())/20;
 		},
 		
