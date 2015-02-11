@@ -640,10 +640,12 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			
 			
 			radio('event').subscribe(function(message){
+				var idx = newmessages.map(function(item){return item.id}).indexOf(message.buttonid);
 				
-				newmessages.push({id:message.buttonid});
-				rendernewmessages();
-				
+				if (idx == -1){
+					newmessages.push({id:message.buttonid});
+					rendernewmessages();
+				}
 			});
 			
 			//should just pass this in - buttons doesn't want to have anything to do with managing the messages array!

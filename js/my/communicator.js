@@ -30,12 +30,12 @@ define(['radio'], function(radio){
 		
 		respond = function(msg, count){
 			radio('event').broadcast({id: msg.id, buttonid:msg.buttonid, event:{id:eventidcount++, ts:Math.floor((new Date().getTime())/1000), type:"response", data:"hello e, thanks for this, we'll have it sorted soon."}});
-			count = count + 1;
-			if (count < 3){
-				timer = window.setTimeout(function(){
-					respond(msg, count);
-				}, Math.random() * 5000);	
-			}
+			//count = count + 1;
+			//if (count < 3){
+			//	timer = window.setTimeout(function(){
+			//		respond(msg, count);
+			//	}, Math.random() * 5000);	
+			//}
 		},
 		
 		subscribe = function(){
