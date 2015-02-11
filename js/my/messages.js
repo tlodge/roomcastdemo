@@ -490,18 +490,20 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 			var xpos = Math.floor(d3.select("rect.messagecolumn").attr("x"));
 			var midx = xpos + flowradius() + padding;
 			
+			//5 is the rhs padding
+			var maxtextwidth = cwidth-((midx + flowradius() + 7)-xpos) - 5;
 			
 			d3.selectAll("text.eventtitle")
 	  			  .attr("x",midx + flowradius() + padding)
 				  .attr("y", function(d){return eventypos(d) - headerfontsize() + flowradius()/2})
 	  			  .style("font-size",  titlefontsize + "px")	
-				  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
+				  .call(util.autofit, maxtextwidth);
 				  
 			d3.selectAll("text.eventdate")
 	  			  .attr("x",midx + flowradius() + padding)
 				  .attr("y", function(d){return eventypos(d) +  flowradius()/1.5})
 	  			  .style("font-size",  datefontsize + "px")
-	  		 	  .call(util.autofit, cwidth-((midx + flowradius()*2)-xpos));
+	  		 	  .call(util.autofit, maxtextwidth);
 			
 			
 			d3.selectAll('text.icon')
@@ -638,9 +640,9 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
     			  .call( d3.behavior.drag().on("dragstart", eventclicked)) 
     	
     		event.append("rect")
-    			 .attr("x", midx)
+    			 .attr("x", midx + flowradius() + 7)
     			 .attr("y", function(d){return eventypos(d) - headerfontsize() + flowradius()/2})
-    			 .attr("width", cwidth-((midx + flowradius()*2)-xpos))
+    			 .attr("width", maxtextwidth)
     			 .attr("height",30)
     			 .attr("fill", "red")
     			 
@@ -651,7 +653,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .style("fill", "#4d4d4d")
 	  			  .style("font-size", titlefontsize+ "px")
 	  			  .text(function(d){return eventtotext(d).trunc(30, true)}) 
-	  			  .call(util.autofit, cwidth-((midx + flowradius()*2)-xpos));
+	  			  .call(util.autofit, maxtextwidth);
 				
 		
 				 
@@ -663,7 +665,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .style("font-size",  datefontsize + "px")
 	  			  .text(function(d){return moment.unix(d.ts).format("MMM Do, h:mm:ss a")})  
 	  			 // .call( d3.behavior.drag().on("dragstart", eventclicked))
-	  			  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
+	  			  .call(util.autofit, maxtextwidth);
 	  			  					
 			flows
 				.exit()
