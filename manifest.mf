@@ -9,6 +9,10 @@ js/demo.js
 js/my/widgets/groupwidget.js
 js/my/widgets/notifywidget.js
 js/my/widgets/namewidget.js
+js/my/widgets/userwidget.js
+js/my/widgets/summarywidget.js
+js/my/widgets/contextwidget.js
+js/my/widgets/infowidget.js
 
 #screens
 js/my/stats.js
@@ -18,6 +22,7 @@ js/my/messages.js
 js/my/buttonmaker.js
 js/my/controls.js
 js/my/navigator.js
+js/my/communicator.js
 js/my/d3building.js
 js/my/model.js
 js/my/uidelegate.js
@@ -39,3 +44,6 @@ buttons/andy.json
 buttons/dave.json
 buttons/demo.json
 buttons/additions.json
+
+#fonts
+css/font-awesome-4.3.0/css/font-awesome.min.css
