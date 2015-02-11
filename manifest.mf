@@ -48,5 +48,7 @@ buttons/additions.json
 #fonts
 css/font-awesome-4.3.0/css/font-awesome.min.css
 css/font-awesome-4.3.0/fonts/fontawesome-webfont.woff
+css/font-awesome-4.3.0/fonts/fontawesome-webfont.woff?v=4.3.0
 css/font-awesome-4.3.0/fonts/fontawesome-webfont.ttf
-css/font-awesome-4.3.0/fonts/fontawesome-webfont.svg
+css/font-awesome-4.3.0/fonts/fontawesome-webfont.ttf?v=4.3.0
+css/font-awesome-4.3.0/fonts/fontawesome-webfont.svg#fontawesomeregular
