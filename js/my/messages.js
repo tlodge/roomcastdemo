@@ -637,6 +637,13 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
     			  })
     			  .call( d3.behavior.drag().on("dragstart", eventclicked)) 
     	
+    		/*event.append("rect")
+    			 .attr("x", midx)
+    			 .attr("y", function(d){return eventypos(d) - headerfontsize() + flowradius()/2})
+    			 .attr("width", cwidth-((midx + flowradius()*2)-xpos))
+    			 .attr("height",30)
+    			 .attr("fill", "red")*/
+    			 
 			event.append("text")
 				  .attr("class", "eventtitle")
 	  			  .attr("x",midx + flowradius() + 7)
@@ -644,8 +651,7 @@ define(['jquery','d3', 'moment', 'util', 'radio'], function($,d3,moment,util, ra
 	  			  .style("fill", "#4d4d4d")
 	  			  .style("font-size", titlefontsize+ "px")
 	  			  .text(function(d){return eventtotext(d).trunc(30, true)}) 
-	  			 // .call( d3.behavior.drag().on("dragstart", eventclicked))
-	  			  .call(util.autofit, cwidth- ((midx + flowradius()*2)-xpos));
+	  			  .call(util.autofit, cwidth-((midx + flowradius()*2)-xpos));
 				
 		
 				 
