@@ -117,20 +117,20 @@ define(['jquery','d3', 'util'], function($,d3,util){
 							_select(d);
 						});
 					}));
-					
 				
+				var textwidth =  cwidth - (xscale(0) + (cheight-selectboxheight)/2 + selectboxheight -  xscale(0));
+								
 				user.append("text")
 				  	.attr("class", "residenttext")
 				  	.attr("dy", ".2em")
 				  	.attr("text-anchor", "middle")
-					.attr("x", function(d,i){return xscale(column[d.name]) + selectboxheight + (cwidth-selectboxheight)/2})
-					
+					.attr("x", function(d,i){return xscale(column[d.name]) + (cheight-selectboxheight)/2 + selectboxheight  + textwidth/2})
 					.attr("y", function(d){return  yscale(row[d.name]) + cheight/2})
 					.style("fill","white")
 					.style("font-size", (cheight * 0.3) + "px")
 					
 					.text(function(d){return d.name})
-					.call(util.autofit, cwidth-(selectboxheight*3), "residenttext")
+					.call(util.autofit, textwidth)
 					.call( d3.behavior.drag().on("dragstart", function(d){
 						util.handledrag(d, function(d){	
 							_select(d);
