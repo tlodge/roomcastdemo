@@ -1,0 +1,8 @@
+{
+	"name" : "roomcast",
+	"version": "0.0.1",
+	"dependencies" :{
+		"express": "3.x",
+		"node-red":"0.10.x"
+	}
+}
