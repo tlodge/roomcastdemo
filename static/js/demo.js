@@ -6,7 +6,8 @@ require.config({
 		"d3": "../d3/d3",
 	 	"radio": "../radio/radio.min",	
 	 	"moment": "../moment/moment.min",
-	 	"ramda": "../ramda/ramda.min"
+	 	"ramda": "../ramda/ramda.min",
+	 	"socketio":"../socketio/socket.io"
     },
     
 	//"pubnub": "//cdn.pubnub.com/pubnub.min"

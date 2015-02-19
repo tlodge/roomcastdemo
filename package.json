@@ -1,8 +1,9 @@
 {
-	"name" : "roomcast",
-	"version": "0.0.1",
-	"dependencies" :{
-		"express": "3.x",
-		"node-red":"0.10.x"
-	}
+  "name": "roomcast",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "3.x",
+    "node-red": "0.10.x",
+    "socket.io": "^1.3.4"
+  }
 }

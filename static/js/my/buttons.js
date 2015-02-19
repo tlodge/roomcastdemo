@@ -1,4 +1,4 @@
-define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, messages, util, controls, radio){
+define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], function($,d3, messages, util, controls, radio, io){
 	
 	"use strict";
 	
@@ -660,6 +660,13 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 			});
 		},
 		
+		comms = function(){
+			var socket = io();
+			socket.on('connect', function(){console.log("connected!!")});
+  			socket.on('event', function(data){console.log("event!!!!")});
+  			socket.on('disconnect', function(){console.log("disconnected!!")});
+		},
+		
 		init = function(d){
 			
 			dim = d;
@@ -700,7 +707,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio'], function($,d3, m
 				createmasks();
 				update();
 				subscribe();
-				
+				comms();
 			});
 			
 			

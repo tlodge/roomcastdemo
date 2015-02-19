@@ -2,6 +2,7 @@ var http = require('http');
 var express = require('express');
 var RED = require("node-red");
 
+
 var app = express();
 
 app.use('/', express.static("static"));
@@ -12,11 +13,11 @@ app.get('/roomcast/test', function(req,res){
 
 var server = http.createServer(app);
 
-/*app.listen(8080, function(){
-	var host = server.address().address
-	var port = server.address().port
-	console.log("listenoing on http://%s:%s", host,port)
-});*/
+var io = require('socket.io').listen(server);
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
 
 var settings = {
 	httpAdminRoot:"/red",
