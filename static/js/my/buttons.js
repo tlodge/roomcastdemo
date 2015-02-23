@@ -3,7 +3,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 	"use strict";
 	
 	var 
-
+		
+		socket,
+		 
 		dim,
 		
 		svg  = d3.select("#buttons")
@@ -661,10 +663,13 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 		},
 		
 		comms = function(){
-			var socket = io();
+			/*socket = io();
+			
 			socket.on('connect', function(){console.log("connected!!")});
+  			
   			socket.on('event', function(data){console.log("event!!!!")});
-  			socket.on('disconnect', function(){console.log("disconnected!!")});
+  			
+  			socket.on('disconnect', function(){console.log("disconnected!!")});*/
 		},
 		
 		init = function(d){

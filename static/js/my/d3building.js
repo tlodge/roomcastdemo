@@ -1,8 +1,10 @@
-define(['jquery','d3', 'util'], function($,d3,util){
+define(['jquery','d3', 'util', 'socketio'], function($,d3,util, io){
 
 	"use strict";
 	var 
 	
+		socket,
+		
 		root,
 		
 		delegate,
@@ -412,8 +414,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
   		//update the current rooms with additional ones
   		unionrooms  = function(rms){
   			
-  			console.log("DOING A UNION ROOMS!!");
-  			
+  		
   			d3.selectAll("rect.window").style("fill-opacity", 0.0);
   			selectedfloors = [];
   			renderfloors();
@@ -422,8 +423,11 @@ define(['jquery','d3', 'util'], function($,d3,util){
 			if (!rooms)
 				return;
 			
+			console.log(rooms);
+			
   			rms.forEach(function(room){
   				
+  				console.log("looking for" + room);		
   				if (rooms[room]){
 					if (!roomselected(room)){
 						console.log("ADDING ROOM ");
@@ -512,6 +516,8 @@ define(['jquery','d3', 'util'], function($,d3,util){
   		renderrooms = function(){
   			var layerlookup = {};
   			selectedrooms.sort(function(a,b){return (comp(a.id) > comp(b.id)) ? 1 : (comp(a.id) < comp(b.id)) ? -1 : 0})
+  			console.log("seelect romms are");
+  			console.log(selectedrooms);
   			
   			var rc 	=  rowscols(selectedrooms.length);
   			
@@ -1000,6 +1006,26 @@ define(['jquery','d3', 'util'], function($,d3,util){
 			});	*/
 		},
 		
+		comms = function(){
+			socket = io();
+			
+			socket.on('connect', function(){console.log("connected!!")});  			
+  			
+  			socket.on('display', function(data){
+  				var data = JSON.parse(data);
+  				console.log(data);
+  				var myrooms = data.map(function(item){
+  					return item.apartment.id;
+  				});
+  				console.log(myrooms);
+  				unionrooms(myrooms);
+  				
+  				
+  			});
+  			
+  			socket.on('disconnect', function(){console.log("disconnected!!")});
+		},
+		
 	  	init = function(dim){
 	  	
 	  		d3.select("#building")
@@ -1148,7 +1174,7 @@ define(['jquery','d3', 'util'], function($,d3,util){
   					//should do maxheights too so that we can center in container!
   					renderbuilding(buildingdata);
   					subscribe();
-  				
+  					comms();
 				});
 			});
 		
