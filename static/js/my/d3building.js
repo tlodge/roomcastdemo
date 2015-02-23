@@ -1012,6 +1012,7 @@ define(['jquery','d3', 'util', 'socketio'], function($,d3,util, io){
 			socket.on('connect', function(){console.log("connected!!")});  			
   			
   			socket.on('display', function(data){
+  				console.log("got some data!");
   				var data = JSON.parse(data);
   				console.log(data);
   				var myrooms = data.map(function(item){

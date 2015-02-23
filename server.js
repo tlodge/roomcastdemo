@@ -15,7 +15,8 @@ var client = redis.createClient();
 
 
 client.on('message', function (channel, message) {
-	
+	console.log("seen a message:");
+	console.log(message);
 	if (channel == "display"){
 		io.emit('display', message);
 	}

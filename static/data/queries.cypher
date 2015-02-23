@@ -4,8 +4,13 @@ MATCH (a:Apartment) WHERE a.name = "B3.4" RETURN a;
 //or
 MATCH (a:Apartment {name:"B3.4"}) RETURN a;
 
-//get all adjacency relationships
+//get all apartments alongside all relationships and return relationship
+MATCH (n:`Apartment`)-[r]-() RETURN r,n LIMIT 25 
 
+//get all apartments alongside all above and adjacent and return relationship
+MATCH (n:`Apartment`)-[r:`ADJACENT`|`ABOVE`]-() RETURN r,n LIMIT 25 
+
+//get all adjacency relationships
 MATCH (a)-[:`ADJACENT`]->(b) RETURN a,b LIMIT 25
 
 //get all nodes adjacent to B3.3
