@@ -160,14 +160,19 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				.attr("y",opty + optheight - (buttonradius/2))	
 				.style("fill", "#fff")
 				.style("font-size", buttonradius/2.5+ "px")
-				.text("SEND") 
-				.call( d3.behavior.drag().on("dragstart", function(d){
+				.text("SEND")
+				.on("click", function(d){
+					d3.select("g.options").remove(); 
+					d3.selectAll("g").style("opacity", 1.0);
+				});
+				 
+				/*.call( d3.behavior.drag().on("dragstart", function(d){
 					util.handledrag(d, function(d){
 						d3.select("g.options").remove(); 
 						d3.selectAll("g").style("opacity", 1.0);
 						send(d);
 					});
-				}));	
+				}));	*/
 				
 				//wrap this with the prevent default stuff!
 				
@@ -185,13 +190,18 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				.attr("y",opty + optheight - (buttonradius/2))	
 				.style("fill", "#fff")
 				.style("font-size", buttonradius/2.5+ "px")
-				.text("CANCEL") 
-				.call( d3.behavior.drag().on("dragstart", function(d){
+				.text("CANCEL")
+				.on("click", function(d){
+					d3.select("g.options").remove(); 
+					d3.selectAll("g").style("opacity", 1.0);
+				});
+				 
+				/*.call( d3.behavior.drag().on("dragstart", function(d){
 					util.handledrag(d, function(d){
 						d3.select("g.options").remove(); 
 						d3.selectAll("g").style("opacity", 1.0);
 					});
-				}));	
+				}));	*/
 				
 			
 			
