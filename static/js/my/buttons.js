@@ -687,17 +687,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 		
 			messages.init(dim);
 			
-			var mysvg = d3.select("#buttons")
+			d3.select("#buttons")
   				.select("svg")
   			 	.attr("width", dim.width() + dim.margin().left + dim.margin().right)
 				.attr("height",dim.height() + dim.margin().top + dim.margin().bottom)
-				.append("g")
-			
-			mysvg.append("circle")
-				 .attr("cx", dim.width()/2)
-				 .attr("cy", dim.height()/2)
-				 .attr("r", dim.height()/2/2)
-				 .style("fill", "blue");
+				
 				 
 					
 			d3.select("g#main")
@@ -708,14 +702,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				if (error){
 					console.log(error);
 				}
-				console.log("got buttons as ");
-				console.log(json);
+			
 				buttons = json;
 				
 				buttons.forEach(function(category){
-					console.log("am in here!!");
-					console.log(category);
-					
+
 					category.buttons.forEach(function(button){
 						button.options.forEach(function(option){
 							option.components.forEach(function(component){
