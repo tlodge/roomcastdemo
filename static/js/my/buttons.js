@@ -684,7 +684,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
   				.select("svg")
   			 	.attr("width", dim.width() + dim.margin().left + dim.margin().right)
 				.attr("height",dim.height() + dim.margin().top + dim.margin().bottom)
-			
+				.append("g")
 			
 			mysvg.append("circle")
 				 .attr("cx", dim.width()/2)
