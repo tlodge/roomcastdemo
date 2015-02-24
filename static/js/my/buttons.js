@@ -724,8 +724,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				createmasks();
 				update();
 				subscribe();
-				comms();*/
-			});
+				comms();
+			});*/
 			
 			
 		}
