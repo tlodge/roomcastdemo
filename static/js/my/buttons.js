@@ -389,10 +389,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 							//d3.event.stopPropagation();
 							
 					//})
-					.on("click", function(e){
+					.on("click", function(d){
 							console.log("CLICK START!!!");
 							d3.event.stopPropagation();
-							
+							dragpressed(d);
 					});
 					//.call( d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 						
@@ -410,9 +410,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 							//d3.event.stopPropagation();
 							
 					//})
-					.on("click", function(e){
+					.on("click", function(d){
 							console.log("CLICK START!!!");
-							//d3.event.stopPropagation();
+							d3.event.stopPropagation();
+							dragpressed(d);
 							
 					})
 	  			  			.call(util.autofit , buttonwidth())
