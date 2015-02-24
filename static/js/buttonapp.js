@@ -20,7 +20,7 @@ require(['jquery', 'buttons', 'dimensions'], function($, buttons,  Dimensions) {
 	
 	console.log("ok logging is working!");
 	
-	$(document).bind(
+	/*$(document).bind(
 		'touchmove',
 			function(e){
 				e.preventDefault();
@@ -40,7 +40,7 @@ require(['jquery', 'buttons', 'dimensions'], function($, buttons,  Dimensions) {
          s_ = useWordBoundary && toLong ? s_.substr(0,s_.lastIndexOf(' ')) : s_;
          return  toLong ? s_ + '...' : s_;
       };
-	
+	*/
 
 	console.log("ok window height is:");
 	console.log($(window).height());
