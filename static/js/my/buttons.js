@@ -376,17 +376,13 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 					.style("fill",function(d){return column[d.id] % 2 == 0 ? "#f47961": "#1b80a1"})
 					.on("touchstart", function(e){
 							console.log("TOUCH START!!!");
-							console.log("passed in");
-							console.log(e);
-							console.log("se");
-							console.log(d3.event.sourceEvent);
+							d3.event.stopPropagation();
+							
 					})
 					.on("click", function(e){
-							console.log("clicked");
-							console.log("passed in");
-							console.log(e);
-							console.log("se");
-							console.log(d3.event.sourceEvent);
+							console.log("CLICK START!!!");
+							d3.event.stopPropagation();
+							
 					});
 					//.call( d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 						
@@ -399,12 +395,16 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 	  			  			.style("fill", "white")
 	  			  			.style("font-size", fontsize + "px")
 	  			  			.text(function(d){return d.name}) 
-	  			  			.on("touchstart", function(d){
-								console.log("TOUCH START!!!");
-							})
-							.on("click", function(d){
-								console.log("Clicked");
-							})	
+	  			  			.on("touchstart", function(e){
+							console.log("TOUCH START!!!");
+							d3.event.stopPropagation();
+							
+					})
+					.on("click", function(e){
+							console.log("CLICK START!!!");
+							d3.event.stopPropagation();
+							
+					})
 	  			  			.call(util.autofit , buttonwidth())
 	  			  			
 	  						//.call(d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
