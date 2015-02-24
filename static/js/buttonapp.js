@@ -32,7 +32,7 @@ require(['jquery', 'buttons', 'dimensions'], function($, buttons,  Dimensions) {
 			e.preventDefault();
 		}
 	});
-		
+	*/	
 	String.prototype.trunc =
      function(n,useWordBoundary){
          var toLong = this.length>n,
@@ -40,7 +40,7 @@ require(['jquery', 'buttons', 'dimensions'], function($, buttons,  Dimensions) {
          s_ = useWordBoundary && toLong ? s_.substr(0,s_.lastIndexOf(' ')) : s_;
          return  toLong ? s_ + '...' : s_;
       };
-	*/
+	
 
 	console.log("ok window height is:");
 	console.log($(window).height());
