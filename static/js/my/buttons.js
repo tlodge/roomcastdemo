@@ -220,7 +220,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 			renderbuttons();
 			renderheading();
 			rendermessagecolumn();
-			//messages.update(mwidth());
+			messages.update(mwidth());
 			//updatemasks();
 		},
 		
