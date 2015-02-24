@@ -216,6 +216,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 						
 		//called on screen size update
 		update  = function(){	
+			console.log("am in update!");
 			renderbuttons();
 			//renderheading();
 			//rendermessagecolumn();
@@ -299,7 +300,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 		},
 		
 		renderbuttons = function(){
-			
+		
+			console.log("am in renderbuttons!");
 		
 			d3.select("#buttons")
   				.select("svg")
@@ -308,6 +310,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				
   			maxbuttons = d3.max(buttons.map(function(item){return item.buttons.length}));
 
+  			console.log("max button sis " );
+  			console.log(maxbuttons);
   			
   			column = {};
   			
@@ -321,6 +325,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
   				});
   				
   			});
+  			 
+  			 console.log("ok so buttons are");
+  			 console.log(buttons);
   			 
   			var fontsize = buttonheight()*0.2;
   			
@@ -690,7 +697,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				 .attr("cx", dim.width()/2)
 				 .attr("cy", dim.height()/2)
 				 .attr("r", dim.height()/2/2)
-				 .style("fill", "red");
+				 .style("fill", "blue");
 				 
 					
 			d3.select("g#main")
@@ -706,6 +713,9 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				buttons = json;
 				
 				buttons.forEach(function(category){
+					console.log("am in here!!");
+					console.log(category);
+					
 					category.buttons.forEach(function(button){
 						button.options.forEach(function(option){
 							option.components.forEach(function(component){
