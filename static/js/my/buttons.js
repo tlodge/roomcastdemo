@@ -390,7 +390,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 	  			  			.text(function(d){return d.name}) 
 	  			  			.on("touchstart", function(d){
 								console.log("TOUCH START!!!");
-							}); 	
+							}) 	
 	  			  			.call(util.autofit , buttonwidth())
 	  			  			
 	  						//.call(d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
