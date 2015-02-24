@@ -177,6 +177,7 @@ define(['jquery', 'd3'], function($, d3){
 	  	handledrag = function(d, callback){
 			if (d3.event != null){
 				if (d3.event.defaultPrevented){
+					console.log("YES D3 DEFAULT PREVENTED");
 					return;
 				}
 				d3.event.sourceEvent.stopPropagation();
