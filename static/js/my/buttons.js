@@ -217,10 +217,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 		//called on screen size update
 		update  = function(){	
 			renderbuttons();
-			renderheading();
-			rendermessagecolumn();
-			messages.update(mwidth());
-			updatemasks();
+			//renderheading();
+			//rendermessagecolumn();
+			//messages.update(mwidth());
+			//updatemasks();
 		},
 		
 		//called when new buttons added
@@ -692,7 +692,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				 .attr("r", dim.height()/2/2)
 				 .style("fill", "red");
 				 
-			/*		
+					
 			d3.select("g#main")
 				.attr("transform", "translate(" + dim.margin().left + "," + dim.margin().top + ")");
 			
@@ -721,11 +721,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 						});
 					});
 				});
-				createmasks();
+				//createmasks();
 				update();
-				subscribe();
-				comms();
-			});*/
+				//subscribe();
+				//comms();
+			});
 			
 			
 		}
