@@ -18,7 +18,7 @@ require.config({
 
 require(['jquery', 'buttons', 'dimensions'], function($, buttons,  Dimensions) {
 	
-	console.log("ok logging is --->s working!");
+	console.log("ok logging is ---->-->s working!");
 	
 	/*$(document).bind(
 		'touchmove',
