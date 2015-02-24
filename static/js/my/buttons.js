@@ -221,7 +221,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 			renderheading();
 			rendermessagecolumn();
 			messages.update(mwidth());
-			//updatemasks();
+			updatemasks();
 		},
 		
 		//called when new buttons added
