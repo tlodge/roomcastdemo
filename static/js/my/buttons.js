@@ -680,7 +680,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 		
 			messages.init(dim);
 			
-			mysvg = d3.select("#buttons")
+			var mysvg = d3.select("#buttons")
   				.select("svg")
   			 	.attr("width", dim.width() + dim.margin().left + dim.margin().right)
 				.attr("height",dim.height() + dim.margin().top + dim.margin().bottom)
