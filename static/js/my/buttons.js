@@ -374,11 +374,19 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 					.style("stroke", "white")
 					.style("stroke-width", 4)
 					.style("fill",function(d){return column[d.id] % 2 == 0 ? "#f47961": "#1b80a1"})
-					.on("touchstart", function(d){
+					.on("touchstart", function(e){
 							console.log("TOUCH START!!!");
+							console.log("passed in");
+							console.log(e);
+							console.log("se");
+							console.log(d3.event.sourceEvent);
 					})
-					.on("click", function(d){
+					.on("click", function(e){
 							console.log("clicked");
+							console.log("passed in");
+							console.log(e);
+							console.log("se");
+							console.log(d3.event.sourceEvent);
 					});
 					//.call( d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 						
