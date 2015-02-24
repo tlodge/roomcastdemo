@@ -384,16 +384,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 					.style("stroke", "white")
 					.style("stroke-width", 4)
 					.style("fill",function(d){return column[d.id] % 2 == 0 ? "#f47961": "#1b80a1"})
-					//.on("touchstart", function(e){
-						//	console.log("TOUCH START!!!");
-							//d3.event.stopPropagation();
-							
-					//})
 					.on("click", function(d){
-							console.log("CLICK START!!!");
+							
 							d3.event.stopPropagation();
 							dragpressed(d);
-					});
+					})
 					.call( d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 						
 			
@@ -406,12 +401,13 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 	  			  			.style("font-size", fontsize + "px")
 	  			  			.text(function(d){return d.name}) 
 							.on("click", function(d){
+								d3.event.stopPropagation();
 								dragpressed(d);
 							
 							})
 	  			  			
-	  						.call(d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
-	  						.call(util.autofit , buttonwidth())
+	  						.call(d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}))
+	  						.call(util.autofit , buttonwidth());
 	  		cat
 	  			.exit()
 	  			.remove()
