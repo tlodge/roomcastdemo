@@ -3,49 +3,49 @@ define(['jquery','react'], function($, React){
 	"use strict";
 	
 	
-	var ButtonNav = React.createClass({
+	var ButtonNav = React.createClass({displayName: "ButtonNav",
 		render: function(){
-			return (<div></div>);
+			return ("<div></div>");
 		}
 	});
 	
-	var ButtonName = React.createClass({
+	var ButtonName = React.createClass({displayName: "ButtonName",
 		render: function(){
-			return (<div></div>);
+			return ("<div></div>");
 		}
 	});
 	
-	var ButtonGroup = React.createClass({
+	var ButtonGroup = React.createClass({displayName: "ButtonGroup",
 		render: function(){
-			return (<div></div>);
+			return ("<div></div>");
 		}
 	});
 	
-	var ButtonDescription = React.createClass({
+	var ButtonDescription = React.createClass({displayName: "ButtonDescription",
 		render: function(){
-			return (<div></div>);
+			return ("<div></div>");
 		}
 	});
 	
-	var ButtonNotify = React.createClass({
+	var ButtonNotify = React.createClass({displayName: "ButtonNotify",
 		render: function(){
-			return (<div></div>);
+			return ("<div></div>");
 		}
 	});
 	
-	var ButtonContext = React.createClass({
+	var ButtonContext = React.createClass({displayName: "ButtonContext",
 		render: function(){
-			return (<div></div>);
+			return ("<div></div>");
 		}
 	});
 	
-	var ButtonUsers = React.createClass({
+	var ButtonUsers = React.createClass({displayName: "ButtonUsers",
 		render: function(){
-			return (<div></div>);
+			return ("<div></div>");
 		}
 	});
 	
-	var ButtonSummary = React.createClass({
+	var ButtonSummary = React.createClass({displayName: "ButtonSummary",
 		
 		make: function(){
 			console.log("would pass something up here");
@@ -53,14 +53,14 @@ define(['jquery','react'], function($, React){
 		
 		render: function(){
 			return (
-				<div className="content">
-					<a href="#" className="btn btn-primary" onClick={this.make}>make</a>
-				</div>
+				React.createElement("div", {className: "content"}, 
+					React.createElement("a", {href: "#", className: "btn btn-primary", onClick: this.make}, "make")
+				)
 			)
 		}
 	});
 	
-	var MakerBox = React.createClass({
+	var MakerBox = React.createClass({displayName: "MakerBox",
 		
 		
 		sendFlowsToServer: function(flows){
@@ -114,23 +114,23 @@ define(['jquery','react'], function($, React){
 		},
 		render: function(){
 			return (
-				<div className="main">
-					<ButtonNav />
-					<ButtonName />
-					<ButtonGroup />
-					<ButtonDescription />
-					<ButtonNotify />
-					<ButtonContext />
-					<ButtonUsers />
-					<ButtonSummary />
-				</div>
+				React.createElement("div", {className: "main"}, 
+					React.createElement(ButtonNav, null), 
+					React.createElement(ButtonName, null), 
+					React.createElement(ButtonGroup, null), 
+					React.createElement(ButtonDescription, null), 
+					React.createElement(ButtonNotify, null), 
+					React.createElement(ButtonContext, null), 
+					React.createElement(ButtonUsers, null), 
+					React.createElement(ButtonSummary, null)
+				)
 			)
 		}
 	});
 
 	var init = function(){
 		React.render(
-			<MakerBox url="red/flows"/>, document.getElementById('maker')
+			React.createElement(MakerBox, {url: "red/flows"}), document.getElementById('maker')
 		)
 	};
 	

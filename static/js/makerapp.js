@@ -7,7 +7,7 @@ require.config({
 	 	"radio": "../radio/radio.min",	
 	 	"moment": "../moment/moment.min",
 	 	"ramda": "../ramda/ramda.min",
-	 	"react": "../react/react.min"
+	 	"react": "../react/react"
     },
       
     "shim": {
