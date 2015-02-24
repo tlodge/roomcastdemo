@@ -680,11 +680,19 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 		
 			messages.init(dim);
 			
-			d3.select("#buttons")
+			mysvg = d3.select("#buttons")
   				.select("svg")
   			 	.attr("width", dim.width() + dim.margin().left + dim.margin().right)
 				.attr("height",dim.height() + dim.margin().top + dim.margin().bottom)
-					
+			
+			
+			mysvg.append("circle")
+				 .attr("cx", dim.width()/2)
+				 .attr("cy", dim.height()/2)
+				 .attr("r", dim.height()/2/2)
+				 .style("fill", "red");
+				 
+			/*		
 			d3.select("g#main")
 				.attr("transform", "translate(" + dim.margin().left + "," + dim.margin().top + ")");
 			
@@ -716,7 +724,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				createmasks();
 				update();
 				subscribe();
-				comms();
+				comms();*/
 			});
 			
 			

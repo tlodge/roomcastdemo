@@ -20,7 +20,7 @@ require(['jquery', 'buttons', 'dimensions'], function($, buttons,  Dimensions) {
 	
 	console.log("ok logging is ---->-->s working!");
 	
-	/*$(document).bind(
+	$(document).bind(
 		'touchmove',
 			function(e){
 				e.preventDefault();
@@ -32,7 +32,7 @@ require(['jquery', 'buttons', 'dimensions'], function($, buttons,  Dimensions) {
 			e.preventDefault();
 		}
 	});
-	*/	
+		
 	String.prototype.trunc =
      function(n,useWordBoundary){
          var toLong = this.length>n,
