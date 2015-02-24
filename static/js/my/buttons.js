@@ -673,8 +673,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 		},
 		
 		init = function(d){
-			
+		
+			console.log("buttons is initing!");
+		
 			dim = d;
+		
 			messages.init(dim);
 			
 			d3.select("#buttons")
@@ -690,7 +693,8 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				if (error){
 					console.log(error);
 				}
-				
+				console.log("got buttons as ");
+				console.log(json);
 				buttons = json;
 				
 				buttons.forEach(function(category){

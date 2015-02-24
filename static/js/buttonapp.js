@@ -42,6 +42,11 @@ require(['jquery', 'buttons', 'dimensions'], function($, buttons,  Dimensions) {
       };
 	
 
+	console.log("ok window height is:");
+	console.log($(window).height());
+	
+	console.log("ok window width is");
+	console.log($(window).width());
 	
 	buttons.init(
 		new Dimensions({
