@@ -374,7 +374,10 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 					.style("stroke", "white")
 					.style("stroke-width", 4)
 					.style("fill",function(d){return column[d.id] % 2 == 0 ? "#f47961": "#1b80a1"})
-					.call( d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
+					.on("touchstart", function(d){
+							console.log("TOUCH START!!!");
+					});
+					//.call( d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 						
 			
 			 button.append("text")
@@ -384,9 +387,13 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				  			.attr("text-anchor", "middle")
 	  			  			.style("fill", "white")
 	  			  			.style("font-size", fontsize + "px")
-	  			  			.text(function(d){return d.name})  	
+	  			  			.text(function(d){return d.name}) 
+	  			  			.on("touchstart", function(d){
+								console.log("TOUCH START!!!");
+							}); 	
 	  			  			.call(util.autofit , buttonwidth())
-	  						.call(d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
+	  			  			
+	  						//.call(d3.behavior.drag().on("dragstart", function(d){util.handledrag(d,dragpressed)}));
 	  		
 	  		cat
 	  			.exit()
