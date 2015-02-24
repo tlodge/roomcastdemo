@@ -219,7 +219,7 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 			console.log("am in update!");
 			renderbuttons();
 			renderheading();
-			//rendermessagecolumn();
+			rendermessagecolumn();
 			//messages.update(mwidth());
 			//updatemasks();
 		},
