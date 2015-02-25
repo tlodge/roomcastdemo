@@ -746,6 +746,11 @@ define(['jquery','d3','messages', 'util', 'controls', 'radio', 'socketio'], func
 				update();
 				//subscribe();
 				//comms();
+				
+				d3.select(window).on('resize', function(){
+					console.log("------>>>>>>>> seen a resize!");
+					update();
+				});
 			});
 			
 			

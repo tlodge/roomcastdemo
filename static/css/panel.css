@@ -1,0 +1,21 @@
+body{
+  	background-color:#fff;
+  	font-family: "Open Sans",sans-serif;
+  	margin: 0;
+  	/*position:relative;*/
+  	overflow: hidden;
+}
+  		
+h1{
+  	font-weight: normal;
+}
+  		
+h2{
+  	font-weight: normal;
+}
+
+.button{
+	position: absolute;
+	background: #ff0000;
+	text-align:center;
+}
