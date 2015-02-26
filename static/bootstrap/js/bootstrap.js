@@ -824,6 +824,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
   }
 
   Modal.prototype.toggle = function (_relatedTarget) {
+  	console.log("in toggle!!");
     return this.isShown ? this.hide() : this.show(_relatedTarget)
   }
 
@@ -879,6 +880,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
   }
 
   Modal.prototype.hide = function (e) {
+  	console.log("Seen a hide event!");
     if (e) e.preventDefault()
 
     e = $.Event('hide.bs.modal')
@@ -1045,6 +1047,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
   // ==============
 
   $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
+  	
     var $this   = $(this)
     var href    = $this.attr('href')
     var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) //strip for ie7

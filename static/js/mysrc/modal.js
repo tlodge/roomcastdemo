@@ -1,4 +1,4 @@
-define(['jquery','react', 'bootstrap'], function($, React, bootstrap){
+define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, mixins){
 	var 
 
 
@@ -37,7 +37,7 @@ define(['jquery','react', 'bootstrap'], function($, React, bootstrap){
  
 					componentDidMount: function() {
 						
-						console.log($(this.getDOMNode()));
+						
 						
 						var $modal = $(this.getDOMNode()).modal({
 							backdrop: this.props.backdrop,
@@ -58,6 +58,7 @@ define(['jquery','react', 'bootstrap'], function($, React, bootstrap){
 					
  
 					componentWillUnmount: function() {
+						
 						var $modal = $(this.getDOMNode())
 						
 						handlerProps.forEach(function(prop) {
@@ -71,14 +72,17 @@ define(['jquery','react', 'bootstrap'], function($, React, bootstrap){
 					},
 					
 					hide: function() {
+						console.log("HIDE HAS BEEN CALLED!!!");
 						$(this.getDOMNode()).modal('hide')
 					},
  
 					show: function() {
+						console.log("SHOW HAS BEEN CALLED!!!");
 						$(this.getDOMNode()).modal('show')
 					},
  
  					toggle: function() {
+ 						console.log("TOGGLE HAS BEEN CALLED!!!");
 						$(this.getDOMNode()).modal('toggle')
 					},
 					
@@ -87,28 +91,54 @@ define(['jquery','react', 'bootstrap'], function($, React, bootstrap){
 					}
 				}
 		}(),
+		
+		ModalButton = React.createClass({
+			
+		
+			handleClick: function(){
+				this.props.handler();
+			},
+			
+			render: function() {
+			
+				return(
+					<button type="button" className={"btn btn-" + this.props.buttontype} onClick={this.handleClick}>{this.props.text}</button>
+			
+				)
+			}
+			
+		}),
 	
 		Modal = React.createClass({
 			
 			mixins: [modalmixin], 
-	
+			
 			render: function() {
 				
-				var self = this;
+				
 				var buttons = this.props.buttons.map(function(button) {
-					return <button type="button" className={"btn btn-" + button.type} onClick={button.handler}>{button.text}</button>
+					//return <button type="button" className={"btn btn-" + button.type} onClickCapture={button.handler}>{button.text}</button>
+					return <ModalButton buttontype={button.type} handler={button.handler} text={button.text}/>
 				})
- 
+ 				
+ 				var modalStyle ={
+ 					width: this.props.modalwidth + "px"
+ 				}
+ 				
+ 				var bodyStyle={
+ 					height: this.props.modalheight + "px"
+ 				}
  			
-				return <div className="modal fade">
-						<div className="modal-dialog">
+				return <div className="modal fade" >
+						<div className="modal-dialog" style={modalStyle}>
 							<div className="modal-content">
 								<div className="modal-header">
 									{this.renderCloseButton()}
 									<strong>{this.props.header}</strong>
 								</div>
-								<div className="modal-body">
-									{this.props.children}
+								<div className="modal-body" style={bodyStyle}>
+									<ModalAbout width={this.props.modalwidth/4} info={this.props.button.info} />
+									<ModalOptions />
 								</div>
 								<div className="modal-footer">
 									{buttons}
@@ -118,8 +148,24 @@ define(['jquery','react', 'bootstrap'], function($, React, bootstrap){
 					</div>
 				}
 		}),
- 
-		ExampleApp = React.createClass({
+		
+		ModalAbout = React.createClass({
+ 			render: function() {
+ 				var myStyle={
+ 					width: this.props.width + "px"
+ 				}
+ 				
+ 				return (<div style={myStyle} dangerouslySetInnerHTML={{__html: this.props.info}}/>)
+ 			}
+ 		}),
+ 		
+ 		ModalOptions = React.createClass({
+			render: function() {
+ 				return (<div></div>)
+ 			}
+ 		})
+ 		
+		/*ExampleApp = React.createClass({
 
 			getInitialState: function() {
 				return {
@@ -171,7 +217,7 @@ define(['jquery','react', 'bootstrap'], function($, React, bootstrap){
 				this.setState({logs: [{ type: type , time: new Date().toLocaleTimeString() , message: message}].concat(this.state.logs.slice(0, 3))
 				})
 			}
-		})
+		})*/
 	
 	return {
 		Modal:Modal

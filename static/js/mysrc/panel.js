@@ -18,7 +18,7 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 					data.forEach(function(item, i){
 						this.maxbuttons = Math.max(this.maxbuttons, item.buttons.length);
   					}.bind(this));		
-					this.setState({buttons:data, buttonwidth:Math.floor($(window).width()/data.length), buttonheight:Math.floor($(window).height()/this.maxbuttons)});
+					this.setState({buttons:data, buttonwidth:Math.ceil($(window).width()/data.length), windowwidth:Math.ceil($(window).width()), windowheight:Math.ceil($(window).height())});
 				
 				}.bind(this),
 				error: function(xhr, status, err){
@@ -28,23 +28,36 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 		},
 		
 		getInitialState: function(){
-			return {buttons:[], buttonwidth:0, buttonheight:0};
+			return {buttons:[], buttonwidth:0, windowheight:0, windowwidth:0};
+		},
+		
+		handleResize: function(){
+			this.setState({buttonwidth:Math.ceil($(window).width()/this.state.buttons.length), windowwidth:Math.ceil($(window).width()), windowheight:Math.ceil($(window).height())});
+		
+		},
+		
+		
+		componentWillUnmount: function(){
+			window.removeEventListener('resize', this.handleResize);
 		},
 		
 		componentDidMount: function(){
 			
 			this.getButtonsFromServer();
 			var self = this;
-			$(window).resize(function(){
-				this.setState({buttonwidth:Math.floor($(window).width()/this.state.buttons.length), buttonheight:Math.floor($(window).height()/this.maxbuttons)});
-			}.bind(this));
+			window.addEventListener('resize', this.handleResize);
 		},
 		
 		render: function(){
+			var colours = ["#7bb6a4","#e5cf58","#cd804a","#445662","#d35a51", "#3f3b3c"];
 			
 			return (
 				<div className="buttonpanel">
-					<ButtonList buttons={this.state.buttons} buttonwidth={this.state.buttonwidth} buttonheight={this.state.buttonheight}/>
+					<ButtonList colours={colours} 
+						buttons={this.state.buttons} 
+						buttonwidth={this.state.buttonwidth} 
+						windowheight={this.state.windowheight} 
+						windowwidth={this.state.windowwidth}/>
 				</div>
 			)
 		}
@@ -52,18 +65,46 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 
 	var ButtonList = React.createClass({
 		
+		
+		allowedtoshow: true,
+		
+		handleExternalHide: function() {
+			this.refs.modal.hide();
+		},
+		
+		handleModalClick: function(button){
+			this.setState({currentbutton:button});
+			this.refs.modal.show();
+		},
+		
+		getInitialState: function(){
+			return {currentbutton:{}};
+		},
+		
 		render: function(){
-			var self = this;
+		
+			var buttoncount = 0;
 			//render each set of rows for each category!
 			var columns = this.props.buttons.map(function(item, i){
-				var left = i * self.props.buttonwidth;
+				var left = i * this.props.buttonwidth;
+				buttoncount = buttoncount + item.buttons.length;
+				//used for setting the colour of the button
 				return (
-					 <ButtonColumn  column={i} left={left} buttonwidth={self.props.buttonwidth} buttonheight={self.props.buttonheight} category={item.category} buttons={item.buttons}/>
+					 <ButtonColumn buttoncount={buttoncount-item.buttons.length} colours={this.props.colours} clickhandler={this.handleModalClick} column={i} left={left} buttonwidth={this.props.buttonwidth} buttonheight={ Math.ceil(this.props.windowheight / item.buttons.length)} category={item.category} buttons={item.buttons}/>
 				);
-			});
+				
+				
+				
+			}.bind(this));
 			
+			var buttons = [ {type: 'danger', text: 'Hide Modal', handler: this.handleExternalHide}, {type: 'primary', text: 'Do Nothing', handler: this.handleDoingNothing}]
+			
+			console.log(this.state.currentbutton);
 			return(	
-				<div className="buttoncolumns">{columns}</div>
+				<div>
+					<div className="buttoncolumns">{columns}</div>
+					<modal.Modal ref="modal" button={this.state.currentbutton} modalwidth={this.props.windowwidth*0.9} modalheight={this.props.windowheight*0.6} show={false} header={this.state.currentbutton.name} buttons={buttons}></modal.Modal>
+				</div>
 			)
 			
 		}
@@ -71,11 +112,12 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 	
 	var ButtonColumn = React.createClass({
 		
-		
-		
 		render: function(){
 			
 			var column = this.props.buttons.map(function(item, i){
+				
+				
+				var cindex =  (this.props.buttoncount + i) %this.props.colours.length;
 				
 				var buttonStyle = {
 					color: 'white',
@@ -84,10 +126,11 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 					width:  this.props.buttonwidth + "px",
 					height: this.props.buttonheight + "px",
 					lineHeight:  this.props.buttonheight + "px",
+					background: this.props.colours[cindex],
 				};
 				
 				return (
-					 <Button buttonstyle={buttonStyle} category={this.props.category} data={item}/>
+					 <Button clickhandler={this.props.clickhandler} buttonstyle={buttonStyle} category={this.props.category} data={item}/>
 				);
 			}.bind(this));
 			
@@ -98,29 +141,21 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 	
 	var Button = React.createClass({
 	
-		mixins: [mixins.touchmixin], //need this in modal too!!!
 		
-		event: function(){
-			console.log("seen a touch/click");
-			this.refs.modal.show();
-			console.log(this.props.data.name);
+		mixins: [mixins.touchmixin],
+		
+		event: function(e){
+			console.log(e);
+			console.log(this.props.data.name + " has been clicked!!!");
+			this.props.clickhandler(this.props.data);
 		},
 		
-		handleExternalHide: function() {
-			this.refs.modal.hide();
-		},
 		
 		render: function(){
-			var buttons = [ {type: 'danger', text: 'Hide Modal', handler: this.handleExternalHide}, {type: 'primary', text: 'Do Nothing', handler: this.handleDoingNothing}]
-
+			
 			return(
 				<div>
 					<div className="button" onTouchStart={this.handleTouch} onClick={this.handleClick} style={this.props.buttonstyle}>{this.props.data.name} </div>
-				
-					<modal.Modal ref="modal" show={false} header="Example Modal" buttons={buttons}>
-						<p>I am the content.</p>
-						<p>That is about it, really.</p>
-					</modal.Modal>
 				</div>
 			)
 		}
@@ -131,7 +166,7 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 		React.initializeTouchEvents(true);
 		
 		React.render(
-			<MainPanel url="buttons/demo.json"/>, document.getElementById('panel')
+			<MainPanel url="buttons/dave.json"/>, document.getElementById('panel')
 		)
 		//React.render(<modal.ExampleApp/>, document.getElementById('panel'))
 	};

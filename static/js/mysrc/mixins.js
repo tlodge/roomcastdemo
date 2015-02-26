@@ -7,17 +7,21 @@ define(['jquery', 'react'], function($, React){
 			touched: false,
 	
 			handleTouch: function(fn){
+			
+				//stop touches from hitting other components below this one
+				
 				this.touched=true;
+				
 				typeof fn === 'string' ? this[fn]() : this.event(fn);
+				
 			}, 
 			handleClick:function(fn){
+				
 				if (this.touched){
-				 	console.log("am tocuhed so returning");
-				 	return 
+				 	return this.touched = false;
 				}
-				console.log("hmmmm seeen a click!");
-				this.touched = false;
 				typeof fn === 'string' ? this[fn]() : this.event(fn);
+			
 			}	
 		}
 	 

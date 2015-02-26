@@ -9,12 +9,13 @@ require.config({
 	 	"ramda": "../ramda/ramda.min",
 	 	"socketio":"../socketio/socket.io",
 	 	"react":"../react/react",
-	 	"bootstrap":"../../bootstrap/js/bootstrap.min"
+	 	"bootstrap":"../../bootstrap/js/bootstrap-modal"
     },
     
 	//"pubnub": "//cdn.pubnub.com/pubnub.min"
     
     "shim": {
+    	"bootstrap":["jquery"]
     }
 });
 
