@@ -122,13 +122,15 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
 				})
  				
  				var modalStyle ={
- 					width: this.props.modalwidth + "px"
+ 					width: this.props.modalwidth
  				}
  				
  				var bodyStyle={
- 					height: this.props.modalheight + "px"
+ 					height: this.props.modalheight 
  				}
  			
+ 				console.log(this.props.button);
+ 				
 				return <div className="modal fade" >
 						<div className="modal-dialog" style={modalStyle}>
 							<div className="modal-content">
@@ -137,8 +139,10 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
 									<strong>{this.props.header}</strong>
 								</div>
 								<div className="modal-body" style={bodyStyle}>
-									<ModalAbout width={this.props.modalwidth/4} info={this.props.button.info} />
-									<ModalOptions />
+									
+										<ModalAbout  width={Math.floor(this.props.modalwidth*1/4)} info={this.props.button.info} />
+										<ModalOptions options={this.props.button.options || []} height={this.props.modalheight} left={Math.floor(this.props.modalwidth*1/4)} width={Math.floor(this.props.modalwidth*3/4)-1} />
+								
 								</div>
 								<div className="modal-footer">
 									{buttons}
@@ -153,72 +157,117 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  			render: function() {
  				var myStyle={
  					width: this.props.width + "px"
- 				}
- 				
- 				return (<div style={myStyle} dangerouslySetInnerHTML={{__html: this.props.info}}/>)
+ 				}	
+ 				return (<div className="modalinfo" style={myStyle} dangerouslySetInnerHTML={{__html: this.props.info}}/>)
  			}
  		}),
  		
  		ModalOptions = React.createClass({
+ 			
 			render: function() {
- 				return (<div></div>)
+				
+				var questions = this.props.options.map(function(option, i){
+					return(
+						<Question top={i*this.props.height/this.props.options.length} height={Math.ceil(this.props.height/this.props.options.length)} width={this.props.width} question={option.question} components={option.components || []} />
+					)
+				}.bind(this));
+				
+ 				var myStyle ={
+ 					width: this.props.width,
+ 					height: this.props.height,
+ 					left: this.props.left,
+ 				}
+ 				return (<div className="modaloptions" style={myStyle}>{questions}</div>)
+ 			}
+ 		}),
+ 		
+ 		Question = React.createClass({
+ 			render: function() {
+ 			
+ 				var headingheight = this.props.height/5;
+ 				
+ 				myStyle = {
+ 					top: this.props.top,
+ 					position: 'absolute',
+ 					left: 0,
+ 					textAlign: 'center',
+ 					width: this.props.width,
+ 					height: headingheight,
+ 					
+ 				}	
+ 				
+ 				headingStyle={
+ 					fontSize: headingheight*0.7,
+ 				}
+ 							
+ 				var components = this.props.components.map(function(component,i){
+ 					return <Component column={i} top={this.props.top+headingheight} height={this.props.height-headingheight} width={Math.ceil(this.props.width/this.props.components.length)} left={i*this.props.width/this.props.components.length} component={component} />
+ 				}.bind(this));
+ 				
+ 				return(
+ 					<div>
+ 						<div style={myStyle}><span style={headingStyle} className="optionsquestion">{this.props.question}</span></div>
+ 						<div>{components}</div>
+ 					</div>
+ 				)
+ 			}
+ 		}),
+ 		
+ 		Component = React.createClass({
+ 			
+ 			render: function(){
+ 				
+ 				myStyle={
+ 					left: this.props.left,
+ 					top: this.props.top,
+ 					width: this.props.width,
+ 					height: this.props.height,
+ 					position:'absolute',
+ 					background: this.props.column % 2 == 0 ? '#d4d4d4' : '#cccccc',
+ 				}
+ 				
+ 				var formitem = "";
+ 				
+ 				switch (this.props.component.type){
+ 					case "options":
+ 						formitem = <DropDown width={this.props.width} height={this.props.height} options={this.props.component.options || []}/>
+ 						break;
+ 					default:
+ 						break;
+ 				}
+ 				
+ 				return <div style={myStyle}>{formitem}</div>
+ 				
  			}
  		})
  		
-		/*ExampleApp = React.createClass({
-
-			getInitialState: function() {
-				return {
-					logs: []
-				}
-			},
- 
-			render: function() {
-		
-				var buttons = [ {type: 'danger', text: 'Hide Modal', handler: this.handleExternalHide}, {type: 'primary', text: 'Do Nothing', handler: this.handleDoingNothing}]
-
-				var logs = this.state.logs.map(function(log) {
-						return <div className={'alert alert-' + log.type}>
-							[<strong>{log.time}</strong>] {log.message}
-						</div>
-				})
- 
-				return <div className="panel panel-default">
-					<div className="panel-heading">
-					<h3 className="panel-title">Demo</h3>
-					</div>
-					<div className="panel-body">
-					<button type="button" className="btn btn-primary btn-lg btn-block" onClick={this.handleShowModal}>Show Modal</button>
-					<h3>Logs</h3>
-					{logs}
-					</div>
-					<Modal ref="modal" show={false} header="Example Modal" buttons={buttons} handleShow={this.handleLog.bind(this, 'Modal about to show', 'info')} 
-					handleShown={this.handleLog.bind(this, 'Modal showing', 'success')} handleHide={this.handleLog.bind(this, 'Modal about to hide', 'warning')}
-					handleHidden={this.handleLog.bind(this, 'Modal hidden', 'danger')}>
-					<p>I am the content.</p>
-					<p>That is about it, really.</p>
-					</Modal>
-				</div>
-			},
- 
-			handleShowModal: function() {
-				this.refs.modal.show()
-			},
- 
-			handleExternalHide: function() {
-				this.refs.modal.hide()
-			},
- 
-			handleDoingNothing: function() {
-				this.handleLog("Remember I said I'd do nothing? ...I lied!", 'danger')
-			},
- 
-			handleLog: function(message, type) {
-				this.setState({logs: [{ type: type , time: new Date().toLocaleTimeString() , message: message}].concat(this.state.logs.slice(0, 3))
-				})
-			}
-		})*/
-	
+ 		DropDown = React.createClass({
+ 			
+ 			render:function(){
+ 				
+ 				var options = this.props.options.map(function(option){
+ 					return <option>{option}</option>
+ 				});
+ 				
+ 				var width 	= this.props.width * 0.9;
+ 				var height = this.props.height * 0.9;
+ 				var top = (this.props.height - height)/2;
+ 				var left = (this.props.width - width)/2;
+ 				//try paddingtop rather than top?
+ 				myStyle={
+ 					height: height,
+ 					width:  width,
+ 					textAlign: 'center',
+ 					fontSize: height * 0.5,
+ 					position: 'absolute',
+ 					top: top,
+ 					left: left,
+ 				}
+ 			
+ 				return <select style={myStyle} className="form-control">{options}</select>
+ 			}
+ 		});
+ 		
 	return {
 		Modal:Modal
 	} 

@@ -18,7 +18,7 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 					data.forEach(function(item, i){
 						this.maxbuttons = Math.max(this.maxbuttons, item.buttons.length);
   					}.bind(this));		
-					this.setState({buttons:data, buttonwidth:Math.ceil($(window).width()/data.length), windowwidth:Math.ceil($(window).width()), windowheight:Math.ceil($(window).height())});
+					this.setState({buttons:data, buttonwidth:Math.ceil($(window).width()/data.length), windowwidth:$(window).width(), windowheight:$(window).height()});
 				
 				}.bind(this),
 				error: function(xhr, status, err){
@@ -32,7 +32,7 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 		},
 		
 		handleResize: function(){
-			this.setState({buttonwidth:Math.ceil($(window).width()/this.state.buttons.length), windowwidth:Math.ceil($(window).width()), windowheight:Math.ceil($(window).height())});
+			this.setState({buttonwidth:Math.ceil($(window).width()/this.state.buttons.length), windowwidth:$(window).width(), windowheight:$(window).height()});
 		
 		},
 		
@@ -99,7 +99,7 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 			
 			var buttons = [ {type: 'danger', text: 'Hide Modal', handler: this.handleExternalHide}, {type: 'primary', text: 'Do Nothing', handler: this.handleDoingNothing}]
 			
-			console.log(this.state.currentbutton);
+			
 			return(	
 				<div>
 					<div className="buttoncolumns">{columns}</div>
@@ -145,8 +145,6 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 		mixins: [mixins.touchmixin],
 		
 		event: function(e){
-			console.log(e);
-			console.log(this.props.data.name + " has been clicked!!!");
 			this.props.clickhandler(this.props.data);
 		},
 		

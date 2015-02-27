@@ -18,3 +18,30 @@ h2{
 	position: absolute;
 	text-align:center;
 }
+
+.modaloptions{
+	position:absolute;
+	background: #4d4d4d;
+	padding: 10px;
+	
+}
+
+.modalinfo{
+	position:absolute;
+	left:0px;
+	padding: 10px;
+}
+
+.modal-body{
+	padding: 0px;
+}
+
+span.optionsquestion{
+	padding: 0px;
+	margin: 0px;
+	color: #fff;
+}
+
+.form-control{
+	box-shadow:none;
+}

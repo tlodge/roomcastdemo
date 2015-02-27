@@ -21,9 +21,7 @@
 						"name":"contact",
 						"question":"what kind of rubbish is it",
 						"components":[
-							{"name":"c1","id":"c1", "type":"button", "value": false, "label":"bulky"},
-							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"non recyclable"},
-							{"name":"c3","id":"c3", "type":"button", "value": true, "label":"dry/recyclable"}
+							{"name":"c1","id":"c1", "type":"options", "value": false, "options":["one","two","three","four","five"]}
 						]
 					}
 				]		
