@@ -297,23 +297,19 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  				}
  				
  				myContainer={
- 				
+ 					textAlign: 'center',
  					width: this.props.width,
  				}
  				
  				checkText={
  					top: 5 + dim + 5,
- 					width: this.props.width,
- 					position: 'absolute',
- 					textAlign: 'center',
- 					fontSize: dim/4,
+ 					position: 'absolute'
  				}
  				
  				return 	React.createElement("div", {style: myContainer}, 
  							React.createElement("div", {style: myStyle, id: this.props.id, value: this.props.value}), 
- 							React.createElement("span", {style: checkText}, this.props.text)
+ 							React.createElement("div", {style: checkText}, this.props.text)
  						)
- 						
  			}
  		})
 	return {

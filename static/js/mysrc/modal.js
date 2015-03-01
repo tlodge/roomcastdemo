@@ -232,6 +232,9 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  					case "options":
  						formitem = <DropDown width={this.props.width} height={this.props.height} options={this.props.component.options || []}/>
  						break;
+ 					case "checkbox":
+ 						formitem = <CheckBox width={this.props.width} height={this.props.height} text={this.props.component.text} value={this.props.component.value} id={this.props.component.id}/>
+ 						
  					default:
  						break;
  				}
@@ -266,8 +269,53 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  			
  				return <select style={myStyle} className="form-control">{options}</select>
  			}
- 		});
+ 		}),
  		
+ 		
+ 		CheckBox = React.createClass({
+ 			
+ 			render:function(){
+ 					
+ 				var dim 	= Math.min(this.props.width * 0.9, this.props.height * 0.9);
+ 				var top =  (this.props.height-dim)/2;
+ 				var left = (this.props.width-dim)/2;
+ 				
+ 				//try paddingtop rather than top?
+ 				myStyle={
+ 					height: dim,
+ 					width:  dim,
+ 					textAlign: 'center',
+ 					fontSize: dim * 0.5,
+ 					position: 'absolute',
+ 					top: 5,
+ 					border: 3,
+ 					borderColor: '#4d4d4d',
+ 					borderStyle: 'solid',
+ 					background: 'white',
+ 					left: left,
+ 					
+ 				}
+ 				
+ 				myContainer={
+ 				
+ 					width: this.props.width,
+ 				}
+ 				
+ 				checkText={
+ 					top: 5 + dim + 5,
+ 					width: this.props.width,
+ 					position: 'absolute',
+ 					textAlign: 'center',
+ 					fontSize: dim/4,
+ 				}
+ 				
+ 				return 	<div style={myContainer}>
+ 							<div style={myStyle} id={this.props.id} value={this.props.value}></div>
+ 							<span style={checkText}>{this.props.text}</span>
+ 						</div>
+ 						
+ 			}
+ 		})
 	return {
 		Modal:Modal
 	} 

@@ -306,7 +306,7 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  					width: this.props.width,
  					position: 'absolute',
  					textAlign: 'center',
- 					fontSize: dim/4,
+ 					fontSize: dim/0.5,
  				}
  				
  				return 	React.createElement("div", {style: myContainer}, 

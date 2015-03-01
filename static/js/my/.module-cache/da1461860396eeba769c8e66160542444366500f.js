@@ -263,7 +263,7 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  					textAlign: 'center',
  					fontSize: height * 0.5,
  					position: 'absolute',
- 					top: top,
+ 					paddingTop: top,
  					left: left,
  				}
  			
@@ -276,44 +276,24 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  			
  			render:function(){
  					
- 				var dim 	= Math.min(this.props.width * 0.9, this.props.height * 0.9);
- 				var top =  (this.props.height-dim)/2;
- 				var left = (this.props.width-dim)/2;
- 				
+ 				var width 	= this.props.width * 0.9;
+ 				var height = this.props.height * 0.9;
+ 				var top = (this.props.height - height)/2;
+ 				var left = (this.props.width - width)/2;
  				//try paddingtop rather than top?
  				myStyle={
- 					height: dim,
- 					width:  dim,
+ 					height: height,
+ 					width:  width,
  					textAlign: 'center',
- 					fontSize: dim * 0.5,
+ 					fontSize: height * 0.5,
  					position: 'absolute',
- 					top: 5,
- 					border: 3,
- 					borderColor: '#4d4d4d',
- 					borderStyle: 'solid',
- 					background: 'white',
+ 					paddingTop: top,
  					left: left,
- 					
  				}
- 				
- 				myContainer={
- 				
- 					width: this.props.width,
- 				}
- 				
- 				checkText={
- 					top: 5 + dim + 5,
- 					width: this.props.width,
- 					position: 'absolute',
- 					textAlign: 'center',
- 					fontSize: dim/4,
- 				}
- 				
- 				return 	React.createElement("div", {style: myContainer}, 
- 							React.createElement("div", {style: myStyle, id: this.props.id, value: this.props.value}), 
- 							React.createElement("span", {style: checkText}, this.props.text)
+ 			
+ 				return 	React.createElement("label", {className: "checkbox-inline"}, 
+ 							React.createElement("input", {type: "checkbox", id: this.props.id, value: this.props.value}, this.props.text)
  						)
- 						
  			}
  		})
 	return {

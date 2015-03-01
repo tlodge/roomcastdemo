@@ -36,23 +36,11 @@
 						"name":"how many",
 						"question":"how many items need cleaning?",
 						"components":[
-								{"name":"rows", "id":"rows", "type":"slider", "min":1, "max":15, "value":1, "valueLabel":"items"}
-						]
-					},
-					{
-						"name":"where",
-						"question":"when should we come and collect your items?",
-						"components":[
-								{"name":"rows", "id":"rows", "type":"date", "min":"today", "max":10, "value":"today"}
-						]
-					},
-					{
-						"name":"contact",
-						"question":"how do you want to be notified of the cost?",
-						"components":[
-							{"name":"c1","id":"c1", "type":"button", "value": false, "label":"tlodge@gmail.com"},
-							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"07972639571"},
-							{"name":"c3","id":"c3", "type":"button", "value": true, "label":"do not contact me!"}
+								{"name":"rows", "id":"one", "type":"checkbox", "value":"one", "text":"one"},
+								{"name":"rows", "id":"two", "type":"checkbox", "value":"two", "text":"two"},
+								{"name":"rows", "id":"three", "type":"checkbox", "value":"three", "text":"three"},
+								{"name":"rows", "id":"four", "type":"checkbox", "value":"four", "text":"four"},
+								{"name":"rows", "id":"five", "type":"checkbox", "value":"five", "text":"five"}
 						]
 					}
 				]		

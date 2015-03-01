@@ -292,28 +292,17 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  					borderColor: '#4d4d4d',
  					borderStyle: 'solid',
  					background: 'white',
- 					left: left,
- 					
+ 					left: left,	
  				}
+ 			
+ 				//checkText={
+ 				//	top: 5 + dim + 5,
+ 				//}
  				
- 				myContainer={
- 				
- 					width: this.props.width,
- 				}
- 				
- 				checkText={
- 					top: 5 + dim + 5,
- 					width: this.props.width,
- 					position: 'absolute',
- 					textAlign: 'center',
- 					fontSize: dim/4,
- 				}
- 				
- 				return 	React.createElement("div", {style: myContainer}, 
- 							React.createElement("div", {style: myStyle, id: this.props.id, value: this.props.value}), 
- 							React.createElement("span", {style: checkText}, this.props.text)
- 						)
+ 				return 	React.createElement("div", null, 
+ 							React.createElement("div", {style: myStyle, id: this.props.id, value: this.props.value})
  						
+ 						)
  			}
  		})
 	return {
