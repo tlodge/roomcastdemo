@@ -12,6 +12,7 @@
 				[
 					{
 						"name":"when",
+						"id":"1.1",
 						"question":"when will you be in for us to come and collect it?",
 						"components":[
 								{"name":"rows", "id":"rows", "type":"date", "min":"today", "max":10, "value":"today"}
@@ -19,9 +20,10 @@
 					},
 					{
 						"name":"contact",
+						"id":"1.2",
 						"question":"what kind of rubbish is it",
 						"components":[
-							{"name":"c1","id":"c1", "type":"options", "value": false, "options":["one","two","three","four","five"]}
+							{"name":"c1","id":"c1", "type":"options", "value": "two", "options":["one","two","three","four","five"]}
 						]
 					}
 				]		
@@ -34,13 +36,14 @@
 				[
 					{
 						"name":"how many",
+						"id":"2.1",
 						"question":"how many items need cleaning?",
 						"components":[
-								{"name":"rows", "id":"one", "type":"checkbox", "value":"one", "text":"one"},
-								{"name":"rows", "id":"two", "type":"checkbox", "value":"two", "text":"two"},
-								{"name":"rows", "id":"three", "type":"checkbox", "value":"three", "text":"three"},
-								{"name":"rows", "id":"four", "type":"checkbox", "value":"four", "text":"four"},
-								{"name":"rows", "id":"five", "type":"checkbox", "value":"five", "text":"five"}
+								{"name":"rows", "id":"one", "type":"checkbox", "value":"one", "text":"one", "selected":false},
+								{"name":"rows", "id":"two", "type":"checkbox", "value":"two", "text":"two","selected":false},
+								{"name":"rows", "id":"three", "type":"checkbox", "value":"three", "text":"three","selected":false},
+								{"name":"rows", "id":"four", "type":"checkbox", "value":"four", "text":"four","selected":false},
+								{"name":"rows", "id":"five", "type":"checkbox", "value":"five", "text":"five","selected":true}
 						]
 					}
 				]		
@@ -54,17 +57,17 @@
 					{
 						"name":"when",
 						"question":"when is the estimated delivery time/date?",
+						"id":"3.1",
 						"components":[
-								{"name":"rows", "id":"rows", "type":"date", "min":"today", "max":10, "value":"today"}
+								{"name":"delivery", "id":"delivery", "type":"text", "lines":1, "value":"today"}
 						]
 					},
 					{
 						"name":"contact",
-						"question":"how do you want to be notified when it arrives?",
+						"id":"3.2",
+						"question":"how do you want to be told when it arrives?",
 						"components":[
-							{"name":"c1","id":"c1", "type":"button", "value": false, "label":"tlodge@gmail.com"},
-							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"07972639571"},
-							{"name":"c3","id":"c3", "type":"button", "value": true, "label":"come to my apartment"}
+							{"name":"c1","id":"c1", "type":"radio", "value": "tlodge@gmail.com", "options":["tlodge@gmail.com","07972639571","come to my apartment"]}
 						]
 					}
 				]		
@@ -87,6 +90,7 @@
 					{
 						"name":"contact",
 						"question":"where are you?",
+						"id":"4.1",
 						"components":[
 							{"name":"c1","id":"c1", "type":"button", "value": true, "label":"main gate"},
 							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"foyer door"},
@@ -106,6 +110,7 @@
 					{
 						"name":"where",
 						"question":"where is the noise coming from?",
+						"id":"6.1",
 						"components":[
 							{"name":"c11","id":"c11", "type":"button", "value": true, "label":"in the building"},
 							{"name":"c12","id":"c12", "type":"button", "value": false, "label":"upstairs"},
@@ -116,6 +121,7 @@
 					{
 						"name":"now",
 						"question":"is it happening now?",
+						"id":"6.2",
 						"components":[
 							{"name":"c16","id":"c16", "type":"button", "value": false, "label":"yes"},
 							{"name":"c17","id":"c17", "type":"button", "value": false, "label":"no"}
@@ -124,6 +130,7 @@
 					{
 						"name":"before",
 						"question":"has this noise occurred before?",
+						"id":"6.3",
 						"components":[
 							{"name":"c16","id":"c16", "type":"button", "value": false, "label":"yes"},
 							{"name":"c17","id":"c17", "type":"button", "value": false, "label":"no"}
@@ -140,6 +147,7 @@
 					{
 						"name":"where",
 						"question":"where would you like to be escorted from?",
+						"id":"7.1",
 						"components":[
 							{"name":"c11","id":"c11", "type":"button", "value": true, "label":"gloucester road"},
 							{"name":"c12","id":"c12", "type":"button", "value": false, "label":"earls court"},
@@ -164,6 +172,7 @@
 				[
 					{
 						"name":"contact",
+						"id":"9.1",
 						"question":"how bad is it?",
 						"components":[
 							{"name":"c1","id":"c1", "type":"button", "value": true, "label":"urgent!"},
@@ -173,6 +182,7 @@
 					{
 						"name":"contact",
 						"question":"where is it coming from",
+						"id":"9.2",
 						"components":[
 							{"name":"c1","id":"c1", "type":"button", "value": true, "label":"don't know"},
 							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"inside my apartment"},
@@ -191,6 +201,7 @@
 					{
 						"name":"contact",
 						"question":"how long have you noticed low pressure?",
+						"id":"10.1",
 						"components":[
 							{"name":"duration", "id":"duration", "type":"slider", "min":1, "max":24, "value":1, "valueLabel":"hours"}				
 						]
@@ -205,6 +216,7 @@
 				[
 					{
 						"name":"contact",
+						"id":"11.1",
 						"question":"how long has it been down?",
 						"components":[
 							{"name":"duration", "id":"duration", "type":"slider", "min":1, "max":24, "value":1, "valueLabel":"hours"}				
@@ -228,6 +240,7 @@
 					{
 						"name":"when",
 						"question":"where is it coming from?",
+						"id":"115.1",
 						"components":[
 							{"name":"c1","id":"c1", "type":"button", "value": true, "label":"don't know"},
 							{"name":"c2","id":"c2", "type":"button", "value": false, "label":"inside my apartment"},

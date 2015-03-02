@@ -103,7 +103,7 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 			return(	
 				<div>
 					<div className="buttoncolumns">{columns}</div>
-					<modal.Modal ref="modal" button={this.state.currentbutton} modalwidth={this.props.windowwidth*0.9} modalheight={this.props.windowheight*0.6} show={false} header={this.state.currentbutton.name} buttons={buttons}></modal.Modal>
+					<modal.Modal ref="modal" button={this.state.currentbutton} modalwidth={this.props.windowwidth*0.9} modalheight={this.props.windowheight*0.7} show={false} header={this.state.currentbutton.name} buttons={buttons}></modal.Modal>
 				</div>
 			)
 			
@@ -121,12 +121,13 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 				
 				var buttonStyle = {
 					color: 'white',
-					top: 	(this.props.buttonheight * i) + "px",
-					left:   this.props.left  + "px",
-					width:  this.props.buttonwidth + "px",
-					height: this.props.buttonheight + "px",
+					top: 	(this.props.buttonheight * i),
+					left:   this.props.left ,
+					width:  this.props.buttonwidth,
+					height: this.props.buttonheight,
 					lineHeight:  this.props.buttonheight + "px",
 					background: this.props.colours[cindex],
+					fontSize: this.props.buttonwidth * 0.1
 				};
 				
 				return (
@@ -149,11 +150,13 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 		},
 		
 		
+		
+		
 		render: function(){
-			
+		
 			return(
 				<div>
-					<div className="button" onTouchStart={this.handleTouch} onClick={this.handleClick} style={this.props.buttonstyle}>{this.props.data.name} </div>
+					<div className="button"  onTouchStart={this.handleTouch} onClick={this.handleClick} style={this.props.buttonstyle}>{this.props.data.name} </div>
 				</div>
 			)
 		}

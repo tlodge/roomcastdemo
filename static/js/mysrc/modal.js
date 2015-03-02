@@ -1,4 +1,7 @@
 define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, mixins){
+	
+	"use strict"
+	
 	var 
 
 
@@ -6,12 +9,14 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
 		
 			var handlerProps = ['handleShow', 'handleShown', 'handleHide', 'handleHidden'];
  
+ 			var hidecount = 0;
+ 			
 			var bsModalEvents = {	
 					handleShow: 'show.bs.modal',
 					handleShown: 'shown.bs.modal',
 					handleHide: 'hide.bs.modal',
 					handleHidden: 'hidden.bs.modal'
-			}
+			};
  
 			return {
 					
@@ -35,9 +40,11 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
 						}
 					},
  
+ 					getInitialState: function(){
+						return {options: {}};
+					},
+					
 					componentDidMount: function() {
-						
-						
 						
 						var $modal = $(this.getDOMNode()).modal({
 							backdrop: this.props.backdrop,
@@ -58,7 +65,6 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
 					
  
 					componentWillUnmount: function() {
-						
 						var $modal = $(this.getDOMNode())
 						
 						handlerProps.forEach(function(prop) {
@@ -72,17 +78,16 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
 					},
 					
 					hide: function() {
-						console.log("HIDE HAS BEEN CALLED!!!");
+						console.log(this.state.options);
 						$(this.getDOMNode()).modal('hide')
 					},
  
 					show: function() {
-						console.log("SHOW HAS BEEN CALLED!!!");
+						this.setState({options: {}});
 						$(this.getDOMNode()).modal('show')
 					},
  
  					toggle: function() {
- 						console.log("TOGGLE HAS BEEN CALLED!!!");
 						$(this.getDOMNode()).modal('toggle')
 					},
 					
@@ -112,12 +117,16 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
 		Modal = React.createClass({
 			
 			mixins: [modalmixin], 
-			
+ 			
+ 			handleUpdate: function(item){
+ 				var options = this.state.options;
+ 				options[item.questionid + "_" + item.componentid] = {name:item.name, value:item.value}; 
+ 				this.setState({options:options});
+ 			},
+ 				
 			render: function() {
 				
-				
 				var buttons = this.props.buttons.map(function(button) {
-					//return <button type="button" className={"btn btn-" + button.type} onClickCapture={button.handler}>{button.text}</button>
 					return <ModalButton buttontype={button.type} handler={button.handler} text={button.text}/>
 				})
  				
@@ -128,8 +137,6 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  				var bodyStyle={
  					height: this.props.modalheight 
  				}
- 			
- 				console.log(this.props.button);
  				
 				return <div className="modal fade" >
 						<div className="modal-dialog" style={modalStyle}>
@@ -141,7 +148,7 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
 								<div className="modal-body" style={bodyStyle}>
 									
 										<ModalAbout  width={Math.floor(this.props.modalwidth*1/4)} info={this.props.button.info} />
-										<ModalOptions options={this.props.button.options || []} height={this.props.modalheight} left={Math.floor(this.props.modalwidth*1/4)} width={Math.floor(this.props.modalwidth*3/4)-1} />
+										<ModalOptions handleUpdate={this.handleUpdate} id={this.props.button.id} options={this.props.button.options || []} height={this.props.modalheight} left={Math.floor(this.props.modalwidth*1/4)} width={Math.floor(this.props.modalwidth*3/4)-1} />
 								
 								</div>
 								<div className="modal-footer">
@@ -156,7 +163,7 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
 		ModalAbout = React.createClass({
  			render: function() {
  				var myStyle={
- 					width: this.props.width + "px"
+ 					width: this.props.width
  				}	
  				return (<div className="modalinfo" style={myStyle} dangerouslySetInnerHTML={{__html: this.props.info}}/>)
  			}
@@ -164,11 +171,18 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  		
  		ModalOptions = React.createClass({
  			
+ 			
+ 			handleUpdate: function(item){
+ 				item.buttonid = this.props.id;
+ 				this.props.handleUpdate(item);
+ 			},
+ 			
 			render: function() {
+			
 				
 				var questions = this.props.options.map(function(option, i){
 					return(
-						<Question top={i*this.props.height/this.props.options.length} height={Math.ceil(this.props.height/this.props.options.length)} width={this.props.width} question={option.question} components={option.components || []} />
+						<Question handleUpdate={this.handleUpdate} top={i*this.props.height/this.props.options.length} height={Math.ceil(this.props.height/this.props.options.length)} width={this.props.width} question={option.question} id={option.id} components={option.components || []} />
 					)
 				}.bind(this));
 				
@@ -182,26 +196,33 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  		}),
  		
  		Question = React.createClass({
+ 		
+ 			handleUpdate: function(item){
+ 				item.questionid=this.props.id;
+ 				this.props.handleUpdate(item);
+ 			},
+ 			
  			render: function() {
  			
  				var headingheight = this.props.height/5;
  				
- 				myStyle = {
+ 				var myStyle = {
  					top: this.props.top,
  					position: 'absolute',
  					left: 0,
  					textAlign: 'center',
  					width: this.props.width,
  					height: headingheight,
- 					
+ 					lineHeight: headingheight + "px"
  				}	
  				
- 				headingStyle={
- 					fontSize: headingheight*0.7,
+ 				var headingStyle={
+ 					fontSize: headingheight*0.5,
+ 					
  				}
  							
  				var components = this.props.components.map(function(component,i){
- 					return <Component column={i} top={this.props.top+headingheight} height={this.props.height-headingheight} width={Math.ceil(this.props.width/this.props.components.length)} left={i*this.props.width/this.props.components.length} component={component} />
+ 					return <Component handleUpdate={this.handleUpdate} id={component.id} column={i} top={this.props.top+headingheight} height={this.props.height-headingheight} width={Math.ceil(this.props.width/this.props.components.length)} left={i*this.props.width/this.props.components.length} component={component} />
  				}.bind(this));
  				
  				return(
@@ -215,9 +236,15 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  		
  		Component = React.createClass({
  			
+ 			handleUpdate: function(item){
+ 				
+ 				item.componentid = this.props.id;
+ 				this.props.handleUpdate(item)
+ 			},
+ 			
  			render: function(){
  				
- 				myStyle={
+ 				var myStyle={
  					left: this.props.left,
  					top: this.props.top,
  					width: this.props.width,
@@ -229,12 +256,18 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  				var formitem = "";
  				
  				switch (this.props.component.type){
+ 					case "text":
+ 						formitem = <TextInput width={this.props.width}  height={this.props.height} name={this.props.component.name} value={this.props.component.value} handleUpdate={this.handleUpdate}/>
+ 						break;
  					case "options":
- 						formitem = <DropDown width={this.props.width} height={this.props.height} options={this.props.component.options || []}/>
+ 						formitem = <DropDown width={this.props.width}  height={this.props.height} value={this.props.component.value} options={this.props.component.options || []}  handleUpdate={this.handleUpdate}/>
  						break;
  					case "checkbox":
- 						formitem = <CheckBox width={this.props.width} height={this.props.height} text={this.props.component.text} value={this.props.component.value} id={this.props.component.id}/>
- 						
+ 						formitem = <CheckBox width={this.props.width} height={this.props.height} text={this.props.component.text} value={this.props.component.value} selected={this.props.component.selected} handleUpdate={this.handleUpdate}/>
+ 						break;
+ 					case "radio":
+ 						formitem = <Radios width={this.props.width} height={this.props.height} value={this.props.component.value} options={this.props.component.options || []} handleUpdate={this.handleUpdate}/>
+ 						break;
  					default:
  						break;
  				}
@@ -242,10 +275,64 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  				return <div style={myStyle}>{formitem}</div>
  				
  			}
- 		})
+ 		}),
+ 		
+ 		TextInput = React.createClass({
+ 		
+ 			handleChange:function(event){
+ 				this.setState({value:event.target.value});
+ 				this.props.handleUpdate({name:this.props.name, value:event.target.value});
+ 			},
+ 			
+ 			getInitialState: function(){
+ 				return {value:this.props.value};	
+ 			},
+ 			
+ 			componentDidMount: function(){
+				//set the initial state of this checkbox!
+				this.props.handleUpdate({name:this.props.name, value:this.state.value})
+			},
+			
+ 			render:function(){
+ 				
+					var width 	= this.props.width * 0.9;
+					var height = this.props.height * 0.9;
+					var top = (this.props.height - height)/2;
+					var left = (this.props.width - width)/2;
+			
+					var myStyle={
+						height: height,
+						width:  width,
+						fontSize: height * 0.4,
+						position: 'absolute',
+						top: top,
+						left: left,
+					}
+ 			
+ 				return <input type="text" style={myStyle} value={this.state.value} className="form-control" onChange={this.handleChange}></input>	
+ 			}
+ 			
+ 		}),
  		
  		DropDown = React.createClass({
  			
+ 			handleChange: function(event){
+ 				if (event.target.value != this.state.value){
+ 					this.props.handleUpdate({name:this.state.value, value:false});
+ 					this.setState({value:event.target.value});
+ 					this.props.handleUpdate({name:event.target.value, value:true});
+ 				}
+ 			},
+ 			
+ 			getInitialState: function(){
+ 				return {value:this.props.value};	
+ 			},
+ 			
+ 			componentDidMount: function(){
+				//set the initial state of this checkbox!
+				this.props.handleUpdate({name:this.state.value, value:true})
+			},
+			
  			render:function(){
  				
  				var options = this.props.options.map(function(option){
@@ -257,60 +344,157 @@ define(['jquery','react', 'bootstrap', 'mixins'], function($, React, bootstrap, 
  				var top = (this.props.height - height)/2;
  				var left = (this.props.width - width)/2;
  				//try paddingtop rather than top?
- 				myStyle={
+ 				var myStyle={
  					height: height,
  					width:  width,
  					textAlign: 'center',
- 					fontSize: height * 0.5,
+ 					fontSize: height * 0.4,
  					position: 'absolute',
  					top: top,
  					left: left,
  				}
  			
- 				return <select style={myStyle} className="form-control">{options}</select>
+ 				return <select style={myStyle} value={this.state.value} className="form-control" onChange={this.handleChange}>{options}</select>
  			}
  		}),
  		
+ 		Radios = React.createClass({
+ 			
+ 			getInitialState: function(){
+				return {selected: this.props.value};
+			},
+			
+			handleSelect: function(item){
+				if (item!=this.state.selected){
+					this.props.handleUpdate({name:this.state.selected, value:false});
+					this.setState({selected: item});	
+					this.props.handleUpdate({name:item, value:true});
+				}
+			},
+			componentDidMount: function(){
+				//set the initial state of this checkbox!
+				this.props.handleUpdate({name:this.state.selected, value:true})
+			},
+			
+ 			render:function(){
+ 				
+ 				
+ 				var fontpadding = 5;
+ 				var width = this.props.width/this.props.options.length;
+ 				var dim  = Math.min(width * 0.6, (this.props.height + (this.props.height*0.6/4) + fontpadding*2) * 0.6);
+ 				var fontsize = dim/6;
+ 				var left = (this.props.width-dim)/2;
+ 				var top   =  (this.props.height- (dim+fontpadding+fontsize))/2;
+ 				var options = this.props.options.map(function(option, i){
+ 					
+ 					var containerStyle={
+ 						height: this.props.height,
+ 						width: width,
+ 						left: width*i,
+ 						position: 'absolute',
+ 					}
+ 					
+ 					var radioStyle={
+ 						height: dim,
+ 						width:  dim,
+ 						position: 'absolute',
+ 						top: top,
+ 						left: (width-dim)/2,
+ 						background: this.state.selected==option? '#cd804a':'white',
+ 					}
+ 					var radioText={
+						top: top + dim + fontpadding,
+						width: width,
+						fontSize: fontsize,
+						textAlign: 'center',
+						position: 'absolute',
+						whiteSpace: 'nowrap',
+						overflow: 'hidden',
+						left:0,
+					}
+ 					
+ 					return <div style={containerStyle}>
+ 						 	 <Radio textStyle={radioText} radioStyle={radioStyle} value={option} handleSelect={this.handleSelect}></Radio>
+ 						 	 <span style={radioText}>{option}</span>
+ 						   </div>
+ 				}.bind(this));
+ 				
+ 				
+ 				return <div>{options}</div>
+ 			}
+ 		}),
+ 		
+ 		Radio = React.createClass({
+ 				
+ 			mixins: [mixins.touchmixin],
+		
+			event: function(e){
+				this.props.handleSelect(this.props.value);
+			},
+			
+			
+ 			render:function(){
+ 				return	<div>
+ 							<div style={this.props.radioStyle} onTouchStart={this.handleTouch} onClick={this.handleClick}></div>
+ 						</div>
+ 			}
+ 		
+ 		}),
  		
  		CheckBox = React.createClass({
  			
+ 			mixins: [mixins.touchmixin],
+		
+			event: function(e){
+				this.setState({selected: !this.state.selected});
+				this.props.handleUpdate({name:this.props.value, value:!this.state.selected});
+			},
+			
+			getInitialState: function(){
+				return {selected: this.props.selected};
+			},
+			
+			componentDidMount: function(){
+				//set the initial state of this checkbox!
+				this.props.handleUpdate({name:this.props.value, value:this.state.selected})
+			},
+			
  			render:function(){
  					
- 				var dim 	= Math.min(this.props.width * 0.9, this.props.height * 0.9);
- 				var top =  (this.props.height-dim)/2;
+ 				var dim 		= Math.min(this.props.width * 0.6, this.props.height * 0.6);
+ 				var fontsize 	= dim/6;
+ 				var fontpadding = 5;
+ 				var top =  (this.props.height-(dim+fontsize+fontpadding))/2;
  				var left = (this.props.width-dim)/2;
  				
  				//try paddingtop rather than top?
- 				myStyle={
+ 				var myStyle={
  					height: dim,
  					width:  dim,
- 					textAlign: 'center',
- 					fontSize: dim * 0.5,
  					position: 'absolute',
- 					top: 5,
- 					border: 3,
- 					borderColor: '#4d4d4d',
- 					borderStyle: 'solid',
- 					background: 'white',
+ 					top: top,
+ 					background: this.state.selected ? '#cd804a':'white',
  					left: left,
  					
  				}
  				
- 				myContainer={
+ 				var myContainer={
  				
  					width: this.props.width,
  				}
  				
- 				checkText={
- 					top: 5 + dim + 5,
+ 				var checkText={
+ 					top: top + dim + 5,
  					width: this.props.width,
  					position: 'absolute',
  					textAlign: 'center',
- 					fontSize: dim/4,
+ 					fontSize: fontsize,
+ 					overflow: 'hidden',
+ 					whiteSpace: 'nowrap',
  				}
  				
  				return 	<div style={myContainer}>
- 							<div style={myStyle} id={this.props.id} value={this.props.value}></div>
+ 							<div style={myStyle} id={this.props.id} value={this.props.value} onTouchStart={this.handleTouch} onClick={this.handleClick}></div>
  							<span style={checkText}>{this.props.text}</span>
  						</div>
  						
