@@ -9,7 +9,8 @@ MATCH (n:`Apartment`)-[r]-() RETURN r,n LIMIT 25
 
 //get all apartments alongside all above and adjacent and return relationship
 MATCH (n:`Apartment`)-[r:`ADJACENT`|`ABOVE`]-() RETURN r,n LIMIT 25 
-
+MATCH (a:`Apartment`)-[r:`ADJACENT`|`ABOVE`]-(b:`Apartment`) RETURN a,r,b
+ 
 //get all adjacency relationships
 MATCH (a)-[:`ADJACENT`]->(b) RETURN a,b LIMIT 25
 
@@ -68,3 +69,4 @@ RETURN DISTINCT b
 MATCH (b:Button)-[:SEEN_BY]->(g:Group)<-[:BELONGS_TO]-(u:User {name:"John"})
 RETURN DISTINCT b
 
+MATCH (u:User {name:"Tom"})-[:CREATED]->(t:Thread)-[:FIRSTMESSAGE]->fm-[:NEXT]->m<-[:CREATED]-(r:User) RETURN u,t,fm,m,r

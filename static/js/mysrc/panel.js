@@ -142,18 +142,13 @@ define(['jquery','react', 'mixins', 'modal'], function($, React, mixins, modal){
 	
 	var Button = React.createClass({
 	
-		
 		mixins: [mixins.touchmixin],
 		
 		event: function(e){
 			this.props.clickhandler(this.props.data);
 		},
 		
-		
-		
-		
 		render: function(){
-		
 			return(
 				<div>
 					<div className="button"  onTouchStart={this.handleTouch} onClick={this.handleClick} style={this.props.buttonstyle}>{this.props.data.name} </div>
