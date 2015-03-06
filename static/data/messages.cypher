@@ -27,7 +27,7 @@ CREATE (user1)-[:CREATED]->(m2)
 CREATE (staff1)-[:CREATED]->(m3)
 
 //create the message chain
-CREATE (t1)-[:FIRSTMESSAGE]->(m1)
+CREATE (t1)-[:NEXT]->(m1)
 CREATE (m1)-[:NEXT]->(m2)
 CREATE (m2)-[:NEXT]->(m3)
 		

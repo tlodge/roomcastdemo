@@ -69,4 +69,12 @@ RETURN DISTINCT b
 MATCH (b:Button)-[:SEEN_BY]->(g:Group)<-[:BELONGS_TO]-(u:User {name:"John"})
 RETURN DISTINCT b
 
-MATCH (u:User {name:"Tom"})-[:CREATED]->(t:Thread)-[:FIRSTMESSAGE]->fm-[:NEXT]->m<-[:CREATED]-(r:User) RETURN u,t,fm,m,r
+MATCH (u:User {name:"Tom"})-[:CREATED]->(t:Thread)-[:FIRSTMESSAGE]->fm-[:`NEXT`*]->m<-[:CREATED]-(r:User) RETURN u,t,fm,m,r
+
+
+MATCH (u:User {name:"Tom"})-[:CREATED]->(t:Thread)-[:`NEXT`*]->m
+WITH m,t
+MATCH (m)<-[:CREATED]-(u)
+RETURN t,m,u
+RETURN u,t,fm,m,r
+           
