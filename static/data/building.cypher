@@ -510,7 +510,6 @@ CREATE
 
 CREATE (t1:Thread {	threadId:'t_1', 
 					threadName: 'the cleaning button was pressed',
-					body: 'the cleaning button was pressed', 
 					timestamp: 1425573031}
 		)
 
